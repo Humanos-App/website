@@ -5,7 +5,7 @@
     <title>Humanos - Human Truth Layer for AI</title>
     <meta
       name="description"
-      content="Enable autonomous systems to act with provable human authorization. Humanos provides cryptographic proof of verified human intent."
+      content="One API for human decisions. Enable autonomous systems to collect, reuse and verify provable human authorization before acting."
     />
     <link rel="canonical" href="https://humanos.id" />
 
@@ -15,7 +15,7 @@
     <meta property="og:title" content="Humanos - Human Truth Layer for AI" />
     <meta
       property="og:description"
-      content="Enable autonomous systems to act with provable human authorization. Humanos provides cryptographic proof of verified human intent."
+      content="One API for human decisions. Enable autonomous systems to collect, reuse and verify provable human authorization before acting."
     />
     <meta
       property="og:image"
@@ -29,7 +29,7 @@
     <meta name="twitter:title" content="Humanos - Human Truth Layer for AI" />
     <meta
       name="twitter:description"
-      content="Enable autonomous systems to act with provable human authorization. Humanos provides cryptographic proof of verified human intent."
+      content="One API for human decisions. Enable autonomous systems to collect, reuse and verify provable human authorization before acting."
     />
     <meta
       name="twitter:image"
@@ -49,7 +49,7 @@
       rel="stylesheet"
     />
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com" defer></script>
     <script>
       tailwind.config = {
         darkMode: "class",
@@ -95,8 +95,14 @@
       };
     </script>
     <!-- Iconify -->
-    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+    <script
+      src="https://code.iconify.design/3/3.1.0/iconify.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"
+      defer
+    ></script>
     <style>
       html {
         scroll-behavior: smooth;
@@ -660,8 +666,9 @@
       >
         <div class="flex items-center gap-2 h-14 shrink-0">
           <a
-            href="#"
+            href="/"
             class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[200px] h-[28px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"
+            aria-label="Humanos Home"
           ></a>
           <div
             class="h-8 w-px bg-white/10 mx-2 hidden md:block"
@@ -691,6 +698,7 @@
           <a
             href="https://humanos.mintlify.app/essentials/introduction"
             target="_blank"
+            rel="noopener noreferrer"
             class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
             >Docs</a
           >
@@ -2952,11 +2960,11 @@
                   class="text-[10px] text-zinc-600 text-center mt-4 font-light relative z-10"
                 >
                   By submitting this form, you agree to our
-                  <a href="#" class="underline hover:text-zinc-400"
+                  <a href="/terms" class="underline hover:text-zinc-400"
                     >Terms of Service</a
                   >
                   and
-                  <a href="#" class="underline hover:text-zinc-400"
+                  <a href="/privacy" class="underline hover:text-zinc-400"
                     >Privacy Policy</a
                   >.
                 </p>

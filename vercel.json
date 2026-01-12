@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+      { "source": "/usecases", "destination": "/UseCases/generated-page.html" },
+      { "source": "/usecases/(.*)", "destination": "/UseCases/$1" },
+  
+      { "source": "/", "destination": "/Homepage/generated-page.html" },
+      { "source": "/(.*)", "destination": "/Homepage/$1" }
+    ]
+  }

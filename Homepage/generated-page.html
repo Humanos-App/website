@@ -1,0 +1,1395 @@
+<html lang="en" class="dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus - Cloud Orchestration</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..500&amp;display=swap" rel="stylesheet">
+<!-- User Added Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Inter', 'sans-serif'],
+serif: ['Newsreader', 'serif'],
+mono: ['Space Mono', 'monospace'],
+},
+colors: {
+zinc: {
+850: '#1f1f22',
+900: '#18181b',
+950: '#09090b',
+},
+accent: {
+DEFAULT: '#1D08AE',
+}
+},
+letterSpacing: {
+tighter: '-0.04em',
+tight: '-0.02em',
+},
+animation: {
+'marquee': 'marquee 40s linear infinite',
+'beam': 'beam 8s linear infinite',
+},
+keyframes: {
+marquee: {
+'0%': { transform: 'translateX(0)' },
+'100%': { transform: 'translateX(-100%)' },
+},
+beam: {
+'0%': { top: '-200px', opacity: '0' },
+'10%': { opacity: '1' },
+'90%': { opacity: '1' },
+'100%': { top: '100%', opacity: '0' },
+}
+}
+}
+}
+}
+</script>
+<!-- Iconify -->
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+html { scroll-behavior: smooth; }
+body { background-color: #09090b; color: #a1a1aa; }
+::selection { background-color: rgba(255, 255, 255, 0.15); color: #ffffff; }
+::-webkit-scrollbar { width: 0px; }
+.animate-on-scroll { opacity: 0; transform: translateY(30px); filter: blur(10px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-on-scroll.animate { opacity: 1; transform: translateY(0); filter: blur(0px); }
+.word-mask { overflow: hidden; display: inline-block; vertical-align: bottom; }
+.word-reveal { opacity: 0; transform: translateY(110%) rotateX(20deg); transform-origin: top left; transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate .word-reveal { opacity: 1; transform: translateY(0) rotateX(0deg); }
+.animate-line { opacity: 0; animation: reveal-vertical 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes reveal-vertical { 0% { clip-path: inset(0 0 100% 0); opacity: 0; } 1% { opacity: 1; } 100% { clip-path: inset(0 0 0 0); opacity: 0.15; } }
+.spotlight-group:hover .spotlight-border { opacity: 1; }
+.marquee-mask { mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+/* Animation Keyframes (Preserved from original) */
+@keyframes human-pulse { 0% { opacity: 0.5; color: #71717a; transform: scale(1); } 5% { opacity: 1; color: #fff; transform: scale(1.05); text-shadow: 0 0 10px rgba(255,255,255,0.3); } 15% { opacity: 0.5; color: #71717a; transform: scale(1); } 100% { opacity: 0.5; color: #71717a; } }
+@keyframes auth-state { 0% { opacity: 0.3; border-color: rgba(255,255,255,0.1); box-shadow: none; filter: grayscale(1); } 10% { opacity: 1; border-color: #1D08AE; background: rgba(29, 8, 174, 0.05); box-shadow: 0 0 20px rgba(29, 8, 174, 0.2); filter: grayscale(0); } 90% { opacity: 1; border-color: #1D08AE; background: rgba(29, 8, 174, 0.05); box-shadow: 0 0 20px rgba(29, 8, 174, 0.2); filter: grayscale(0); } 100% { opacity: 0.3; border-color: rgba(255,255,255,0.1); box-shadow: none; filter: grayscale(1); } }
+@keyframes system-desktop { 0%, 20% { opacity: 0.3; border-color: rgba(255,255,255,0.05); color: #71717a; } 25%, 35% { opacity: 0.7; border-color: rgba(255,255,255,0.1); color: #a1a1aa; } 40%, 85% { opacity: 1; border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.03); color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.5); } 90%, 100% { opacity: 0.3; border-color: rgba(255,255,255,0.05); color: #71717a; } }
+@keyframes line-verify-desktop { 0%, 20% { stroke-dasharray: 0 100; stroke-dashoffset: 0; opacity: 0; } 25% { opacity: 1; } 30% { stroke-dasharray: 100 0; stroke-dashoffset: 0; } 40% { stroke-dasharray: 100 0; stroke-dashoffset: 0; opacity: 1; stroke: #1D08AE; } 45%, 100% { opacity: 0; } }
+/* Animation Classes */
+.anim-human { animation: human-pulse 12s ease-in-out infinite; }
+.anim-auth { animation: auth-state 12s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+.anim-sys-desktop { animation: system-desktop 12s ease-out infinite; }
+.anim-line-desktop { animation: line-verify-desktop 12s ease-in-out infinite; }
+/* Mobile Animation Classes (Abbreviated for brevity but functional) */
+.anim-mob-1 { animation: mobile-sys-1 12s ease-in-out infinite; }
+.anim-line-mob-1 { animation: line-verify-mobile-1 12s ease-in-out infinite; }
+</style>
+<!-- Intersection Observer -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const observer = new IntersectionObserver((entries) => {
+entries.forEach((entry) => {
+if (entry.isIntersecting) entry.target.classList.add("animate");
+});
+}, { threshold: 0.05, rootMargin: "0px 0px -10% 0px" });
+document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+setTimeout(() => { document.querySelectorAll("#hero .animate-on-scroll").forEach(el => el.classList.add("animate")); }, 100);
+});
+</script>
+<style id="aura-editor-visibility-style">
+.invisible { visibility: hidden !important; }
+</style><link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style><link id="all-fonts-link-font-newsreader" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"><style id="all-fonts-style-font-newsreader">.font-newsreader { font-family: 'Newsreader', serif !important; }</style><link id="all-fonts-link-font-google-sans-flex" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-google-sans-flex">.font-google-sans-flex { font-family: 'Google Sans Flex', sans-serif !important; }</style><link id="all-fonts-link-font-oswald" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-oswald">.font-oswald { font-family: 'Oswald', sans-serif !important; }</style><link id="all-fonts-link-font-dm-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-dm-sans">.font-dm-sans { font-family: 'DM Sans', sans-serif !important; }</style><link id="all-fonts-link-font-cormorant" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-cormorant">.font-cormorant { font-family: 'Cormorant Garamond', serif !important; }</style></head>
+<body class="antialiased min-h-screen overflow-x-hidden flex flex-col text-zinc-400 bg-zinc-950 w-full" id="main-body" data-new-gr-c-s-check-loaded="14.1268.0" data-gr-ext-installed="">
+
+    <!-- Background Component -->
+    <div class="fixed top-0 w-full h-screen -z-10 saturate-0" style="mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 0%, black 80%, transparent)">
+        <div class="top-0 w-full -z-10 absolute h-full">
+            <div data-us-project="ILgOO23w4wEyPQOKyLO4" class="absolute w-full h-full left-0 top-0 -z-10"></div>
+            <script type="text/javascript">
+                !function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();
+            </script>
+        </div>
+    </div>
+
+    <!-- Mouse Spotlight -->
+    <div class="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300" style="background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.03), transparent 40%);"></div>
+
+    <!-- Background Grid -->
+    <div class="absolute inset-0 pointer-events-none z-0 grid grid-cols-6 md:grid-cols-12 max-w-7xl mx-auto border-x border-white/5 h-[1200px]">
+        <div class="border-r border-white/5 h-full hidden md:block animate-line relative overflow-hidden delay-100"><div class="absolute -top-40 -right-[1px] w-[1px] h-40 bg-gradient-to-b from-transparent via-white/20 to-transparent animate-beam"></div></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-300"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-150 relative overflow-hidden"><div class="absolute -top-52 -right-[1px] w-[1px] h-52 bg-gradient-to-b from-transparent via-white/10 to-transparent animate-beam" style="animation-duration: 11s; animation-delay: 2s;"></div></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-200"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-75"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-300"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-100 relative overflow-hidden"><div class="absolute -top-64 -right-[1px] w-[1px] h-64 bg-gradient-to-b from-transparent via-white/20 to-transparent animate-beam" style="animation-duration: 9s; animation-delay: 1.5s;"></div></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-200"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-400"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-150"></div>
+        <div class="border-r border-white/5 h-full hidden md:block animate-line delay-300"></div>
+    </div>
+
+    <!-- Pill Navigation -->
+    <nav class="fixed top-6 z-50 left-1/2 -translate-x-1/2 w-[90%] md:w-auto max-w-5xl shrink-0">
+        <div class="shadow-black/50 md:px-12 flex flex-wrap md:flex-nowrap md:gap-12 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-14 bg-zinc-900/70 max-h-14 border-white/10 border rounded-full pr-8 pl-8 shadow-2xl backdrop-blur-xl gap-x-4 gap-y-4 items-center justify-between">
+  <div class="flex items-center gap-2 h-14 shrink-0">
+    <a href="#" class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[200px] h-[28px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"></a>
+    <div class="h-8 w-px bg-white/10 mx-2 hidden md:block" aria-hidden="true"></div>
+  </div>
+  <div class="hidden md:flex gap-6 shrink-0 h-14 gap-x-6 gap-y-6 items-center">
+  <a href="#product" class="hover:text-white transition-colors flex items-center gap-1 group text-sm font-medium text-zinc-400">Product</a>
+  <button type="button" class="hover:text-white transition-colors text-sm font-medium text-zinc-400" onclick="event.preventDefault();event.stopPropagation();window.open('http://humanos.id/usecases', '_blank', 'noopener,noreferrer')">Use Cases</button>
+  <a href="#pricing" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Pricing</a>
+  <a href="https://humanos.mintlify.app/essentials/introduction" target="_blank" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Docs</a>
+  <a href="#contact" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Contact</a>
+  <button type="button" class="hover:text-white transition-colors text-sm font-medium text-zinc-400" onclick="window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer')">
+  Log in
+</button>
+</div>
+  <div class="flex shrink-0 h-14 gap-x-4 gap-y-4 items-center">
+
+    <a href="javascript:void(0);" onclick="window.open('https://app.humanos.id/sign-up', '_blank'); return false;" class="hover:bg-zinc-200 transition-all overflow-hidden group cursor-pointer inline-flex items-center justify-center text-xs font-semibold text-zinc-950 bg-white rounded-full pt-2 pr-5 pb-2 pl-5 relative">
+      <span class="z-10 relative">Get Started</span>
+    </a>
+    <button class="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" onclick="const nav = this.closest('[data-element-id]'); nav.classList.toggle('max-h-14'); nav.classList.toggle('max-h-[500px]'); nav.classList.toggle('rounded-full'); nav.classList.toggle('rounded-2xl'); nav.classList.toggle('bg-zinc-900/70'); nav.classList.toggle('bg-zinc-900');">
+        <iconify-icon icon="lucide:menu" width="20"></iconify-icon>
+    </button>
+  </div>
+</div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-40 relative">
+
+  <!-- HERO SECTION -->
+  <section class="flex flex-col md:mt-32 min-h-[80vh] w-full max-w-7xl z-10 mt-16 mr-auto ml-auto pr-6 pl-6 relative justify-center" id="hero">
+    <div class="flex spotlight-group animate-on-scroll animate w-full mb-10 relative justify-start">
+      <a href="#" class="z-10 group flex items-center gap-3 hover:border-white/20 transition-all overflow-hidden bg-zinc-900/50 border-white/10 border rounded-full pt-1.5 pr-1.5 pb-1.5 pl-1.5 relative">
+        <span class="group-hover:text-zinc-300 text-sm font-medium text-zinc-400 px-2">Live in Selected Enterprise Partners</span>
+      </a>
+    </div>
+
+    <div class="w-full max-w-5xl">
+      <div class="relative z-20 animate-on-scroll animate">
+        <div class="flex flex-col gap-2 gap-x-2 gap-y-2">
+          <div class="flex uppercase text-xs text-slate-50 tracking-widest font-mono mb-4 gap-x-2 gap-y-2 items-center">
+            The control plane for human intent in autonomous systems that can't afford mistakes.
+          </div>
+          <h1 class="text-5xl md:text-8xl lg:text-[100px] leading-[0.95] tracking-tighter font-serif text-white mix-blend-screen">
+            <span class="block word-mask"><span class="block word-reveal">Human authorization,</span></span>
+            <span class="block word-mask"><span class="block word-reveal sans-serif font-light text-zinc-500">upgraded for AI.</span></span>
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:mt-32 grid grid-cols-1 lg:grid-cols-2 gap-12 animate-on-scroll animate w-full mt-20 gap-x-12 gap-y-12 items-end">
+      <div class="group md:p-8 spotlight-group overflow-hidden hover:bg-zinc-900/50 transition-all duration-500 bg-zinc-900/30 border-white/10 border rounded-2xl pt-6 pr-6 pb-6 pl-6 relative backdrop-blur-sm">
+        <div class="absolute inset-0 pointer-events-none opacity-0 spotlight-border transition-opacity duration-300" style="background: radial-gradient(400px circle at var(--mouse-x-rel) var(--mouse-y-rel), rgba(255, 255, 255, 0.05), transparent 40%);">
+        </div>
+        <div class="absolute left-0 top-8 w-0.5 h-12 bg-white rounded-r-full"></div>
+        <p class="md:text-xl leading-relaxed text-lg italic text-zinc-300 max-w-lg z-10 relative">Enable systems to act
+          autonomously, with provable human authorization checked before every action. If missing, they can request it
+          in real time.</p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row md:items-center gap-4 z-10 lg:justify-end pb-4 gap-x-4 gap-y-4">
+        <button class="group inline-flex overflow-hidden transition-all duration-300 hover:bg-zinc-200 font-medium text-zinc-950 bg-white h-12 rounded-full pr-8 pl-8 relative items-center justify-center" onclick="event.preventDefault();event.stopPropagation();window.open('http://humanos.id/usecases', '_blank', 'noopener,noreferrer');return false;" role="button">
+        <span class="cursor-pointer mr-2">Use Cases</span>
+        <iconify-icon icon="lucide:terminal" width="16" class="text-zinc-600 group-hover:text-zinc-900 transition-colors"></iconify-icon>
+    </button>
+        <button class="group inline-flex transition-all hover:text-white hover:border-white/30 cursor-pointer font-medium text-zinc-400 bg-transparent h-12 border-white/10 border rounded-full pr-8 pl-8 items-center justify-center" onclick="event.preventDefault();event.stopPropagation();window.open('https://humanos.mintlify.app/essentials/introduction', '_blank', 'noopener,noreferrer');return false;" role="button" type="button">
+        <span class="">Documentation</span>
+        <iconify-icon icon="lucide:arrow-right" width="16" class="ml-2 text-zinc-600 group-hover:translate-x-1 group-hover:text-white transition-all"></iconify-icon>
+    </button>
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="animate-on-scroll animate z-20 w-full mt-24 relative">
+      <div class="flex gap-4 gap-x-4 gap-y-4 items-stretch">
+        <div class="hidden md:flex rounded-xl pt-6 pr-6 pb-6 pl-6 items-center justify-center shrink-0">
+
+        </div>
+        <div class="flex-1 overflow-hidden shadow-black/30 bg-zinc-900/70 border-white/10 border rounded-2xl pt-8 pr-4 pb-8 pl-4 shadow-lg" style="mask-image: linear-gradient(90deg, transparent, black 20%, black 70%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, black 20%, black 70%, transparent);">
+          <style class="">
+            @keyframes scrollLogos {
+              0% {
+                transform: translateX(0);
+              }
+
+              100% {
+                transform: translateX(-50%);
+              }
+            }
+
+            .logo-scroll-container {
+              display: flex;
+              animation: scrollLogos 80s linear infinite;
+              will-change: transform;
+              width: fit-content;
+            }
+
+            .logo-scroll-container:hover {
+              animation-play-state: paused;
+            }
+          </style>
+          <div class="logo-scroll-container">
+            <!-- First Set of Logos -->
+            <div class="flex gap-4 shrink-0 px-2">
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                  <span class="text-base font-semibold text-white tracking-tight">Ciberbit</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">EHR present in 400+ units across Europe and
+                  Middle
+                  East.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Fidelidade</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">Insurance company with 7 million customers
+                  across 14
+                  countries.</p>
+              </div>
+              <div class="shadow-black/30 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300 bg-zinc-900/50 w-72 border-white/10 border rounded-2xl pt-5 pr-5 pb-5 pl-5 shadow-lg gap-x-3 gap-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Joaquim Chaves</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">Hospital and clinical lab chain with 150+
+                  locations.
+                </p>
+              </div>
+              <div class="shadow-black/30 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300 bg-zinc-900/50 w-72 border-white/10 border rounded-2xl pt-5 pr-5 pb-5 pl-5 shadow-lg gap-x-3 gap-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Bloodflow</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">AI-powered peripheral vascular diagnostics.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Coalex</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">AI systems for operational decisions.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Safaire</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">AI-powered patient safety monitoring.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Medify</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">Consent automation for healthcare workflows.
+                </p>
+              </div>
+            </div>
+
+            <!-- Duplicate Set for Smooth Infinite Scroll -->
+            <div class="flex gap-4 shrink-0 px-2">
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex gap-3 gap-x-3 gap-y-3 items-center">
+                  <span class="text-base font-semibold text-white tracking-tight">Ciberbit</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">EHR present in 400+ units across Europe and
+                  Middle
+                  East.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Fidelidade</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">Insurance company with 7 million customers
+                  across 14
+                  countries.</p>
+              </div>
+              <div class="shadow-black/30 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300 bg-zinc-900/50 w-72 border-white/10 border rounded-2xl pt-5 pr-5 pb-5 pl-5 shadow-lg gap-x-3 gap-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Joaquim Chaves</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">Hospital and clinical lab chain with 150+
+                  locations.
+                </p>
+              </div>
+              <div class="shadow-black/30 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300 bg-zinc-900/50 w-72 border-white/10 border rounded-2xl pt-5 pr-5 pb-5 pl-5 shadow-lg gap-x-3 gap-y-3">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold text-white tracking-tight">Bloodflow</span>
+                </div>
+                <p class="leading-snug text-sm font-light text-zinc-400">AI-powered peripheral vascular diagnostics.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Coalex</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">AI systems for operational decisions.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Safaire</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">AI-powered patient safety monitoring.</p>
+              </div>
+              <div class="rounded-2xl border border-white/10 bg-zinc-900/50 p-5 shadow-lg shadow-black/30 w-72 shrink-0 flex flex-col gap-3 hover:bg-zinc-900/80 transition-colors duration-300">
+                <div class="flex items-center gap-3">
+                  <span class="text-base font-semibold tracking-tight text-white">Medify</span>
+                </div>
+                <p class="text-sm text-zinc-400 font-light leading-snug">Consent automation for healthcare workflows.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEFENSE STATEMENT -->
+  <section class="z-10 md:py-32 w-full pt-24 pr-6 pb-24 pl-6 relative">
+    <div class="flex flex-col gap-10 animate-on-scroll text-center max-w-4xl mr-auto ml-auto gap-x-10 gap-y-10 animate">
+      <h2 class="text-3xl md:text-5xl font-serif tracking-tight text-white leading-tight">
+        Automated decisions will be questioned.
+        They need to be defensible.
+      </h2>
+      <div class="flex flex-col gap-8 text-lg md:text-xl font-light text-zinc-400 leading-relaxed max-w-3xl mx-auto">
+        <p class="">When high-risk systems act automatically, companies must be able to explain who approved what, under
+          which conditions, and why.</p>
+        <p class="">Humanos lets automated systems verify and request human authorization before acting. When decisions
+          are challenged, there’s clear evidence behind them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- NARRATIVE SECTION -->
+  <section class="z-20 md:py-32 overflow-hidden bg-zinc-950 w-full border-white/5 border-t pt-24 pb-24 relative">
+
+    <div class="max-w-6xl mx-auto px-6 relative z-10">
+      <!-- Video Container -->
+      <div class="relative w-full animate-on-scroll group animate">
+        <!-- Glow Border Effect -->
+        <div class="absolute -inset-[1px] bg-gradient-to-b from-white/20 via-white/5 to-transparent rounded-2xl blur-[1px] opacity-50 transition-opacity duration-500 group-hover:opacity-100">
+        </div>
+
+        <!-- Main Video Frame -->
+        <div class="relative rounded-2xl overflow-hidden bg-zinc-900 border border-white/10 shadow-[0_0_100px_-20px_rgba(0,0,0,0.5)] aspect-video ring-1 ring-white/5">
+          <div class="absolute inset-0 flex items-center justify-center bg-zinc-900 z-0">
+            <iconify-icon icon="lucide:loader" class="animate-spin text-zinc-700 w-8 h-8"></iconify-icon>
+          </div>
+          <iframe src="https://www.tella.tv/video/humanos-api-for-verified-human-intent-901x/embed?b=0&amp;title=0&amp;a=1&amp;loop=0&amp;auto_play=0&amp;t=0&amp;muted=0" class="w-full h-full relative z-10" allowfullscreen="" allowtransparency="" allow="autoplay; encrypted-media" loading="lazy">
+          </iframe>
+        </div>
+
+        <!-- Side Accents -->
+        <div class="absolute -left-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-20 hidden lg:flex">
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+          <div class="w-1 h-12 bg-gradient-to-b from-white to-transparent rounded-full"></div>
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+        </div>
+        <div class="absolute -right-8 top-1/2 -translate-y-1/2 flex flex-col gap-2 opacity-20 hidden lg:flex">
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+          <div class="w-1 h-12 bg-gradient-to-b from-white to-transparent rounded-full"></div>
+          <div class="w-1 h-1 bg-white rounded-full"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="md:pb-10 md:pt-10 z-20 bg-zinc-950 w-full border-white/5 border-t pt-10 pb-10 relative" id="product">
+    <!-- Fix for the clipped Navbar button shown in the request image -->
+    <style>
+      nav.fixed>div {
+        overflow: visible !important;
+        width: max-content !important;
+        max-width: 90vw !important;
+      }
+    </style>
+    <div class="flex flex-col gap-16 md:gap-24 animate-on-scroll md:py-24 animate w-full max-w-7xl mr-auto ml-auto pt-16 pr-6 pb-16 pl-6 relative gap-x-16 gap-y-16">
+      <div class="absolute inset-0 -z-10 pointer-events-none overflow-hidden mix-blend-screen">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-900/5 rounded-full blur-[120px] opacity-10">
+        </div>
+      </div>
+      <div class="flex flex-col items-center text-center max-w-4xl mx-auto gap-8 relative">
+        <h2 class="md:whitespace-nowrap md:text-8xl leading-[0.9] text-6xl text-white tracking-tighter font-serif">One
+          API
+          for human decisions.</h2>
+        <div class="flex flex-col gap-4 items-center mt-2 max-w-2xl">
+          <p class="md:text-xl leading-relaxed text-lg font-light text-zinc-400 tracking-tight">Unlock safe automation
+            by
+            making human decisions machine-verifiable. Systems can check whether approval exists and what it allows
+            before
+            acting. If it's missing, they can request it.</p>
+        </div>
+      </div>
+      <div class="w-full border-white/10 border-t pt-10 relative">
+        <div class="absolute -top-3 left-0 bg-zinc-950 pr-4">
+          <span class="text-[10px] font-mono tracking-[0.2em] text-zinc-600 uppercase font-medium">CAPTURE · ISSUE · ENFORCE</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mt-12">
+          <div class="flex flex-col gap-5 group">
+            <span class="text-lg text-white font-mono"> 1 – Capture the decision</span>
+            <div class="flex flex-col gap-4">
+              <p class="leading-relaxed text-base font-light text-zinc-300">Collect new approvals or ingest existing
+                ones
+                from any system. What matters is the decision, not the artifact.</p>
+              <p class="leading-relaxed text-base italic text-zinc-300 font-serif">The source and format don't matter.
+                Log, payment, app, PDF, form, signature, message, email, etc.</p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-5 group">
+            <span class="text-lg text-white font-mono">2 – Turn it into a rule</span>
+            <div class="flex flex-col gap-4">
+              <p class="leading-relaxed text-base font-light text-zinc-300">Convert the decision into machine-verifiable
+                authorization, ready to be checked before the action.</p>
+              <p class="leading-relaxed text-base italic text-zinc-200 font-serif">This defines what is allowed, under
+                which conditions.</p>
+            </div>
+          </div>
+          <div class="flex flex-col gap-5 group">
+            <span class="text-lg text-white font-mono">3 – Let any system verify and act</span>
+            <div class="flex flex-col gap-4">
+              <p class="leading-relaxed text-base font-light text-zinc-300">Any service can verify the authorization
+                once
+                issued. Reuse it across workflows, teams, and partners.</p>
+              <p class="leading-relaxed text-base italic text-zinc-200 font-serif">Auto compliance. No re-approval. No
+                duplication. No ambiguity.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGRAM SECTION -->
+  <section class="flex flex-col bg-zinc-950 w-full z-20 border-white/5 border-t pt-0 pb-0 relative">
+    <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
+      <div class="animate-on-scroll flex flex-col gap-10 w-full animate relative py-12">
+
+        <!-- Caption -->
+        <div class="w-full text-center px-6">
+          <p class="text-lg md:text-xl font-light text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+            Humanos turns a human approval into a verifiable mandate, so any system can request and verify it before
+            acting.
+          </p>
+        </div>
+
+        <!-- Animation Card -->
+        <div class="overflow-hidden md:p-12 min-h-[500px] flex bg-zinc-900/10 w-full border-white/5 border rounded-2xl pt-6 pr-6 pb-6 pl-6 relative items-center justify-center">
+          <style>
+            @keyframes mandate-details-reveal {
+
+              0%,
+              12% {
+                opacity: 0;
+                transform: translateY(8px);
+              }
+
+              20%,
+              88% {
+                opacity: 1;
+                transform: translateY(0);
+              }
+
+              95%,
+              100% {
+                opacity: 0;
+                transform: translateY(8px);
+              }
+            }
+
+            .anim-mandate-details {
+              animation: mandate-details-reveal 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            }
+
+            @keyframes query-pulse {
+              0% {
+                stroke-dashoffset: 100;
+                opacity: 0;
+              }
+
+              15% {
+                opacity: 1;
+              }
+
+              85% {
+                opacity: 1;
+              }
+
+              100% {
+                stroke-dashoffset: 0;
+                opacity: 0;
+              }
+            }
+
+            .anim-query-pulse {
+              stroke-dasharray: 12 100;
+              animation: query-pulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+          </style>
+
+          <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none">
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-8 relative z-20 h-full items-center">
+            <!-- Human Column (Left) -->
+            <div class="flex flex-col items-center justify-center relative">
+              <div class="anim-human flex flex-col items-center gap-4">
+                <div class="w-16 h-16 rounded-full bg-zinc-900 border border-current flex items-center justify-center shadow-lg relative z-20">
+                  <iconify-icon icon="lucide:user" width="32" class=""></iconify-icon>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                  <span class="text-sm font-semibold tracking-tight text-current uppercase font-mono">Human approval</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mandate Column (Middle) -->
+            <div class="flex flex-col md:my-0 mt-8 mb-8 relative items-center justify-center">
+              <div class="relative flex flex-col items-center w-full min-w-[220px]">
+
+                <!-- Ledger Card -->
+                <div class="w-full rounded-xl bg-zinc-950 border border-white/5 p-[3px] relative z-20 shadow-2xl">
+                  <div class="w-full h-full rounded-lg border border-white/20 bg-zinc-950 overflow-hidden flex flex-col items-center gap-3 p-5">
+                    <!-- Header -->
+                    <div class="flex flex-col items-center gap-2 z-10 w-full">
+                      <div class="w-10 h-10 flex items-center justify-center text-zinc-200"><iconify-icon icon="lucide:file-check" width="24"></iconify-icon></div>
+                      <div class="flex flex-col items-center text-center gap-0.5">
+                        <span class="text-sm font-semibold tracking-tight text-white uppercase font-mono">Mandate</span>
+                        <span class="text-[10px] text-zinc-500 font-mono tracking-tight font-medium">Verifiable proof of intent</span>
+                      </div>
+                    </div>
+
+                    <!-- Details Block -->
+                    <div class="anim-mandate-details w-full flex flex-col gap-1.5 pt-3 mt-1 border-t border-zinc-800/50 text-[10px] font-mono z-10">
+                      <div class="flex justify-between items-center gap-4">
+                        <span class="text-zinc-600 font-semibold">Who</span>
+                        <span class="text-zinc-400">subject → receiver</span>
+                      </div>
+                      <div class="flex justify-between items-center gap-4">
+                        <span class="text-zinc-600 font-semibold">What</span>
+                        <span class="text-zinc-400">permitted action</span>
+                      </div>
+                      <div class="flex justify-between items-center gap-4">
+                        <span class="text-zinc-600 font-semibold">Rules</span>
+                        <span class="text-zinc-400">scope + limits</span>
+                      </div>
+                      <div class="flex justify-between items-center gap-4">
+                        <span class="text-zinc-600 font-semibold">Expires</span>
+                        <span class="text-zinc-400">policy-defined</span>
+                      </div>
+                      <div class="flex justify-between items-center gap-4">
+                        <span class="text-zinc-600 font-semibold">Proof</span>
+                        <span class="text-emerald-500/80 font-medium">encrypted</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- System Column (Right) -->
+            <div class="hidden md:flex flex-col items-end justify-center gap-6 relative h-full">
+              <div class="flex gap-3 anim-sys-desktop z-20 bg-zinc-900 w-full max-w-[240px] border-white/5 border rounded-lg p-4 items-center shadow-lg hover:border-white/10 transition-colors">
+                <iconify-icon icon="lucide:banknote" width="20"></iconify-icon>
+                <span class="text-xs font-semibold tracking-tight">Insurance payout</span>
+              </div>
+              <div class="flex gap-3 anim-sys-desktop z-20 bg-zinc-900 w-full max-w-[240px] border-white/5 border rounded-lg p-4 items-center shadow-lg hover:border-white/10 transition-colors">
+                <iconify-icon icon="lucide:activity" width="20"></iconify-icon>
+                <span class="text-xs font-semibold tracking-tight">Medical access</span>
+              </div>
+              <div class="flex gap-3 anim-sys-desktop z-20 bg-zinc-900 w-full max-w-[240px] border-white/5 border rounded-lg p-4 items-center shadow-lg hover:border-white/10 transition-colors">
+                <iconify-icon icon="lucide:brain" width="20" class=""></iconify-icon>
+                <span class="text-xs font-semibold tracking-tight">AI decision</span>
+              </div>
+            </div>
+
+            <!-- Connecting Lines -->
+            <svg class="absolute inset-0 w-full h-full pointer-events-none z-10 hidden md:block" xmlns="http://www.w3.org/2000/svg">
+              <!-- Left: Human -> Mandate -->
+              <line x1="16.66%" y1="50%" x2="50%" y2="50%" stroke="#3f3f46" stroke-width="1" stroke-dasharray="4 4" opacity="0.3"></line>
+
+              <!-- Right: System -> Mandate (Pulse) -->
+              <!-- Coordinates reversed (Start: System, End: Mandate) to simplify dashoffset animation direction -->
+              <line x1="78%" y1="28%" x2="50%" y2="50%" stroke="#3b82f6" stroke-width="1.5" class="anim-query-pulse" pathLength="100" style="stroke-linecap: round; opacity: 0;"></line>
+              <line x1="78%" y1="50%" x2="50%" y2="50%" stroke="#3b82f6" stroke-width="1.5" class="anim-query-pulse" pathLength="100" style="stroke-linecap: round; opacity: 0; animation-delay: 1s;"></line>
+              <line x1="78%" y1="72%" x2="50%" y2="50%" stroke="#3b82f6" stroke-width="1.5" class="anim-query-pulse" pathLength="100" style="stroke-linecap: round; opacity: 0; animation-delay: 2s;"></line>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="flex flex-col z-20 bg-zinc-950 w-full border-white/5 border-t mt-32 pt-32 pb-32 relative md:mt-0" id="features">
+    <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
+      <div class="animate-on-scroll animate text-center max-w-4xl mx-auto mb-20">
+        <h2 class="md:text-[4.05rem] leading-tight text-[2.7rem] italic text-white tracking-tighter font-serif mb-8">
+          Human approval infrastructure
+          <span class="not-italic font-normal text-zinc-500">for systems that can't afford mistakes.</span>
+        </h2>
+        <p class="leading-relaxed text-lg md:text-xl font-light text-zinc-500 max-w-2xl mx-auto">
+          Humanos lets automated systems verify what a human allowed, before acting, without custom logic, re-approval,
+          or system coupling.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full gap-x-6 gap-y-6">
+        <!-- Card 01 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative w-40 h-24 bg-zinc-900/80 rounded-lg border border-white/10 p-3 flex flex-col justify-between shadow-2xl backdrop-blur-sm">
+              <div class="flex gap-1.5">
+                <div class="w-1 h-1 rounded-full bg-zinc-600"></div>
+                <div class="w-1 h-1 rounded-full bg-zinc-600"></div>
+              </div>
+              <div class="space-y-2 w-full">
+                <div class="w-2/3 h-0.5 bg-zinc-700 rounded-full"></div>
+                <div class="w-1/2 h-0.5 bg-zinc-700 rounded-full"></div>
+              </div>
+              <div class="mt-auto flex justify-between items-center pt-2">
+                <span class="text-[6px] font-mono text-zinc-600 uppercase tracking-wider">Status</span>
+                <span class="text-[8px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded flex items-center gap-1">
+                        <iconify-icon icon="lucide:check" width="8"></iconify-icon> VALID
+                    </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">01</span>
+            <iconify-icon icon="lucide:scan" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">Systems can verify approval
+            automatically</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">No human-in-the-loop at runtime. Every decision is
+            issued in a format machines can check instantly.</p>
+        </div>
+
+        <!-- Card 02 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative flex items-center justify-center gap-2">
+              <div class="w-8 h-8 rounded border border-white/5 bg-white/5 flex items-center justify-center opacity-50">
+                <div class="w-1 h-1 bg-zinc-600 rounded-full"></div>
+              </div>
+              <div class="w-1 relative">
+                <div class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-4 h-[1px] bg-zinc-800"></div>
+              </div>
+              <div class="w-10 h-10 rounded-lg border border-white/10 bg-zinc-900 flex items-center justify-center shadow-xl z-10">
+                <iconify-icon icon="lucide:copy" width="14" class="text-zinc-400"></iconify-icon>
+              </div>
+              <div class="w-1 relative">
+                <div class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-4 h-[1px] bg-zinc-800"></div>
+              </div>
+              <div class="w-8 h-8 rounded border border-white/5 bg-white/5 flex items-center justify-center opacity-50">
+                <div class="w-1 h-1 bg-zinc-600 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">02</span>
+            <iconify-icon icon="lucide:repeat" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">Reuse approvals across workflows,
+            systems and partners</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">Approve once. Use everywhere. The same
+            authorization works across teams, tools, and external systems.</p>
+        </div>
+
+        <!-- Card 03 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative w-48 bg-zinc-950 border border-white/10 rounded-lg p-3 font-mono text-[8px] leading-relaxed text-zinc-400 shadow-2xl backdrop-blur-sm">
+              <div class="flex items-center gap-1.5 mb-2 opacity-50">
+                <div class="w-1.5 h-1.5 rounded-full bg-zinc-600"></div>
+                <span class="text-zinc-500">audit_log.json</span>
+              </div>
+              <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
+                <span class="text-purple-400">id</span><span class="text-zinc-300">"req_9a2f"</span>
+                <span class="text-purple-400">actor</span><span class="text-zinc-300">"alice@co"</span>
+                <span class="text-purple-400">status</span><span class="text-emerald-400">"VERIFIED"</span>
+              </div>
+              <div class="absolute -bottom-3 -right-3 w-8 h-8 bg-zinc-900 border border-white/10 rounded-full flex items-center justify-center shadow-lg">
+                <iconify-icon icon="lucide:search" width="12" class="text-zinc-500"></iconify-icon>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">03</span>
+            <iconify-icon icon="lucide:globe" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">No trust in internal logs or
+            vendors</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">Any system can independently verify approval
+            without relying on your database or another company's logs.</p>
+        </div>
+
+        <!-- Card 04 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative w-40 h-24 bg-zinc-900/80 rounded-lg border border-white/10 p-3 flex flex-col shadow-2xl backdrop-blur-sm">
+              <div class="flex gap-2 mb-4">
+                <div class="w-8 h-1 bg-zinc-700 rounded-full"></div>
+                <div class="ml-auto w-3 h-1 bg-zinc-700 rounded-full"></div>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-[2px] border border-blue-500 bg-blue-500/20"></div>
+                  <div class="w-16 h-1 bg-zinc-700 rounded-full"></div>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-2 h-2 rounded-[2px] border border-zinc-700 bg-transparent"></div>
+                  <div class="w-12 h-1 bg-zinc-700 rounded-full"></div>
+                </div>
+              </div>
+              <div class="mt-auto ml-auto">
+                <span class="text-[8px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 rounded flex items-center gap-1">
+                        <div class="w-1 h-1 rounded-full bg-emerald-500"></div> ACTIVE
+                    </span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">04</span>
+            <iconify-icon icon="lucide:maximize-2" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">Approvals tied to real-world
+            intent</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">Every approval is scoped to a specific action,
+            context, time window, and limit. No blanket permissions. No implied access. No surprises at runtime.</p>
+        </div>
+
+        <!-- Card 05 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative flex flex-col items-center justify-center">
+              <span class="absolute -top-6 text-[8px] text-emerald-500 font-mono bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">ENCRYPTED</span>
+              <div class="w-px h-6 bg-emerald-500/20 absolute -top-4"></div>
+              <div class="w-12 h-12 rounded-xl bg-zinc-900 border border-white/10 flex items-center justify-center relative z-10 shadow-xl">
+                <iconify-icon icon="lucide:lock" width="20" class="text-zinc-400"></iconify-icon>
+              </div>
+              <div class="w-px h-4 bg-white/10 absolute -bottom-2"></div>
+              <span class="absolute -bottom-6 text-[8px] text-zinc-600 font-mono bg-black/50 px-1.5 py-0.5 rounded border border-white/5">SHA-256</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">05</span>
+            <iconify-icon icon="lucide:shield-check" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">Approval records you can prove in
+            court</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">Every approval is cryptographically sealed and
+            independently verifiable. If someone questions what was authorized, you can prove it, without trusting
+            internal logs or vendors.</p>
+        </div>
+
+        <!-- Card 06 -->
+        <div class="group relative flex flex-col justify-start rounded-2xl bg-zinc-900/30 border border-white/5 p-6 md:p-8 hover:bg-zinc-900/50 transition-colors duration-300">
+          <div class="rounded-xl bg-black/40 border border-white/5 h-48 w-full mb-8 relative overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-50">
+            </div>
+            <div class="relative w-52 bg-zinc-950 border border-white/10 rounded-lg p-3 font-mono text-[9px] leading-relaxed shadow-2xl backdrop-blur-sm">
+              <div class="flex gap-1 mb-2 opacity-50">
+                <div class="w-1.5 h-1.5 rounded-full bg-zinc-700"></div>
+                <div class="w-1.5 h-1.5 rounded-full bg-zinc-700"></div>
+              </div>
+              <div class="mb-1"><span class="text-purple-400">await</span>
+                <span class="text-white">humanos.check(<span class="text-orange-300">auth</span>)</span>
+              </div>
+              <div class="text-emerald-500 opacity-90">&gt;&gt; Verified (20ms)</div>
+              <div class="text-zinc-600">&gt;&gt; Executing...</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 bg-white/5 border border-white/5 px-1.5 py-1 rounded">06</span>
+            <iconify-icon icon="lucide:play-circle" class="text-zinc-500" width="14"></iconify-icon>
+          </div>
+          <h3 class="text-lg md:text-xl font-semibold text-white mb-3 tracking-tight">Checked before execution</h3>
+          <p class="text-sm text-zinc-400 leading-relaxed font-light">Systems can verify whether approval exists and
+            what it allows before acting. If approval is missing or insufficient, systems are informed and can request
+            it automatically via the Humanos API.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW SECTION (Corrected) -->
+  <section class="flex flex-col z-20 md:mt-40 w-full max-w-7xl mt-32 mx-auto px-6 relative pb-40" id="workflow">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 animate-on-scroll animate w-full gap-x-12 gap-y-12">
+      <!-- Left Column -->
+      <div class="flex flex-col justify-center">
+        <div class="flex items-center gap-3 mb-8">
+          <iconify-icon icon="lucide:shield-check" width="20" class="text-white"></iconify-icon>
+          <span class="text-xs font-mono tracking-[0.2em] uppercase text-white font-semibold">VIA PROTOCOL</span>
+        </div>
+        <h2 class="text-5xl md:text-7xl leading-[0.9] tracking-tight font-serif mb-8 text-white">Authorization
+          infrastructure, <span class="text-zinc-700 block">without black boxes.</span></h2>
+        <p class="text-xl text-zinc-400 font-light mb-12 leading-relaxed tracking-tight">VIA is the open standard for
+          transparent human authorization in automated systems.</p>
+
+        <div class="relative pl-6 border-l border-white/10 mb-16">
+          <p class="text-base text-zinc-500 font-light leading-relaxed">It defines how systems request, prove, and check
+            authorization under explicit conditions. Authorization is transparent by design. Any system can
+            independently verify what was allowed.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
+          <div class="flex flex-col gap-3">
+            <iconify-icon icon="lucide:settings-2" width="24" class="text-white mb-1"></iconify-icon>
+            <h3 class="text-base font-semibold text-white tracking-tight">Machine-verifiable</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed font-light">Every authorization can be checked by any
+              system, automatically.</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <iconify-icon icon="lucide:sliders-horizontal" width="24" class="text-white mb-1"></iconify-icon>
+            <h3 class="text-base font-semibold text-white tracking-tight">Explicit conditions</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed font-light">Permissions define what is allowed, by whom, and
+              for how long.</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <iconify-icon icon="lucide:shield-check" width="24" class="text-white mb-1"></iconify-icon>
+            <h3 class="text-base font-semibold text-white tracking-tight">Independent verification</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed font-light">No need to trust internal logs or the issuing
+              system.</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <iconify-icon icon="lucide:globe" width="24" class="text-white mb-1"></iconify-icon>
+            <h3 class="text-base font-semibold text-white tracking-tight">Open by design</h3>
+            <p class="text-sm text-zinc-500 leading-relaxed font-light">Built on open standards. Not tied to a single
+              vendor.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="flex flex-col mt-12 lg:mt-0">
+        <div class="w-full rounded-xl bg-black border border-white/10 relative shadow-2xl overflow-hidden">
+          <!-- Card Header -->
+          <div class="flex border-white/5 border-b pt-4 pr-6 pb-4 pl-6 items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+              <span class="text-xs font-medium text-zinc-400">VIA Protocol Verification</span>
+            </div>
+            <div class="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-zinc-500 border border-white/5">Net:
+              v1.0.4</div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="md:p-8 pt-6 pr-6 pb-6 pl-6 relative">
+            <!-- Vertical Line -->
+            <div class="absolute left-[44px] md:left-[52px] top-8 bottom-8 w-px bg-zinc-800"></div>
+
+            <!-- Step 1: Request -->
+            <div class="relative z-10 flex gap-6 mb-8">
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center text-zinc-500 shadow-lg">
+                <iconify-icon icon="lucide:bot" width="18" class=""></iconify-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] uppercase font-mono tracking-wider text-zinc-500 mb-2 font-semibold">Requesting
+                  System</div>
+                <div class="bg-zinc-900 border border-white/5 rounded-lg overflow-hidden">
+                  <div class="px-4 py-2 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                    <span class="text-xs font-medium text-zinc-300">Requests permission</span>
+                    <span class="text-[10px] font-mono text-zinc-600">0.04s</span>
+                  </div>
+                  <div class="p-4 font-mono text-[10px] space-y-2 bg-zinc-950/50">
+                    <div class="flex gap-3">
+                      <span class="text-purple-400">OP</span>
+                      <span class="-3">
+                                        <span class="text-blue-400">PROOF</span>
+                      <span class="text-zinc-400">Proof of human approval</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Verify -->
+            <div class="relative z-10 flex gap-6 mb-8">
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-zinc-900 border border-blue-500/20 flex items-center justify-center text-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                <iconify-icon icon="lucide:shield" width="18" class=""></iconify-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] uppercase font-mono tracking-wider text-blue-500 mb-2 font-semibold">
+                  Authorization Check</div>
+                <div class="bg-zinc-900/80 border border-blue-900/30 rounded-lg overflow-hidden relative">
+                  <div class="absolute inset-0 bg-blue-500/5 pointer-events-none"></div>
+                  <div class="px-4 py-2 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                    <span class="text-xs font-medium text-zinc-200">Checking conditions00/10 text-emerald-500 text-[10px] font-medium border border-emerald-500/20"&gt;Approved</span>
+                  </div>
+                  <div class="p-4">
+                    <div class="bg-black/40 border border-white/5 rounded p-3 mb-1">
+                      <div class="flex items-center gap-2 mb-3">
+                        <iconify-icon icon="lucide:file-text" width="12" class="text-zinc-500"></iconify-icon>
+                        <span class="text-xs text-zinc-300 font-medium">Authorization: "Allow high-value transfer"</span>
+                      </div>
+                      <div class="grid grid-cols-[auto_1fr] gap-x-8 gap-y-1 text-[10px] font-mono pl-5">
+                        <div class="text-zinc-600">Limit</div>
+                        <div class="text-zinc-300 text-right">Up to $50,000</div>
+                        <div class="text-zinc-600">Valid for</div>
+                        <div class="text-zinc-300 text-right">60 minutes</div>
+                        <div class="text-zinc-600">Scope</div>
+                        <div class="text-zinc-300 text-right">Finance operations</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Result -->
+            <div class="z-10 flex gap-6 relative gap-x-6 gap-y-6">
+              <div class="absolute left-5 -translate-x-1/2 top-0 w-4 h-[200%] bg-black -z-10"></div>
+              <div class="shrink-0 w-10 h-10 rounded-lg bg-zinc-900 border border-emerald-500/20 flex items-center justify-center text-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                <iconify-icon icon="lucide:server" width="18"></iconify-icon>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10px] uppercase font-mono tracking-wider text-emerald-500 mb-2 font-semibold">
+                  Executing System</div>
+                <div class="bg-zinc-900/80 border border-emerald-900/30 rounded-lg overflow-hidden flex items-center justify-between p-1 pl-4 pr-1">
+                  <span class="text-xs font-medium text-zinc-200">Permission confirmed</span>
+                  <div class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/30 border border-emerald-500/20 rounded text-[10px] font-semibold text-emerald-500 uppercase tracking-wide">
+                    <iconify-icon icon="lucide:check" width="12"></iconify-icon>
+                    Action Completed
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4 mt-4">
+
+          <div class="space-y-4 text-sm font-light text-zinc-500 leading-relaxed">
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="flex flex-col md:py-32 z-20 bg-zinc-950 w-full border-white/5 border-t pt-24 pb-24 relative" id="pricing">
+    <!-- Background Grid Effect -->
+    <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none -z-10">
+    </div>
+
+    <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
+      <!-- Section Header -->
+      <div class="animate-on-scroll text-center max-w-3xl mx-auto mb-20 animate">
+        <h2 class="md:text-6xl leading-[0.95] text-4xl text-white tracking-tighter font-serif mb-6 md:whitespace-nowrap">
+          Predictable pricing for infinite scale
+        </h2>
+        <p class="leading-relaxed text-lg md:text-xl font-light text-zinc-500 max-w-2xl mx-auto">
+          Pay for verification when systems act. Pay for collection only when a new human decision is required.
+        </p>
+      </div>
+
+      <!-- Pricing Cards Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 w-full animate-on-scroll items-start animate">
+
+        <!-- Card 1: Pay-as-you-go -->
+        <div class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full">
+          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+
+          <div class="flex flex-col gap-2 mb-6 relative z-10">
+            <span class="text-[10px] font-mono font-medium text-zinc-500 uppercase tracking-widest">PAY-AS-YOU-GO</span>
+            <div class="flex items-baseline gap-1.5 mt-2">
+              <span class="text-4xl md:text-5xl font-semibold text-white tracking-tight">$0.0099</span>
+              <span class="text-sm text-zinc-500 font-light">per verification</span>
+            </div>
+          </div>
+
+          <div class="text-sm text-zinc-400 font-light leading-relaxed mb-8 min-h-[60px] relative z-10">
+            <p class="mb-2">Each time a system checks whether an action is allowed.</p>
+            <p class="opacity-70">Authorizations are reusable across workflows, teams, and partners.</p>
+          </div>
+
+          <button class="hover:bg-zinc-200 transition-colors shadow-white/5 cursor-pointer text-sm font-semibold text-zinc-950 bg-white w-full z-10 rounded-full mb-10 pt-3 pr-4 pb-3 pl-4 relative shadow-lg" onclick="window.open('https://app.humanos.id/sign-up', '_blank')" role="button">
+    Start building
+</button>
+
+          <div class="space-y-4 relative z-10">
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-emerald-500 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Machine-verifiable authorizations</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-emerald-500 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Independent verification (no system-to-system coupling)</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-emerald-500 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Reusable across systems and partners</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-emerald-500 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Usage-based, no minimums</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-emerald-500 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Designed for agentic and automated workflows</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Pro -->
+        <div class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full">
+          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+
+          <div class="flex flex-col gap-2 mb-6 relative z-10">
+            <span class="text-[10px] font-mono font-medium text-emerald-500 uppercase tracking-widest">PRO</span>
+            <div class="flex items-baseline gap-1.5 mt-2">
+              <span class="text-4xl md:text-5xl font-semibold text-white tracking-tight">$99</span>
+              <span class="text-sm text-zinc-500 font-light">/ month</span>
+            </div>
+          </div>
+
+          <div class="text-sm text-zinc-400 font-light leading-relaxed mb-8 min-h-[60px] relative z-10">
+            <p class="">For teams running production workflows in regulated or high-risk environments.</p>
+          </div>
+
+          <button class="w-full py-3 px-4 bg-zinc-800 text-zinc-400 border border-white/5 cursor-not-allowed rounded-full text-sm font-medium mb-10 relative z-10 flex items-center justify-center gap-2">
+                    Coming soon
+                </button>
+
+          <div class="space-y-4 relative z-10 mb-8">
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Included verification allowance (monthly)</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Discounted per-verification pricing beyond allowance</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Teams &amp; groups for access control</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Extended data retention (5 years)</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Security &amp; compliance certifications</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Production + sandbox environments</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Priority support</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-zinc-600 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Audit-ready exports and reporting</span>
+            </div>
+          </div>
+
+          <p class="mt-auto text-xs text-zinc-600 font-light leading-relaxed border-t border-white/5 pt-4">
+            Designed for early production as organizations scale automation.
+          </p>
+        </div>
+
+        <!-- Card 3: Custom -->
+        <div class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full">
+          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+
+          <div class="flex flex-col gap-2 mb-6 relative z-10">
+            <span class="text-[10px] font-mono font-medium text-purple-400 uppercase tracking-widest">ENTERPRISE</span>
+            <div class="flex items-baseline gap-1.5 mt-2">
+              <span class="text-4xl md:text-5xl font-semibold text-white tracking-tight">Custom</span>
+            </div>
+          </div>
+
+          <div class="text-sm text-zinc-400 font-light leading-relaxed mb-8 min-h-[60px] relative z-10">
+            <p class="">For large-scale, multi-entity, and heavily regulated deployments.</p>
+          </div>
+
+          <button class="hover:bg-white/5 transition-colors z-10 cursor-pointer text-sm font-medium text-white bg-transparent w-full border-white/10 border rounded-full mb-10 pt-3 pr-4 pb-3 pl-4 relative" onclick="document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });" role="button">
+    Contact sales
+</button>
+
+          <div class="space-y-4 relative z-10">
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Contracted verification volumes and volume-based pricing</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Custom approval collection pricing by channel and geography</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Advanced compliance and regulatory support</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Legal-grade audit trails and evidentiary exports</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Dedicated infrastructure and regional deployment options</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Custom SLAs and uptime guarantees</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Extended or bespoke data retention policies</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Multi-entity and multi-tenant support</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Fine-grained access controls and policy management</span>
+            </div>
+            <div class="flex gap-3 items-start">
+              <iconify-icon icon="lucide:check" class="text-purple-400 shrink-0 mt-0.5" width="16"></iconify-icon>
+              <span class="text-sm text-zinc-400 font-light leading-snug">Procurement support, vendor security reviews, and DPAs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Pricing Row: Approval Collection -->
+      <div class="mt-12 md:mt-16 w-full animate-on-scroll">
+        <div class="relative w-full rounded-2xl border border-white/5 bg-zinc-900/10 p-8 md:p-12 overflow-hidden flex flex-col md:flex-row gap-10 md:justify-between items-start md:items-center">
+          <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none">
+          </div>
+          <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/80 via-transparent to-zinc-950/80 pointer-events-none">
+          </div>
+
+          <div class="relative z-10 flex flex-col gap-4 max-w-xl">
+            <h3 class="md:text-3xl text-2xl text-white tracking-tight font-serif whitespace-nowrap">When approval
+              doesn’t exist, <span class="text-zinc-500">Humanos collects it.</span></h3>
+            <p class="text-zinc-400 font-light leading-relaxed">
+              Some actions require a new human decision. Humanos securely requests and issues an authorization when
+              needed.
+            </p>
+          </div>
+
+          <div class="relative z-10 flex flex-col md:items-end gap-2 md:text-right shrink-0">
+            <div class="flex flex-col">
+              <span class="text-sm text-zinc-500 font-light mb-1">Approval collection</span>
+              <div class="flex items-baseline gap-2 md:justify-end">
+                <span class="text-sm text-zinc-400 font-light">From</span>
+                <span class="text-3xl font-semibold text-white tracking-tight">$0.10</span>
+                <span class="text-sm text-zinc-400 font-light">per authorization</span>
+              </div>
+            </div>
+            <div class="h-px w-full bg-white/10 my-2"></div>
+            <p class="text-xs text-zinc-500 font-mono">Price varies by channel and approval method.</p>
+            <p class="text-xs text-emerald-500 font-medium flex items-center gap-1.5 mt-1 md:justify-end">
+              <iconify-icon icon="lucide:repeat" width="12"></iconify-icon> Collected once. Reused indefinitely.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="flex flex-col md:py-32 bg-zinc-950 w-full z-20 border-white/5 border-t pt-24 pb-24 relative" id="contact">
+    <!-- Background Grid Effect -->
+    <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none -z-10">
+    </div>
+
+    <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 gap-x-16 gap-y-16 items-start">
+        <!-- Left Column: Copy -->
+        <div class="flex flex-col gap-8 animate-on-scroll">
+          <div class="flex flex-col gap-6">
+            <span class="text-xs font-mono font-medium text-emerald-500 uppercase tracking-widest">CONTACT SALES</span>
+            <h2 class="md:text-6xl leading-[0.95] text-4xl text-white tracking-tighter font-serif">
+              Make automated decisions defensible.
+            </h2>
+            <div class="flex flex-col gap-4">
+              <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
+                We help teams deploy human authorization as infrastructure so automated systems can act safely at scale
+                under explicit human intent.
+              </p>
+              <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
+                Talk to us about production deployments, regulated workflows, approval collection at scale, or custom
+                pricing.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-6 mt-4">
+            <div class="flex gap-4 items-start group">
+              <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                <iconify-icon icon="lucide:shield-check" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-white font-medium text-sm">Authorization at scale</h3>
+                <p class="text-zinc-500 text-sm font-light">
+                  Design approval and verification flows that work across systems, agents, and partners.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4 items-start group">
+              <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                <iconify-icon icon="lucide:server" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-white font-medium text-sm">Regulated environments</h3>
+                <p class="text-zinc-500 text-sm font-light">
+                  Audit-ready authorization records with long-term retention and independent verification.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex gap-4 items-start group">
+              <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+                <iconify-icon icon="lucide:code-2" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-white font-medium text-sm">Complex integrations</h3>
+                <p class="text-zinc-500 text-sm font-light">
+                  Work directly with our engineers to integrate Humanos into existing stacks, workflows, and decision
+                  engines.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-8 border-t border-white/5">
+            <p class="text-zinc-500 text-sm font-light mb-2">Prefer email?</p>
+            <a href="mailto:pedro@humanos.tech" class="hover:text-zinc-300 transition-colors flex items-center gap-2 font-medium text-white">
+              pedro@humanos.tech
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div class="animate-on-scroll w-full relative" style="transition-delay: 100ms">
+          <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none">
+          </div>
+          <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] pointer-events-none">
+          </div>
+
+          <!-- 
+         Aura Form Configuration:
+         - Uses 'div' container instead of 'form' to prevent default page reload loops.
+         - Attributes control the behavior: data-form-type, data-email-to, data-success-message.
+         - Inputs are mapped to camelCase names (firstName, lastName, etc.) for the backend.
+    -->
+          <form action="https://formspree.io/f/xnjjakbe" method="POST" class="z-10 md:p-8 overflow-hidden bg-zinc-900/20 border-white/5 border rounded-2xl pt-6 pr-6 pb-6 pl-6 relative backdrop-blur-sm" id="contact-sales-form">
+            <input type="hidden" name="_subject" value="Humanos - Contact Request">
+            <input type="hidden" name="_replyto" value="">
+
+            <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+
+            <div class="grid grid-cols-2 gap-4 mb-4 relative z-10">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-medium text-zinc-500 ml-1">First name</label>
+                <input type="text" name="firstName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Jane" required="">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-xs font-medium text-zinc-500 ml-1">Last name</label>
+                <input type="text" name="lastName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Doe" required="">
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5 mb-4 relative z-10">
+              <label class="text-xs font-medium text-zinc-500 ml-1">Work Email</label>
+              <input type="email" name="email" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="jane@company.com" required="">
+            </div>
+
+            <div class="flex flex-col gap-1.5 mb-4 relative z-10">
+              <label class="text-xs font-medium text-zinc-500 ml-1">Company</label>
+              <input type="text" name="company" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Acme Inc.">
+            </div>
+
+            <div class="flex flex-col gap-1.5 mb-6 relative z-10">
+              <label class="text-xs font-medium text-zinc-500 ml-1">How can we help?</label>
+              <textarea rows="4" name="message" class="placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15 resize-none text-sm text-white bg-zinc-950/50 w-full border-white/10 border rounded-lg pt-2.5 pr-3 pb-2.5 pl-3" placeholder="Describe your workflow, system, or decision you want to automate." required="" spellcheck="false"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-3 px-4 bg-white text-zinc-950 hover:bg-zinc-200 transition-colors rounded-full text-sm font-semibold relative z-10 shadow-lg shadow-white/5 flex items-center justify-center gap-2 group" id="contact-submit">
+    <span id="contact-submit-text">Send message</span>
+    <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-0.5 transition-transform" width="16"></iconify-icon>
+  </button>
+
+            <p id="contact-success" class="hidden text-sm text-emerald-400 text-center mt-4 font-medium relative z-10">
+              Sent. We’ll reply soon.
+            </p>
+
+            <p id="contact-error" class="hidden text-sm text-red-400 text-center mt-4 font-medium relative z-10">
+              Something broke. Email us at <a href="mailto:pedro@humanos.tech" class="underline">pedro@humanos.tech</a>.
+            </p>
+
+            <p class="text-[10px] text-zinc-600 text-center mt-4 font-light relative z-10">
+              By submitting this form, you agree to our
+              <a href="#" class="underline hover:text-zinc-400">Terms of Service</a>
+              and
+              <a href="#" class="underline hover:text-zinc-400">Privacy Policy</a>.
+            </p>
+
+            <script>
+              (function () {
+    const form = document.getElementById("contact-sales-form");
+    const success = document.getElementById("contact-success");
+    const error = document.getElementById("contact-error");
+    const btn = document.getElementById("contact-submit");
+    const btnText = document.getElementById("contact-submit-text");
+
+    if (!form) return;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      success?.classList.add("hidden");
+      error?.classList.add("hidden");
+
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = "Sending...";
+
+      try {
+        const formData = new FormData(form);
+
+        const email = formData.get("email");
+        if (email) formData.set("_replyto", email);
+
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
+
+        if (res.ok) {
+          form.reset();
+          success?.classList.remove("hidden");
+        } else {
+          error?.classList.remove("hidden");
+        }
+      } catch (err) {
+        error?.classList.remove("hidden");
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = "Send message";
+      }
+    });
+  })();
+            </script>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+</main></body></html>

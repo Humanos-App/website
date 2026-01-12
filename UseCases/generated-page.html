@@ -1,0 +1,764 @@
+<html lang="en" class="dark"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Humanos - Enterprise Solutions</title>
+<!-- Fonts: Inter and Newsreader -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,200..500;1,6..72,200..500&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Iconify -->
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<style>
+/* Global Settings */
+html { scroll-behavior: smooth; }
+body { background-color: #09090b; color: #a1a1aa; }
+::selection { background-color: rgba(255, 255, 255, 0.15); color: #ffffff; }
+::-webkit-scrollbar { width: 0px; }
+
+/* Scroll Animations */
+.animate-on-scroll { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.animate-on-scroll.animate { opacity: 1; transform: translateY(0); }
+
+/* Accordion Styles */
+.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.accordion-item.active .accordion-content { max-height: 600px; } /* Increased height for content */
+.accordion-item.active .icon-chevron { transform: rotate(180deg); }
+</style>
+<!-- Scripts -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("animate");
+            }
+        });
+    }, { threshold: 0.05, rootMargin: "0px 0px -10% 0px" });
+    document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
+
+    // Accordion Logic
+    const accordions = document.querySelectorAll('.accordion-header');
+    accordions.forEach(acc => {
+        acc.addEventListener('click', function() {
+            const item = this.parentElement;
+            const content = item.querySelector('.accordion-content');
+            
+            // Close others (optional - remove if you want multiple open)
+            document.querySelectorAll('.accordion-item').forEach(i => {
+                if(i !== item) {
+                    i.classList.remove('active');
+                    i.querySelector('.accordion-content').style.maxHeight = null;
+                }
+            });
+
+            item.classList.toggle('active');
+            if (item.classList.contains('active')) {
+                // Dynamic height calculation
+                content.style.maxHeight = content.scrollHeight + 40 + "px"; 
+            } else {
+                content.style.maxHeight = null;
+            }
+        });
+    });
+});
+</script>
+<link id="all-fonts-link-font-geist" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist">.font-geist { font-family: 'Geist', sans-serif !important; }</style><link id="all-fonts-link-font-roboto" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-roboto">.font-roboto { font-family: 'Roboto', sans-serif !important; }</style><link id="all-fonts-link-font-montserrat" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-montserrat">.font-montserrat { font-family: 'Montserrat', sans-serif !important; }</style><link id="all-fonts-link-font-poppins" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-poppins">.font-poppins { font-family: 'Poppins', sans-serif !important; }</style><link id="all-fonts-link-font-playfair" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;900&amp;display=swap"><style id="all-fonts-style-font-playfair">.font-playfair { font-family: 'Playfair Display', serif !important; }</style><link id="all-fonts-link-font-instrument-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-instrument-serif">.font-instrument-serif { font-family: 'Instrument Serif', serif !important; }</style><link id="all-fonts-link-font-merriweather" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&amp;display=swap"><style id="all-fonts-style-font-merriweather">.font-merriweather { font-family: 'Merriweather', serif !important; }</style><link id="all-fonts-link-font-bricolage" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-bricolage">.font-bricolage { font-family: 'Bricolage Grotesque', sans-serif !important; }</style><link id="all-fonts-link-font-jakarta" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-jakarta">.font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }</style><link id="all-fonts-link-font-manrope" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-manrope">.font-manrope { font-family: 'Manrope', sans-serif !important; }</style><link id="all-fonts-link-font-space-grotesk" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-space-grotesk">.font-space-grotesk { font-family: 'Space Grotesk', sans-serif !important; }</style><link id="all-fonts-link-font-work-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-work-sans">.font-work-sans { font-family: 'Work Sans', sans-serif !important; }</style><link id="all-fonts-link-font-pt-serif" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-pt-serif">.font-pt-serif { font-family: 'PT Serif', serif !important; }</style><link id="all-fonts-link-font-geist-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-geist-mono">.font-geist-mono { font-family: 'Geist Mono', monospace !important; }</style><link id="all-fonts-link-font-space-mono" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap"><style id="all-fonts-style-font-space-mono">.font-space-mono { font-family: 'Space Mono', monospace !important; }</style><link id="all-fonts-link-font-quicksand" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-quicksand">.font-quicksand { font-family: 'Quicksand', sans-serif !important; }</style><link id="all-fonts-link-font-nunito" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&amp;display=swap"><style id="all-fonts-style-font-nunito">.font-nunito { font-family: 'Nunito', sans-serif !important; }</style><link id="all-fonts-link-font-newsreader" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..800&amp;display=swap"><style id="all-fonts-style-font-newsreader">.font-newsreader { font-family: 'Newsreader', serif !important; }</style><link id="all-fonts-link-font-google-sans-flex" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-google-sans-flex">.font-google-sans-flex { font-family: 'Google Sans Flex', sans-serif !important; }</style><link id="all-fonts-link-font-oswald" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-oswald">.font-oswald { font-family: 'Oswald', sans-serif !important; }</style><link id="all-fonts-link-font-dm-sans" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-dm-sans">.font-dm-sans { font-family: 'DM Sans', sans-serif !important; }</style><link id="all-fonts-link-font-cormorant" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&amp;display=swap"><style id="all-fonts-style-font-cormorant">.font-cormorant { font-family: 'Cormorant Garamond', serif !important; }</style></head>
+<body class="bg-zinc-950 text-zinc-400 font-sans antialiased min-h-screen w-full overflow-x-hidden flex flex-col selection:bg-white/20">
+
+    <!-- Background -->
+    <div class="fixed top-0 left-0 w-full h-screen bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-900/20 via-zinc-950/50 to-zinc-950 -z-10 pointer-events-none"></div>
+    <div class="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay -z-10 pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed z-50 w-full top-6">
+    <div class="w-full flex justify-center px-6">
+    <div class="shadow-black/50 md:px-12 flex flex-wrap md:flex-nowrap md:gap-12 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-14 bg-zinc-900/70 w-full max-w-[1100px] max-h-14 border-white/10 border rounded-full pr-8 pl-8 shadow-2xl backdrop-blur-xl gap-x-4 gap-y-4 items-center justify-between">
+    <div class="flex gap-2 shrink-0 h-14 gap-x-2 gap-y-2 items-center">
+        <a href="https://humanos.id/" class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[200px] h-[28px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"></a>
+        <div class="h-8 w-px bg-white/10 mx-2 hidden md:block" aria-hidden="true"></div>
+    </div>
+    
+    <!-- Links Container: Updated to flex-col on mobile, visible (but clipped by parent overflow) to support mobile menu toggle -->
+    <div class="md:w-auto flex flex-col md:flex-row gap-6 shrink-0 md:h-14 md:pt-0 md:pb-0 order-last md:order-none w-full h-auto pt-6 pb-6 gap-x-6 gap-y-6 items-center justify-center">
+        
+        <a href="https://humanos.id/" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Back to Homepage</a>
+        
+        <a href="https://humanos.mintlify.app/essentials/introduction" target="_blank" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Docs</a>
+        <a href="/#contact" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Contact</a>
+        <button type="button" class="hover:text-white transition-colors text-sm font-medium text-zinc-400" onclick="event.preventDefault();event.stopPropagation();window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer');" role="button">Log in</button>
+    </div>
+
+    <div class="flex shrink-0 h-14 gap-x-4 gap-y-4 items-center">
+        <a href="https://app.humanos.id/sign-up" onclick="window.open('https://app.humanos.id/sign-up', '_blank','noopener,noreferrer'); return false;" class="hover:bg-zinc-200 transition-all overflow-hidden group cursor-pointer inline-flex items-center justify-center text-xs font-semibold text-zinc-950 bg-white rounded-full pt-2 pr-5 pb-2 pl-5 relative">
+            <span class="z-10 relative">Get Started</span>
+        </a>
+        <button class="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" onclick="const nav = this.closest('.max-w-[1100px]'); nav.classList.toggle('max-h-14'); nav.classList.toggle('max-h-[500px]'); nav.classList.toggle('rounded-full'); nav.classList.toggle('rounded-2xl'); nav.classList.toggle('bg-zinc-900/70'); nav.classList.toggle('bg-zinc-900');">
+            <iconify-icon icon="lucide:menu" width="20"></iconify-icon>
+        </button>
+    </div>
+</div>
+</div>
+</nav>
+
+    <main class="pt-32 pb-32">
+        
+        <!-- PAGE HERO -->
+        <section class="max-w-7xl mx-auto px-6 mb-24 md:mb-32">
+            <div class="flex flex-col gap-6 max-w-4xl animate-on-scroll animate">
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tighter leading-[0.9] text-balance">
+                    Where automated decisions become legally defensible.
+                </h1>
+                <p class="md:text-2xl leading-relaxed text-xl font-light text-zinc-400 max-w-3xl mt-4">Humanos gives systems cryptographic proof of who approved what, under which conditions, before execution.</p>
+                <div class="inline-block mt-4">
+                    <span class="text-sm font-medium text-zinc-300 border border-white/10 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm">
+                        Built for AI, automation, and regulated workflows.
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY THIS EXISTS -->
+        <section class="max-w-7xl mx-auto px-6 mb-24 md:mb-32">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 border-t border-white/10 pt-12 animate-on-scroll animate">
+                <div class="md:col-span-4">
+                     <h2 class="text-3xl text-white tracking-tight font-serif">Automation moves fast. Liability does not.</h2>
+                </div>
+                <div class="md:col-span-8 flex flex-col gap-6">
+                    <p class="text-lg md:text-xl text-zinc-400 font-light leading-relaxed">
+                        As software and AI automate more decisions, human authorization is still fragmented across emails, PDFs, forms, and internal logs.
+                    </p>
+                    <p class="text-lg md:text-xl text-zinc-400 font-light leading-relaxed">
+                        When something goes wrong, teams cannot reliably prove who approved an action, when it was approved, or under what constraints.
+                    </p>
+                    <p class="text-lg md:text-xl text-white font-medium leading-relaxed">
+                        Humanos solves this by turning human decisions into machine-verifiable authorization that systems can depend on.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW HUMANOS WORKS -->
+        <section class="max-w-7xl mx-auto px-6 mb-32">
+            
+
+            
+        </section>
+
+        <!-- SECTION: WHERE HUMANOS IS USED -->
+        <section class="max-w-4xl mr-auto mb-40 ml-auto pr-6 pl-6">
+            <div class="mb-12 animate-on-scroll animate">
+                <h2 class="text-3xl font-serif text-white tracking-tight mb-3">High-risk decisions</h2>
+                <p class="text-zinc-500 font-light">
+                    Common failure points where automation breaks down without verifiable approval.
+                </p>
+            </div>
+
+            <!-- Accordion List -->
+            <div class="border-t border-white/10 animate-on-scroll">
+
+                <!-- 1. AI-driven decisions -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">AI-driven decisions</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Black-box autonomy</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Automated systems act without provable human approval, making outcomes impossible to justify to regulators, customers, or courts.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Humanos binds AI actions to verifiable human authorization, creating an immutable proof of approval before execution.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Traceable, defensible AI behavior suitable for high-stakes environments.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. High-risk operational actions -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">High-risk operational actions</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: No audit trail for critical changes</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Infrastructure, configuration, or access changes execute without a verifiable record of who approved them and under which conditions.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Critical actions require a verifiable authorization record that provides independent proof of the approval event.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Clear attribution of who approved what, when, and under which constraints.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Delegated authority -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Delegated authority</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Unbounded agent actions</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Humans delegate authority to systems or agents without enforceable scope, limits, or expiration.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Delegation is issued as a cryptographic mandate with defined scope, constraints, and expiration that travels with the request.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Agents act with authority that is clearly scoped and automatically expires.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Insurance claim payouts -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Insurance claim payouts</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Unverifiable financial movement</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Payments execute without cryptographic proof of approval, scope, or policy compliance.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Humanos captures the approval decision and issues a reusable authorization that claims systems verify independently.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Portable proof of payment authorization across providers and partners.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Medical data access -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                         <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Medical data access</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Unauthorized data exposure</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Sensitive health data is accessed or shared without provable patient or clinician authorization.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Access requests must be accompanied by a verifiable authorization proving specific consent or provider approval.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Compliance becomes a property of the data request itself, not just the system.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Agentic payments -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Agentic payments</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Unauthorized financial actions</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">AI agents initiate payments or transfers without machine-verifiable human intent, limits, or validity windows.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Payment authorizations are issued as digital mandates that define strict limits and intent, verifiable by any payment gateway.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Agentic economy operates with the safety and auditability of human oversight.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. Enterprise access provisioning -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Enterprise access provisioning</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Over-permissioned users and systems</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Access is granted or escalated without durable proof of who approved it, for what purpose, and for how long.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Provisioning events are backed by a signed authorization record that proves the granting authority and duration.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Access audits are instant and mathematically verifiable.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Regulatory submissions and filings -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Regulatory submissions and filings</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Non-defensible compliance actions</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Reports or filings are submitted without verifiable sign-off, exposing the organization to fines and enforcement.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Submissions include a cryptographic seal of the approving officer's authorization, linking the filing to the human decision.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Regulatory actions are indisputably linked to authorized personnel.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. Model deployment and release approvals -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Model deployment and release approvals</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Unapproved models in production</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">AI models are promoted or updated without clear authorization boundaries or accountability.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Release pipelines verify a signed approval artifact before promoting models to production environments.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">No model reaches production without a permanent record of authorization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. Third-party system actions -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Third-party system actions</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Uncontrolled partner behavior</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">External vendors or platforms act on your behalf without reusable, independently verifiable authorization.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Partners receive a scoped authorization token that proves they are allowed to act, without granting permanent access keys.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Vendor actions are strictly limited to the scope of the specific authorization.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 11. Automated customer decisions -->
+                <div class="accordion-item border-b border-white/10 group">
+                    <button class="accordion-header w-full flex justify-between items-center py-6 text-left focus:outline-none">
+                        <div class="flex flex-col gap-1">
+                            <h3 class="text-xl font-medium text-white tracking-tight group-hover:text-zinc-200 transition-colors">Automated customer decisions</h3>
+                            <span class="text-xs text-zinc-500 font-mono">Risk: Inability to explain or appeal outcomes</span>
+                        </div>
+                        <iconify-icon icon="lucide:chevron-down" class="icon-chevron text-zinc-500 transition-transform duration-300 text-xl" width="24" stroke-width="1.5"></iconify-icon>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pb-8 pt-4">
+                            <p class="text-sm text-zinc-400 mb-6 max-w-2xl">Decisions affecting customers execute without proof of consent, policy scope, or decision authority.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-white/5 rounded-lg p-6 border border-white/5">
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">How Humanos helps</span>
+                                    <p class="text-sm text-zinc-300 leading-relaxed">Customer-impacting decisions carry a proof of the policy or human approval that authorized them.</p>
+                                </div>
+                                <div class="space-y-2">
+                                    <span class="text-[10px] uppercase tracking-widest text-zinc-500 font-mono block">Result</span>
+                                    <p class="text-sm text-white font-medium leading-relaxed">Automated customer interactions become transparent and auditable.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VISUAL SEPARATOR FOR PRODUCTION SECTION -->
+        <div class="w-full border-t border-zinc-800/50"></div>
+
+        <!-- SECTION 2: PRODUCTION -->
+        <section class="bg-zinc-950 pt-24 pb-24 relative">
+            
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                
+                <div class="mb-16 animate-on-scroll">
+                    <h2 class="text-3xl font-serif text-white tracking-tight mb-3">Built for real-world risk, not demos</h2>
+                    <p class="text-zinc-500 font-light max-w-lg">
+                        Built for regulated, high-risk workflows where missing authorization becomes incident, audit pain, or litigation.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-on-scroll">
+                    
+                    <!-- Card 1: Healthcare -->
+                    <div class="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] flex flex-col h-full hover:border-white/10 transition-colors">
+                        <h3 class="text-xl text-white font-medium mb-3">Healthcare providers and insurers</h3>
+                        <p class="text-sm text-zinc-400 font-light leading-relaxed mb-6">
+                            Consents, PHI access, approvals, and clinical ops become reusable authorizations any system can verify.
+                        </p>
+                        
+                        <div class="h-px w-full bg-white/5 mb-6"></div>
+
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Prove who approved PHI access, and why.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Stop re-collecting consents across systems.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Make audits queryable, not screenshot-based.</span>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="flex items-start gap-3 border-t border-white/5 pt-4 mt-auto">
+                            <iconify-icon icon="lucide:check" class="text-white mt-0.5 shrink-0" width="16"></iconify-icon>
+                            <p class="text-sm text-zinc-200 font-medium">Audits become verification, not reconstruction.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Enterprise -->
+                    <div class="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] flex flex-col h-full hover:border-white/10 transition-colors">
+                        <h3 class="text-xl text-white font-medium mb-3">Enterprise and platform teams</h3>
+                        <p class="text-sm text-zinc-400 font-light leading-relaxed mb-6">
+                            Ship approvals once, reuse them across services, teams, and partners without system-to-system coupling.
+                        </p>
+                        
+                        <div class="h-px w-full bg-white/5 mb-6"></div>
+
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Standardize approval policies across products.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Decouple services while keeping shared truth.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Make high-risk actions checkable by machines.</span>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="flex items-start gap-3 border-t border-white/5 pt-4 mt-auto">
+                             <iconify-icon icon="lucide:check" class="text-white mt-0.5 shrink-0" width="16"></iconify-icon>
+                            <p class="text-sm font-medium text-zinc-200">Approval logic scales without slowing teams.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Fintech -->
+                    <div class="group relative p-8 rounded-xl border border-white/5 bg-white/[0.02] flex flex-col h-full hover:border-white/10 transition-colors">
+                        <h3 class="text-xl text-white font-medium mb-3">Fintech, payments, and risk</h3>
+                        <p class="text-sm text-zinc-400 font-light leading-relaxed mb-6">
+                            Authorizations for movement of money become provable, scoped, and reusable across providers.
+                        </p>
+                        
+                        <div class="h-px w-full bg-white/5 mb-6"></div>
+
+                        <ul class="space-y-3 mb-8">
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Prove who approved transfers and payouts.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Reduce chargebacks and dispute overhead.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <iconify-icon icon="lucide:check" class="text-zinc-500 shrink-0 mt-0.5" width="14"></iconify-icon>
+                                <span class="text-sm text-zinc-400 font-light leading-tight">Control agentic payments with limits.</span>
+                            </li>
+                            
+                        </ul>
+
+                        <div class="flex items-start gap-3 border-t border-white/5 pt-4 mt-auto">
+                             <iconify-icon icon="lucide:check" class="text-white mt-0.5 shrink-0" width="16"></iconify-icon>
+                            <p class="text-sm text-zinc-200 font-medium">Money moves with proof, not assumptions.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CLOSING -->
+        <section class="max-w-7xl mr-auto ml-auto pt-16 pr-6 pb-32 pl-6">
+            
+        <section class="flex flex-col md:py-32 z-20 bg-zinc-950 w-full border-white/5 border-t pt-24 pb-24 relative" id="contact">
+  <!-- Background Grid Effect -->
+  <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none -z-10">
+  </div>
+
+  <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 gap-x-16 gap-y-16 items-start">
+      <!-- Left Column: Copy -->
+      <div class="flex flex-col gap-8 animate-on-scroll">
+        <div class="flex flex-col gap-6">
+          <span class="text-xs font-mono font-medium text-emerald-500 uppercase tracking-widest">CONTACT SALES</span>
+          <h2 class="md:text-6xl leading-[0.95] text-4xl text-white tracking-tighter font-serif">
+            Make automated decisions defensible.
+          </h2>
+          <div class="flex flex-col gap-4">
+            <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
+              We help teams deploy human authorization as infrastructure so automated systems can act safely at scale
+              under explicit human intent.
+            </p>
+            <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
+              Talk to us about production deployments, regulated workflows, approval collection at scale, or custom
+              pricing.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-6 mt-4">
+          <div class="flex gap-4 items-start group">
+            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+              <iconify-icon icon="lucide:shield-check" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-white font-medium text-sm">Authorization at scale</h3>
+              <p class="text-zinc-500 text-sm font-light">
+                Design approval and verification flows that work across systems, agents, and partners.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start group">
+            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+              <iconify-icon icon="lucide:server" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-white font-medium text-sm">Regulated environments</h3>
+              <p class="text-zinc-500 text-sm font-light">
+                Audit-ready authorization records with long-term retention and independent verification.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4 items-start group">
+            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
+              <iconify-icon icon="lucide:code-2" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-white font-medium text-sm">Complex integrations</h3>
+              <p class="text-zinc-500 text-sm font-light">
+                Work directly with our engineers to integrate Humanos into existing stacks, workflows, and decision
+                engines.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-white/5">
+          <p class="text-zinc-500 text-sm font-light mb-2">Prefer email?</p>
+          <a href="mailto:pedro@humanos.tech" class="hover:text-zinc-300 transition-colors flex items-center gap-2 font-medium text-white">
+            pedro@humanos.tech
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Column: Form -->
+      <div class="animate-on-scroll w-full relative" style="transition-delay: 100ms">
+        <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none">
+        </div>
+        <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] pointer-events-none">
+        </div>
+
+        <!-- 
+         Aura Form Configuration:
+         - Uses 'div' container instead of 'form' to prevent default page reload loops.
+         - Attributes control the behavior: data-form-type, data-email-to, data-success-message.
+         - Inputs are mapped to camelCase names (firstName, lastName, etc.) for the backend.
+    -->
+        <form action="https://formspree.io/f/xnjjakbe" method="POST" class="z-10 md:p-8 overflow-hidden bg-zinc-900/20 border-white/5 border rounded-2xl pt-6 pr-6 pb-6 pl-6 relative backdrop-blur-sm" id="contact-sales-form">
+          <input type="hidden" name="_subject" value="Humanos - Contact Request">
+          <input type="hidden" name="_replyto" value="">
+          
+          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
+
+          <div class="grid grid-cols-2 gap-4 mb-4 relative z-10">
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-medium text-zinc-500 ml-1">First name</label>
+              <input type="text" name="firstName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Jane" required="">
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-medium text-zinc-500 ml-1">Last name</label>
+              <input type="text" name="lastName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Doe" required="">
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-1.5 mb-4 relative z-10">
+            <label class="text-xs font-medium text-zinc-500 ml-1">Work Email</label>
+            <input type="email" name="email" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="jane@company.com" required="">
+          </div>
+
+          <div class="flex flex-col gap-1.5 mb-4 relative z-10">
+            <label class="text-xs font-medium text-zinc-500 ml-1">Company</label>
+            <input type="text" name="company" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Acme Inc.">
+          </div>
+
+          <div class="flex flex-col gap-1.5 mb-6 relative z-10">
+            <label class="text-xs font-medium text-zinc-500 ml-1">How can we help?</label>
+            <textarea rows="4" name="message" class="placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15 resize-none text-sm text-white bg-zinc-950/50 w-full border-white/10 border rounded-lg pt-2.5 pr-3 pb-2.5 pl-3" placeholder="Describe your workflow, system, or decision you want to automate." required="" spellcheck="false"></textarea>
+          </div>
+
+          <button type="submit" class="w-full py-3 px-4 bg-white text-zinc-950 hover:bg-zinc-200 transition-colors rounded-full text-sm font-semibold relative z-10 shadow-lg shadow-white/5 flex items-center justify-center gap-2 group" id="contact-submit">
+    <span id="contact-submit-text">Send message</span>
+    <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-0.5 transition-transform" width="16"></iconify-icon>
+  </button>
+
+          <p id="contact-success" class="hidden text-sm text-emerald-400 text-center mt-4 font-medium relative z-10">
+            Sent. We’ll reply soon.
+          </p>
+
+          <p id="contact-error" class="hidden text-sm text-red-400 text-center mt-4 font-medium relative z-10">
+            Something broke. Email us at <a href="mailto:pedro@humanos.tech" class="underline">pedro@humanos.tech</a>.
+          </p>
+
+          <p class="text-[10px] text-zinc-600 text-center mt-4 font-light relative z-10">
+            By submitting this form, you agree to our
+            <a href="#" class="underline hover:text-zinc-400">Terms of Service</a>
+            and
+            <a href="#" class="underline hover:text-zinc-400">Privacy Policy</a>.
+          </p>
+
+<script>
+  (function () {
+    const form = document.getElementById("contact-sales-form");
+    const success = document.getElementById("contact-success");
+    const error = document.getElementById("contact-error");
+    const btn = document.getElementById("contact-submit");
+    const btnText = document.getElementById("contact-submit-text");
+
+    if (!form) return;
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      success?.classList.add("hidden");
+      error?.classList.add("hidden");
+
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = "Sending...";
+
+      try {
+        const formData = new FormData(form);
+
+        const email = formData.get("email");
+        if (email) formData.set("_replyto", email);
+
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" },
+        });
+
+        if (res.ok) {
+          form.reset();
+          success?.classList.remove("hidden");
+        } else {
+          error?.classList.remove("hidden");
+        }
+      } catch (err) {
+        error?.classList.remove("hidden");
+      } finally {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.textContent = "Send message";
+      }
+    });
+  })();
+</script>
+        </form>
+      </div>
+    </div>
+  </div>
+</section></section>
+
+        <!-- FOOTER -->
+        
+
+    </main>
+
+</body></html>

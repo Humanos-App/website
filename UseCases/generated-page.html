@@ -56,7 +56,50 @@
     />
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com" defer></script>
-
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              serif: ["Newsreader", "serif"],
+              mono: ["Space Mono", "monospace"],
+            },
+            colors: {
+              zinc: {
+                850: "#1f1f22",
+                900: "#18181b",
+                950: "#09090b",
+              },
+              accent: {
+                DEFAULT: "#1D08AE",
+              },
+            },
+            letterSpacing: {
+              tighter: "-0.04em",
+              tight: "-0.02em",
+            },
+            animation: {
+              marquee: "marquee 40s linear infinite",
+              beam: "beam 8s linear infinite",
+            },
+            keyframes: {
+              marquee: {
+                "0%": { transform: "translateX(0)" },
+                "100%": { transform: "translateX(-100%)" },
+              },
+              beam: {
+                "0%": { top: "-200px", opacity: "0" },
+                "10%": { opacity: "1" },
+                "90%": { opacity: "1" },
+                "100%": { top: "100%", opacity: "0" },
+              },
+            },
+          },
+        },
+      };
+    </script>
     <!-- Iconify -->
     <script
       src="https://code.iconify.design/3/3.1.0/iconify.min.js"
@@ -386,73 +429,71 @@
       "
     ></div>
 
-    <!-- Navigation -->
-    <nav class="fixed z-50 w-full top-6">
-      <div class="w-full flex justify-center px-6">
-        <div
-          class="shadow-black/50 md:px-6 flex flex-wrap md:flex-nowrap md:gap-6 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-12 bg-zinc-900/70 w-full max-w-[860px] max-h-12 border-white/10 border rounded-full pr-4 pl-4 shadow-2xl backdrop-blur-xl gap-x-2 gap-y-4 items-center justify-between"
-        >
-          <div class="flex shrink-0 h-12 gap-x-2 gap-y-2 items-center">
-            <a
-              href="/"
-              class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[120px] h-[17px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"
-            ></a>
-            <div
-              class="h-6 w-px bg-white/10 mx-2 hidden md:block"
-              aria-hidden="true"
-            ></div>
-          </div>
-
+    <!-- Pill Navigation -->
+    <nav
+      class="fixed top-6 z-50 left-1/2 -translate-x-1/2 w-[90%] md:w-auto max-w-6xl shrink-0"
+    >
+      <div
+        data-element-id="navbar"
+        class="w-full shadow-black/50 px-4 md:px-12 flex flex-wrap md:flex-nowrap md:gap-12 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-14 bg-zinc-900/70 max-h-14 border-white/10 border rounded-full shadow-2xl backdrop-blur-xl gap-x-2 md:gap-x-4 gap-y-4 items-center justify-between"
+      >
+        <div class="flex items-center gap-2 h-14 shrink-0">
+          <a
+            href="/"
+            class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[100px] md:w-[140px] h-[14px] md:h-[20px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain bg-no-repeat rounded"
+            aria-label="Humanos Home"
+          ></a>
           <div
-            class="hidden md:flex gap-3 shrink-0 h-10 gap-x-3 gap-y-4 items-center"
+            class="h-8 w-px bg-white/10 mx-2 hidden md:block"
+            aria-hidden="true"
+          ></div>
+        </div>
+        <div
+          class="hidden md:flex gap-6 shrink-0 h-14 gap-x-6 gap-y-6 items-center"
+        >
+          <a
+            href="https://www.humanos.id/#product"
+            class="hover:text-white transition-colors flex items-center gap-1 group text-sm font-medium text-zinc-400"
+            >Product</a
           >
-            <a
-              href="https://www.humanos.id/#product"
-              class="hover:text-white transition-colors flex items-center gap-0.5 group text-xs font-medium text-zinc-400"
-              >Product</a
-            >
-            <button
-              type="button"
-              class="hover:text-white transition-colors text-xs font-medium text-zinc-400"
-              onclick="event.preventDefault();event.stopPropagation();window.open('http://humanos.id/usecases', '_blank', 'noopener,noreferrer')"
-            >
-              Use Cases
-            </button>
-            <a
-              href="https://www.humanos.id/#pricing"
-              class="hover:text-white transition-colors text-xs font-medium text-zinc-400"
-              >Pricing</a
-            >
-            <a
-              href="https://humanos.mintlify.app/essentials/introduction"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hover:text-white transition-colors text-xs font-medium text-zinc-400"
-              >Docs</a
-            >
-            <a
-              href="https://www.humanos.id/#contact"
-              class="hover:text-white transition-colors text-xs font-medium text-zinc-400"
-              >Contact</a
-            >
-            <button
-              type="button"
-              class="hover:text-white transition-colors text-xs font-medium text-zinc-400"
-              onclick="window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer')"
-            >
-              Log in
-            </button>
-          </div>
-
-          <div class="flex shrink-0 h-12 gap-x-4 gap-y-4 items-center">
-            <a
-              href="javascript:void(0);"
-              onclick="window.open('https://app.humanos.id/sign-up', '_blank'); return false;"
-              class="group relative inline-flex h-8 items-center justify-center overflow-hidden rounded-full bg-white px-3 text-xs font-medium text-zinc-950 transition-all hover:bg-zinc-200"
-            >
-              <span class="relative z-10">Get Started</span>
-            </a>
-          </div>
+          <a
+            href="https://www.humanos.id/usecases"
+            class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
+            >Use Cases</a
+          >
+          <a
+            href="https://www.humanos.id/#pricing"
+            class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
+            >Pricing</a
+          >
+          <a
+            href="https://humanos.mintlify.app/essentials/introduction"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
+            >Docs</a
+          >
+          <a
+            href="https://www.humanos.id/#contact"
+            class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
+            >Contact</a
+          >
+          <button
+            type="button"
+            class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
+            onclick="window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer')"
+          >
+            Log in
+          </button>
+        </div>
+        <div class="flex shrink-0 h-14 gap-x-2 md:gap-x-4 gap-y-4 items-center">
+          <a
+            href="javascript:void(0);"
+            onclick="window.open('https://app.humanos.id/sign-up', '_blank'); return false;"
+            class="hover:bg-zinc-200 transition-all overflow-hidden group cursor-pointer inline-flex items-center justify-center text-xs font-semibold text-zinc-950 bg-white rounded-full py-1.5 px-3 md:pt-2 md:pr-5 md:pb-2 md:pl-5 relative"
+          >
+            <span class="z-10 relative">Get Started</span>
+          </a>
         </div>
       </div>
     </nav>

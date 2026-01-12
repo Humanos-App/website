@@ -1,0 +1,12 @@
+# robots.txt for humanos.id
+User-agent: *
+Allow: /
+
+# Disallow non-content paths
+Disallow: /api/
+Disallow: /_next/
+Disallow: /assets/
+Disallow: /static/
+
+# Sitemap location
+Sitemap: https://humanos.id/sitemap.xml

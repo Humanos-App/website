@@ -76,30 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
     <!-- Navigation -->
     <nav class="fixed z-50 w-full top-6">
     <div class="w-full flex justify-center px-6">
-    <div class="shadow-black/50 md:px-12 flex flex-wrap md:flex-nowrap md:gap-12 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-14 bg-zinc-900/70 w-full max-w-[1100px] max-h-14 border-white/10 border rounded-full pr-8 pl-8 shadow-2xl backdrop-blur-xl gap-x-4 gap-y-4 items-center justify-between">
-    <div class="flex gap-2 shrink-0 h-14 gap-x-2 gap-y-2 items-center">
-        <a href="https://humanos.id/" class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[200px] h-[28px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"></a>
-        <div class="h-8 w-px bg-white/10 mx-2 hidden md:block" aria-hidden="true"></div>
-    </div>
+    <div class="shadow-black/50 md:px-6 flex flex-wrap md:flex-nowrap md:gap-6 md:items-center overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] md:max-h-14 bg-zinc-900/70 w-full max-w-[1100px] max-h-14 border-white/10 border rounded-full pr-4 pl-4 shadow-2xl backdrop-blur-xl gap-x-2 gap-y-4 items-center justify-between">
+  <div class="flex shrink-0 h-14 gap-x-2 gap-y-2 items-center">
+    <a href="/" class="inline-flex items-center justify-center bg-center opacity-100 mix-blend-normal w-[120px] h-[17px] bg-[url(https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/c7bf83cf-ee08-4094-82fd-49bab1ff6fe3_800w.png)] bg-contain rounded"></a>
+    <div class="h-6 w-px bg-white/10 mx-2 hidden md:block" aria-hidden="true"></div>
+  </div>
+  
+  <div class="hidden md:flex gap-3 shrink-0 h-10 gap-x-3 gap-y-4 items-center">
+    <a href="#product" class="hover:text-white transition-colors flex items-center gap-0.5 group text-xs font-medium text-zinc-400">Product</a>
+    <button type="button" class="hover:text-white transition-colors text-xs font-medium text-zinc-400" onclick="event.preventDefault();event.stopPropagation();window.open('http://humanos.id/usecases', '_blank', 'noopener,noreferrer')">Use Cases</button>
+    <a href="#pricing" class="hover:text-white transition-colors text-xs font-medium text-zinc-400">Pricing</a>
+    <a href="https://humanos.mintlify.app/essentials/introduction" target="_blank" class="hover:text-white transition-colors text-xs font-medium text-zinc-400">Docs</a>
+    <a href="#contact" class="hover:text-white transition-colors text-xs font-medium text-zinc-400">Contact</a>
+    <button type="button" class="hover:text-white transition-colors text-xs font-medium text-zinc-400" onclick="window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer')">
+      Log in
+    </button>
+  </div>
+  
+  <div class="flex shrink-0 h-14 gap-x-4 gap-y-4 items-center">
+    <a href="javascript:void(0);" onclick="window.open('https://app.humanos.id/sign-up', '_blank'); return false;" class="group relative inline-flex h-8 items-center justify-center overflow-hidden rounded-full bg-white px-3 text-xs font-medium text-zinc-950 transition-all hover:bg-zinc-200">
+      <span class="relative z-10">Get Started</span>
+    </a>
     
-    <!-- Links Container: Updated to flex-col on mobile, visible (but clipped by parent overflow) to support mobile menu toggle -->
-    <div class="md:w-auto flex flex-col md:flex-row gap-6 shrink-0 md:h-14 md:pt-0 md:pb-0 order-last md:order-none w-full h-auto pt-6 pb-6 gap-x-6 gap-y-6 items-center justify-center">
-        
-        <a href="https://humanos.id/" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Back to Homepage</a>
-        
-        <a href="https://humanos.mintlify.app/essentials/introduction" target="_blank" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Docs</a>
-        <a href="/#contact" class="hover:text-white transition-colors text-sm font-medium text-zinc-400">Contact</a>
-        <button type="button" class="hover:text-white transition-colors text-sm font-medium text-zinc-400" onclick="event.preventDefault();event.stopPropagation();window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer');" role="button">Log in</button>
-    </div>
-
-    <div class="flex shrink-0 h-14 gap-x-4 gap-y-4 items-center">
-        <a href="https://app.humanos.id/sign-up" onclick="window.open('https://app.humanos.id/sign-up', '_blank','noopener,noreferrer'); return false;" class="hover:bg-zinc-200 transition-all overflow-hidden group cursor-pointer inline-flex items-center justify-center text-xs font-semibold text-zinc-950 bg-white rounded-full pt-2 pr-5 pb-2 pl-5 relative">
-            <span class="z-10 relative">Get Started</span>
-        </a>
-        <button class="md:hidden flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors" onclick="const nav = this.closest('.max-w-[1100px]'); nav.classList.toggle('max-h-14'); nav.classList.toggle('max-h-[500px]'); nav.classList.toggle('rounded-full'); nav.classList.toggle('rounded-2xl'); nav.classList.toggle('bg-zinc-900/70'); nav.classList.toggle('bg-zinc-900');">
-            <iconify-icon icon="lucide:menu" width="20"></iconify-icon>
-        </button>
-    </div>
+  </div>
 </div>
 </div>
 </nav>
@@ -112,7 +111,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-tighter leading-[0.9] text-balance">
                     Where automated decisions become legally defensible.
                 </h1>
-                <p class="md:text-2xl leading-relaxed text-xl font-light text-zinc-400 max-w-3xl mt-4">Humanos gives systems cryptographic proof of who approved what, under which conditions, before execution.</p>
+                <p class="text-xl md:text-2xl text-zinc-400 font-light max-w-3xl leading-relaxed mt-4">
+                    Humanos gives systems cryptographic proof of who approved what, under which conditions — before execution.
+                </p>
                 <div class="inline-block mt-4">
                     <span class="text-sm font-medium text-zinc-300 border border-white/10 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm">
                         Built for AI, automation, and regulated workflows.
@@ -566,198 +567,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- CLOSING -->
         <section class="max-w-7xl mr-auto ml-auto pt-16 pr-6 pb-32 pl-6">
-            
-        <section class="flex flex-col md:py-32 z-20 bg-zinc-950 w-full border-white/5 border-t pt-24 pb-24 relative" id="contact">
-  <!-- Background Grid Effect -->
-  <div class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-20 pointer-events-none -z-10">
-  </div>
-
-  <div class="w-full max-w-7xl mr-auto ml-auto pr-6 pl-6 relative">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 gap-x-16 gap-y-16 items-start">
-      <!-- Left Column: Copy -->
-      <div class="flex flex-col gap-8 animate-on-scroll">
-        <div class="flex flex-col gap-6">
-          <span class="text-xs font-mono font-medium text-emerald-500 uppercase tracking-widest">CONTACT SALES</span>
-          <h2 class="md:text-6xl leading-[0.95] text-4xl text-white tracking-tighter font-serif">
-            Make automated decisions defensible.
-          </h2>
-          <div class="flex flex-col gap-4">
-            <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
-              We help teams deploy human authorization as infrastructure so automated systems can act safely at scale
-              under explicit human intent.
-            </p>
-            <p class="leading-relaxed text-lg text-zinc-400 font-light max-w-md">
-              Talk to us about production deployments, regulated workflows, approval collection at scale, or custom
-              pricing.
-            </p>
-          </div>
-        </div>
-
-        <div class="flex flex-col gap-6 mt-4">
-          <div class="flex gap-4 items-start group">
-            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
-              <iconify-icon icon="lucide:shield-check" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
+            <div class="flex flex-col items-start gap-8 animate-on-scroll border-t border-white/10 pt-16">
+                <p class="text-2xl md:text-3xl font-serif text-white leading-tight max-w-2xl">
+                    Anywhere a system must prove a human approved an action before execution, Humanos becomes part of the stack.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <button class="px-6 py-3 rounded bg-white text-zinc-950 text-sm font-semibold hover:bg-zinc-200 transition-colors w-full sm:w-auto">
+                        See how it works
+                    </button>
+                    <button class="px-6 py-3 rounded bg-transparent border border-white/10 text-zinc-300 text-sm font-medium hover:border-white/30 transition-colors w-full sm:w-auto">
+                        Talk to us
+                    </button>
+                </div>
             </div>
-            <div class="flex flex-col gap-1">
-              <h3 class="text-white font-medium text-sm">Authorization at scale</h3>
-              <p class="text-zinc-500 text-sm font-light">
-                Design approval and verification flows that work across systems, agents, and partners.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4 items-start group">
-            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
-              <iconify-icon icon="lucide:server" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
-            </div>
-            <div class="flex flex-col gap-1">
-              <h3 class="text-white font-medium text-sm">Regulated environments</h3>
-              <p class="text-zinc-500 text-sm font-light">
-                Audit-ready authorization records with long-term retention and independent verification.
-              </p>
-            </div>
-          </div>
-
-          <div class="flex gap-4 items-start group">
-            <div class="w-10 h-10 rounded-full border border-white/10 bg-zinc-900/50 flex items-center justify-center shrink-0 group-hover:border-white/20 transition-colors">
-              <iconify-icon icon="lucide:code-2" class="text-zinc-400 group-hover:text-white transition-colors" width="18"></iconify-icon>
-            </div>
-            <div class="flex flex-col gap-1">
-              <h3 class="text-white font-medium text-sm">Complex integrations</h3>
-              <p class="text-zinc-500 text-sm font-light">
-                Work directly with our engineers to integrate Humanos into existing stacks, workflows, and decision
-                engines.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-8 pt-8 border-t border-white/5">
-          <p class="text-zinc-500 text-sm font-light mb-2">Prefer email?</p>
-          <a href="mailto:pedro@humanos.tech" class="hover:text-zinc-300 transition-colors flex items-center gap-2 font-medium text-white">
-            pedro@humanos.tech
-          </a>
-        </div>
-      </div>
-
-      <!-- Right Column: Form -->
-      <div class="animate-on-scroll w-full relative" style="transition-delay: 100ms">
-        <div class="absolute -top-24 -right-24 w-64 h-64 bg-emerald-500/5 rounded-full blur-[80px] pointer-events-none">
-        </div>
-        <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-500/5 rounded-full blur-[80px] pointer-events-none">
-        </div>
-
-        <!-- 
-         Aura Form Configuration:
-         - Uses 'div' container instead of 'form' to prevent default page reload loops.
-         - Attributes control the behavior: data-form-type, data-email-to, data-success-message.
-         - Inputs are mapped to camelCase names (firstName, lastName, etc.) for the backend.
-    -->
-        <form action="https://formspree.io/f/xnjjakbe" method="POST" class="z-10 md:p-8 overflow-hidden bg-zinc-900/20 border-white/5 border rounded-2xl pt-6 pr-6 pb-6 pl-6 relative backdrop-blur-sm" id="contact-sales-form">
-          <input type="hidden" name="_subject" value="Humanos - Contact Request">
-          <input type="hidden" name="_replyto" value="">
-          
-          <div class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"></div>
-
-          <div class="grid grid-cols-2 gap-4 mb-4 relative z-10">
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-medium text-zinc-500 ml-1">First name</label>
-              <input type="text" name="firstName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Jane" required="">
-            </div>
-            <div class="flex flex-col gap-1.5">
-              <label class="text-xs font-medium text-zinc-500 ml-1">Last name</label>
-              <input type="text" name="lastName" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Doe" required="">
-            </div>
-          </div>
-
-          <div class="flex flex-col gap-1.5 mb-4 relative z-10">
-            <label class="text-xs font-medium text-zinc-500 ml-1">Work Email</label>
-            <input type="email" name="email" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="jane@company.com" required="">
-          </div>
-
-          <div class="flex flex-col gap-1.5 mb-4 relative z-10">
-            <label class="text-xs font-medium text-zinc-500 ml-1">Company</label>
-            <input type="text" name="company" class="w-full bg-zinc-950/50 border border-white/10 rounded-lg px-3 py-2.5 text-sm text-white placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15" placeholder="Acme Inc.">
-          </div>
-
-          <div class="flex flex-col gap-1.5 mb-6 relative z-10">
-            <label class="text-xs font-medium text-zinc-500 ml-1">How can we help?</label>
-            <textarea rows="4" name="message" class="placeholder:text-zinc-700 focus:outline-none focus:border-white/20 focus:ring-1 focus:ring-white/20 transition-all hover:border-white/15 resize-none text-sm text-white bg-zinc-950/50 w-full border-white/10 border rounded-lg pt-2.5 pr-3 pb-2.5 pl-3" placeholder="Describe your workflow, system, or decision you want to automate." required="" spellcheck="false"></textarea>
-          </div>
-
-          <button type="submit" class="w-full py-3 px-4 bg-white text-zinc-950 hover:bg-zinc-200 transition-colors rounded-full text-sm font-semibold relative z-10 shadow-lg shadow-white/5 flex items-center justify-center gap-2 group" id="contact-submit">
-    <span id="contact-submit-text">Send message</span>
-    <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-0.5 transition-transform" width="16"></iconify-icon>
-  </button>
-
-          <p id="contact-success" class="hidden text-sm text-emerald-400 text-center mt-4 font-medium relative z-10">
-            Sent. We’ll reply soon.
-          </p>
-
-          <p id="contact-error" class="hidden text-sm text-red-400 text-center mt-4 font-medium relative z-10">
-            Something broke. Email us at <a href="mailto:pedro@humanos.tech" class="underline">pedro@humanos.tech</a>.
-          </p>
-
-          <p class="text-[10px] text-zinc-600 text-center mt-4 font-light relative z-10">
-            By submitting this form, you agree to our
-            <a href="#" class="underline hover:text-zinc-400">Terms of Service</a>
-            and
-            <a href="#" class="underline hover:text-zinc-400">Privacy Policy</a>.
-          </p>
-
-<script>
-  (function () {
-    const form = document.getElementById("contact-sales-form");
-    const success = document.getElementById("contact-success");
-    const error = document.getElementById("contact-error");
-    const btn = document.getElementById("contact-submit");
-    const btnText = document.getElementById("contact-submit-text");
-
-    if (!form) return;
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      success?.classList.add("hidden");
-      error?.classList.add("hidden");
-
-      if (btn) btn.disabled = true;
-      if (btnText) btnText.textContent = "Sending...";
-
-      try {
-        const formData = new FormData(form);
-
-        const email = formData.get("email");
-        if (email) formData.set("_replyto", email);
-
-        const res = await fetch(form.action, {
-          method: "POST",
-          body: formData,
-          headers: { Accept: "application/json" },
-        });
-
-        if (res.ok) {
-          form.reset();
-          success?.classList.remove("hidden");
-        } else {
-          error?.classList.remove("hidden");
-        }
-      } catch (err) {
-        error?.classList.remove("hidden");
-      } finally {
-        if (btn) btn.disabled = false;
-        if (btnText) btnText.textContent = "Send message";
-      }
-    });
-  })();
-</script>
-        </form>
-      </div>
-    </div>
-  </div>
-</section></section>
+        </section>
 
         <!-- FOOTER -->
-        
+        <footer class="w-full bg-black pt-20 pb-12 border-t border-zinc-900 text-zinc-400">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-2 md:grid-cols-12 gap-10 md:gap-8 mb-20">
+                    <div class="col-span-2 md:col-span-4 flex flex-col gap-6">
+                        <div class="flex items-center gap-3">
+                            <img src="https://i.imgur.com/Y9zyHR3.png" alt="Humanos Logo" class="h-6 w-auto object-contain">
+                            <span class="text-lg font-semibold tracking-tight text-white">Humanos</span>
+                        </div>
+                        <p class="text-sm text-zinc-500 leading-relaxed max-w-xs font-light">The missing authorization layer for the modern web.</p>
+                    </div>
+                </div>
+                <div class="border-t border-zinc-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="text-xs text-zinc-600 font-mono">© 2024 Humanos Systems Inc.</div>
+                </div>
+            </div>
+        </footer>
 
     </main>
 

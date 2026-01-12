@@ -1,0 +1,70 @@
+# Robots.txt and Sitemap Rules
+
+---
+
+## RULE: robots.exists
+Severity: CRITICAL
+
+robots.txt must exist at /robots.txt
+
+Why: Search engines look for robots.txt first. Missing file causes unnecessary 404s in logs.
+
+---
+
+## RULE: robots.no_disallow_all_prod
+Severity: CRITICAL
+
+Production must NOT have "Disallow: /" in robots.txt.
+
+Applies to: production environment
+
+Check: robots.txt must NOT contain "Disallow: /"
+
+Why: This blocks all crawling - your site won't be indexed.
+
+---
+
+## RULE: robots.references_sitemap
+Severity: WARN
+
+robots.txt should reference sitemap.
+
+Check: Must contain line starting with "Sitemap:"
+Expected: Sitemap: https://humanos.id/sitemap.xml
+
+Why: Helps search engines discover your sitemap automatically.
+
+---
+
+## RULE: sitemap.exists
+Severity: WARN
+
+sitemap.xml should exist at /sitemap.xml
+
+Why: Sitemaps help search engines discover all your pages, especially new ones.
+
+---
+
+## RULE: sitemap.only_canonical_urls
+Severity: CRITICAL
+
+Sitemap must contain only canonical, production URLs.
+
+Check:
+- All URLs use https://
+- All URLs use humanos.id (not www, not vercel.app)
+- URLs follow normalization rules (trailing slash, etc.)
+
+Why: Non-canonical URLs in sitemap confuse search engines about which version to index.
+
+---
+
+## RULE: sitemap.no_3xx_4xx
+Severity: CRITICAL
+
+Sitemap must not contain URLs that return 3xx, 4xx, or 5xx.
+
+Timeout per URL: 10000ms
+Required status: 200
+
+Why: Sitemap should only list working, indexable pages.

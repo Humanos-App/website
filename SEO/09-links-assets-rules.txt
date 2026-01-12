@@ -1,0 +1,76 @@
+# Links and Assets Rules
+# Internal linking, orphan pages, and images
+
+---
+
+## RULE: links.no_broken_internal
+Severity: CRITICAL
+
+No broken internal links.
+
+Applies to: text/html
+Timeout per link: 10000ms
+Allowed status codes: 200, 204
+
+Check: All <a href="..."> pointing to same domain must resolve.
+
+Why: Broken links hurt user experience and waste crawl budget.
+
+---
+
+## RULE: links.no_orphan_pages
+Severity: WARN
+
+No orphan pages (in sitemap but not linked from anywhere).
+
+Applies to: site-wide check
+Source: sitemap
+Must be zero: true
+
+Why: Orphan pages are hard to discover and may not get indexed.
+
+---
+
+## RULE: assets.images_alt_text
+Severity: WARN
+
+Images should have alt text.
+
+Applies to: text/html
+Allow empty alt: false
+
+Check: All <img> tags have non-empty alt attribute.
+
+Exceptions: Decorative images can have alt="" but should be marked.
+
+Why: Alt text helps accessibility and image search ranking.
+
+---
+
+## Additional Link Checks (from your rules.txt)
+
+Key pages reachable within 3 clicks from home (WARN)
+- Important pages should be easily discoverable
+
+Anchor text quality (WARN)
+- Avoid generic "click here" repeated across site
+- Use descriptive anchor text
+
+---
+
+## Performance Hints for Assets
+
+Flag huge HTML payloads (> 1MB)
+Flag missing width/height on images (CLS risk)
+Flag too many JS files on marketing pages
+Flag render-blocking scripts in <head> without defer
+
+---
+
+## Image Best Practices
+
+- Use descriptive file names (product-photo.jpg vs IMG_1234.jpg)
+- Compress images appropriately
+- Use modern formats (WebP) with fallbacks
+- Include width and height attributes to prevent layout shift
+- Use lazy loading for below-the-fold images

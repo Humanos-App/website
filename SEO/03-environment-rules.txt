@@ -1,0 +1,40 @@
+# Environment Rules (Vercel-Specific)
+# Prevents preview deployments from being indexed
+
+## Environment Detection
+- Vercel env variable: VERCEL_ENV
+- Production value: "production"
+- Preview value: "preview"
+- Development value: "development"
+
+---
+
+## RULE: env.preview_must_noindex
+Severity: CRITICAL
+
+Preview and development deployments must be noindex,nofollow.
+
+Applies to:
+- Environments: preview, development
+- Content types: text/html
+
+Check:
+- meta[name='robots'] must contain "noindex" AND "nofollow"
+
+Why: Prevents duplicate content issues and keeps preview URLs out of Google.
+
+---
+
+## RULE: env.prod_must_be_indexable
+Severity: CRITICAL
+
+Production pages must NOT have noindex.
+
+Applies to:
+- Environment: production
+- Content types: text/html
+
+Check:
+- meta[name='robots'] must NOT contain "noindex"
+
+Why: Ensures your production site can actually be crawled and indexed.

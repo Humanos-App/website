@@ -1,0 +1,81 @@
+# Meta Tags Rules
+# Title, description, and canonical link
+
+---
+
+## RULE: meta.title_present_unique
+Severity: CRITICAL
+
+Every page must have a non-empty, unique <title>.
+
+Applies to: text/html
+Minimum characters: 8
+
+Why: Title is the most important on-page SEO element. Duplicate titles confuse search engines.
+
+---
+
+## RULE: meta.title_length
+Severity: WARN
+
+Title should be 30-65 characters (ideal: 50-60).
+
+Applies to: text/html
+Min: 30 chars
+Max: 65 chars
+
+Why: Titles longer than ~60 chars get truncated in search results.
+
+---
+
+## RULE: meta.description_present
+Severity: CRITICAL
+
+Every page must have a meta description.
+
+Applies to: text/html
+Required: <meta name="description" content="...">
+
+Why: Description appears in search results. Missing descriptions hurt click-through rates.
+
+---
+
+## RULE: meta.description_length
+Severity: WARN
+
+Meta description should be 90-180 characters (ideal: 140-160).
+
+Applies to: text/html
+Min: 90 chars
+Max: 180 chars
+
+Why: Descriptions longer than ~160 chars get truncated in search results.
+
+---
+
+## RULE: link.canonical_present_single
+Severity: CRITICAL
+
+Every page must have exactly ONE canonical link.
+
+Applies to: text/html
+Required: <link rel="canonical" href="...">
+Must be: absolute URL (not relative)
+
+Why: Multiple or missing canonicals confuse search engines about which URL to index.
+
+---
+
+## RULE: link.canonical_matches_normalization
+Severity: CRITICAL
+
+Canonical URL must follow normalization rules.
+
+Check:
+- Uses https://
+- Uses humanos.id (not www, not vercel.app)
+- Follows trailing slash policy
+- No index.html
+- No tracking parameters
+
+Why: Canonical must point to the "correct" version of the URL.

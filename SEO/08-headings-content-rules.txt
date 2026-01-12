@@ -1,0 +1,66 @@
+# Headings and Content Rules
+# Page structure and content quality
+
+---
+
+## RULE: headings.single_h1
+Severity: WARN
+
+Each page should have exactly ONE <h1> tag.
+
+Applies to: text/html
+Required count: 1
+
+Why: H1 signals the main topic of the page. Multiple H1s dilute this signal.
+
+---
+
+## RULE: headings.no_empty_h1
+Severity: CRITICAL
+
+H1 must not be empty or too short.
+
+Applies to: text/html
+Minimum characters: 3
+
+Why: Empty H1 tags provide no SEO value and indicate broken content.
+
+---
+
+## RULE: headings.logical_hierarchy
+Severity: WARN
+
+Heading hierarchy should be logical (no skipping levels).
+
+Applies to: text/html
+Max level jump: 1
+
+Good:  H1 -> H2 -> H3 -> H2 -> H3
+Bad:   H1 -> H3 (skipped H2)
+Bad:   H1 -> H4 (skipped H2 and H3)
+
+Why: Logical heading structure helps search engines understand content hierarchy.
+
+---
+
+## RULE: content.min_body_text
+Severity: WARN
+
+Pages should have minimum visible body text.
+
+Applies to: text/html
+Minimum characters: 250
+Ignore sections: nav, footer, header
+
+Why: Thin content (very little text) is considered low quality by search engines.
+
+---
+
+## Content Best Practices
+
+- H1 should match or relate to <title>
+- Use H2s for main sections
+- Use H3s for subsections within H2s
+- Don't use headings just for styling (use CSS instead)
+- Ensure main content is in HTML, not rendered only via JavaScript
+- Avoid hidden text (display:none with SEO keywords)

@@ -1,0 +1,414 @@
+{
+  "version": "1.0.0",
+  "name": "vercel-static-seo-gate",
+  "targets": {
+    "mode": "deployed",
+    "baseUrl": "https://YOUR_PRODUCTION_DOMAIN.com",
+    "allowHosts": [
+      "YOUR_PRODUCTION_DOMAIN.com",
+      "www.YOUR_PRODUCTION_DOMAIN.com"
+    ],
+    "blockHosts": ["vercel.app"],
+    "maxUrls": 500,
+    "maxDepth": 6,
+    "timeoutMs": 15000,
+    "userAgent": "SEO-Gate/1.0 (+https://YOUR_DOMAIN.com)",
+    "fetch": {
+      "followRedirects": false,
+      "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    }
+  },
+  "env": {
+    "vercelEnvVar": "VERCEL_ENV",
+    "productionValue": "production",
+    "previewValue": "preview",
+    "developmentValue": "development"
+  },
+  "normalization": {
+    "forceHttps": true,
+    "canonicalHost": "YOUR_PRODUCTION_DOMAIN.com",
+    "allowWww": false,
+    "trailingSlash": "never",
+    "stripIndexHtml": true,
+    "stripDefaultPorts": true,
+    "collapseSlashes": true,
+    "removeUtmParams": true,
+    "utmParams": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_term",
+      "utm_content",
+      "gclid",
+      "fbclid"
+    ]
+  },
+  "crawl": {
+    "seeds": ["/", "/sitemap.xml", "/robots.txt"],
+    "includeSitemap": true,
+    "includeRobots": true,
+    "sameHostOnly": true,
+    "ignore": {
+      "pathPrefixes": ["/api", "/_next", "/assets", "/static", "/.well-known"],
+      "extensions": [
+        ".pdf",
+        ".zip",
+        ".mp4",
+        ".mov",
+        ".webm",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".gif",
+        ".svg",
+        ".webp",
+        ".ico"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "id": "env.preview_must_noindex",
+      "title": "Preview deployments must be noindex,nofollow",
+      "severity": "critical",
+      "appliesTo": {
+        "envIn": ["preview", "development"],
+        "contentTypes": ["text/html"]
+      },
+      "check": {
+        "type": "dom.metaRobotsContains",
+        "selector": "meta[name='robots']",
+        "mustContainTokens": ["noindex", "nofollow"]
+      },
+      "message": "Preview/development pages must include meta robots noindex,nofollow."
+    },
+    {
+      "id": "env.prod_must_be_indexable",
+      "title": "Production pages must not be noindex",
+      "severity": "critical",
+      "appliesTo": { "envIn": ["production"], "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.metaRobotsNotContains",
+        "selector": "meta[name='robots']",
+        "mustNotContainTokens": ["noindex"]
+      },
+      "message": "Production pages cannot include noindex."
+    },
+    {
+      "id": "http.status_must_200_html",
+      "title": "HTML pages must return 200",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "http.statusIn", "allowed": [200] },
+      "message": "Indexable HTML pages must return HTTP 200."
+    },
+    {
+      "id": "http.no_soft_404",
+      "title": "No soft-404 pages",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "heuristic.soft404",
+        "patterns": [
+          "page not found",
+          "not found",
+          "404",
+          "doesn't exist",
+          "does not exist"
+        ],
+        "minBodyTextChars": 120
+      },
+      "message": "Page looks like a 404 but returned 200 (soft-404)."
+    },
+    {
+      "id": "http.redirect_chain_max_1",
+      "title": "No redirect chains over 1 hop",
+      "severity": "critical",
+      "appliesTo": { "allUrls": true },
+      "check": { "type": "http.redirectChainMax", "maxHops": 1 },
+      "message": "Redirect chains waste crawl budget. Keep to 1 hop."
+    },
+    {
+      "id": "http.no_redirect_loops",
+      "title": "No redirect loops",
+      "severity": "critical",
+      "appliesTo": { "allUrls": true },
+      "check": { "type": "http.redirectLoop", "mustBeFalse": true },
+      "message": "Redirect loop detected."
+    },
+    {
+      "id": "url.force_https",
+      "title": "HTTPS enforced",
+      "severity": "critical",
+      "appliesTo": { "allUrls": true },
+      "check": { "type": "url.mustBeHttps", "mustBeTrue": true },
+      "message": "URLs must be HTTPS."
+    },
+    {
+      "id": "url.canonical_host_enforced",
+      "title": "Single canonical host enforced",
+      "severity": "critical",
+      "appliesTo": { "allUrls": true },
+      "check": {
+        "type": "url.mustMatchHost",
+        "host": "YOUR_PRODUCTION_DOMAIN.com"
+      },
+      "message": "All canonical URLs must use the chosen host."
+    },
+    {
+      "id": "robots.exists",
+      "title": "robots.txt exists",
+      "severity": "critical",
+      "appliesTo": { "special": ["robots"] },
+      "check": { "type": "http.existsAt", "path": "/robots.txt" },
+      "message": "robots.txt missing."
+    },
+    {
+      "id": "robots.no_disallow_all_prod",
+      "title": "No Disallow: / in production",
+      "severity": "critical",
+      "appliesTo": { "envIn": ["production"], "special": ["robots"] },
+      "check": { "type": "robots.mustNotContain", "lines": ["Disallow: /"] },
+      "message": "robots.txt disallows all crawling in production."
+    },
+    {
+      "id": "robots.references_sitemap",
+      "title": "robots.txt references sitemap",
+      "severity": "warn",
+      "appliesTo": { "special": ["robots"] },
+      "check": { "type": "robots.mustContainPrefix", "prefix": "Sitemap:" },
+      "message": "robots.txt should reference Sitemap: https://.../sitemap.xml"
+    },
+    {
+      "id": "sitemap.exists",
+      "title": "sitemap.xml exists",
+      "severity": "warn",
+      "appliesTo": { "special": ["sitemap"] },
+      "check": { "type": "http.existsAt", "path": "/sitemap.xml" },
+      "message": "sitemap.xml missing (recommended for static sites)."
+    },
+    {
+      "id": "sitemap.only_canonical_urls",
+      "title": "Sitemap contains only canonical, production URLs",
+      "severity": "critical",
+      "appliesTo": { "special": ["sitemap"] },
+      "check": {
+        "type": "sitemap.urlsMustNormalize",
+        "normalizationRef": "normalization"
+      },
+      "message": "Sitemap contains non-canonical or non-production URLs."
+    },
+    {
+      "id": "sitemap.no_3xx_4xx",
+      "title": "No 3xx/4xx/5xx URLs in sitemap",
+      "severity": "critical",
+      "appliesTo": { "special": ["sitemap"] },
+      "check": { "type": "sitemap.urlsMustReturn2xx", "timeoutMs": 10000 },
+      "message": "Sitemap contains URLs that do not return 200."
+    },
+    {
+      "id": "meta.title_present_unique",
+      "title": "Title present and unique",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.title.presentAndUnique", "minChars": 8 },
+      "message": "Each page must have a non-empty, mostly-unique <title>."
+    },
+    {
+      "id": "meta.title_length",
+      "title": "Title length ~50–60 chars",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.title.lengthBetween", "min": 30, "max": 65 },
+      "message": "Title length outside recommended range."
+    },
+    {
+      "id": "meta.description_present",
+      "title": "Meta description present",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.metaPresent",
+        "selector": "meta[name='description']"
+      },
+      "message": "Missing meta description."
+    },
+    {
+      "id": "meta.description_length",
+      "title": "Meta description length ~140–160 chars",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.metaLengthBetween",
+        "selector": "meta[name='description']",
+        "attr": "content",
+        "min": 90,
+        "max": 180
+      },
+      "message": "Meta description length outside recommended range."
+    },
+    {
+      "id": "link.canonical_present_single",
+      "title": "Canonical present and single",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.canonical.singleAbsolute",
+        "mustBeAbsolute": true
+      },
+      "message": "Each page must have exactly one absolute canonical link."
+    },
+    {
+      "id": "link.canonical_matches_normalization",
+      "title": "Canonical must be normalized",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.canonical.mustNormalize",
+        "normalizationRef": "normalization"
+      },
+      "message": "Canonical does not match normalization rules (host/https/slash/index.html/UTMs)."
+    },
+    {
+      "id": "social.opengraph_minimum",
+      "title": "OpenGraph minimum tags",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.metaPropertiesPresent",
+        "properties": ["og:title", "og:description", "og:url", "og:image"]
+      },
+      "message": "Missing basic OpenGraph tags."
+    },
+    {
+      "id": "social.twitter_minimum",
+      "title": "Twitter card minimum tags",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "dom.metaNamesPresent",
+        "names": ["twitter:card", "twitter:title", "twitter:description"]
+      },
+      "message": "Missing basic Twitter card tags."
+    },
+    {
+      "id": "headings.single_h1",
+      "title": "Exactly one H1",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.countExactly", "selector": "h1", "count": 1 },
+      "message": "Page should have exactly one H1."
+    },
+    {
+      "id": "headings.no_empty_h1",
+      "title": "No empty H1",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.textNotEmpty", "selector": "h1", "minChars": 3 },
+      "message": "H1 is empty or too short."
+    },
+    {
+      "id": "headings.logical_hierarchy",
+      "title": "Logical heading hierarchy",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.headingHierarchy", "maxJump": 1 },
+      "message": "Heading structure jumps levels (e.g., H2 → H4)."
+    },
+    {
+      "id": "content.min_body_text",
+      "title": "Minimum visible body text",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "heuristic.minVisibleText",
+        "minChars": 250,
+        "ignoreSelectors": ["nav", "footer", "header"]
+      },
+      "message": "Page has very little visible content (might be thin/empty)."
+    },
+    {
+      "id": "links.no_broken_internal",
+      "title": "No broken internal links",
+      "severity": "critical",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "links.internalMustResolve",
+        "timeoutMs": 10000,
+        "allowedStatus": [200, 204]
+      },
+      "message": "Broken internal link(s) found."
+    },
+    {
+      "id": "links.no_orphan_pages",
+      "title": "No orphan pages (sitemap vs crawl)",
+      "severity": "warn",
+      "appliesTo": { "siteWide": true },
+      "check": {
+        "type": "site.orphans",
+        "source": "sitemap",
+        "mustBeZero": true
+      },
+      "message": "Some sitemap pages are not reachable via internal links."
+    },
+    {
+      "id": "assets.images_alt_text",
+      "title": "Images should have alt text",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": { "type": "dom.images.altPresent", "allowEmpty": false },
+      "message": "Some images are missing alt text."
+    },
+    {
+      "id": "anti.preview_domain_leak",
+      "title": "No preview domains anywhere (canonicals, og:url, sitemap)",
+      "severity": "critical",
+      "appliesTo": { "siteWide": true },
+      "check": {
+        "type": "site.mustNotContainHostSubstrings",
+        "substrings": ["vercel.app"]
+      },
+      "message": "Preview/Vercel domains leaked into production-facing metadata."
+    },
+    {
+      "id": "anti.perfect_meta_empty_page",
+      "title": "Flag perfect metadata but near-empty content",
+      "severity": "warn",
+      "appliesTo": { "contentTypes": ["text/html"] },
+      "check": {
+        "type": "heuristic.metaVsContentMismatch",
+        "minTitleChars": 20,
+        "minDescriptionChars": 80,
+        "maxBodyTextCharsForFlag": 120
+      },
+      "message": "Page has full metadata but almost no visible content."
+    },
+    {
+      "id": "anti.boilerplate_meta_reuse",
+      "title": "Detect boilerplate titles/descriptions reused across many pages",
+      "severity": "warn",
+      "appliesTo": { "siteWide": true },
+      "check": {
+        "type": "site.duplicateMetaThreshold",
+        "titleDupPercentWarn": 20,
+        "descriptionDupPercentWarn": 20
+      },
+      "message": "High duplication of titles/descriptions suggests boilerplate SEO."
+    }
+  ],
+  "reporting": {
+    "formats": ["text", "json"],
+    "includeExamples": true,
+    "maxExamplesPerRule": 8,
+    "exitOnSeverityAtOrAbove": "critical",
+    "diff": {
+      "enabled": true,
+      "baselineArtifactPath": ".seo-gate/baseline.json",
+      "onlyShowRegressions": true
+    }
+  },
+  "ci": {
+    "recommendedCommand": "node seo-gate.js --baseUrl=$DEPLOY_URL --env=$VERCEL_ENV --out=seo-report.json",
+    "artifacts": ["seo-report.json", "seo-report.txt"]
+  }
+}

@@ -1,0 +1,80 @@
+# HTTP Rules
+# Status codes, redirects, and protocol enforcement
+
+---
+
+## RULE: http.status_must_200_html
+Severity: CRITICAL
+
+All indexable HTML pages must return HTTP 200.
+
+Applies to: text/html content
+Allowed status codes: 200
+
+Why: Search engines only index pages that return 200. Other codes signal errors or redirects.
+
+---
+
+## RULE: http.no_soft_404
+Severity: CRITICAL
+
+No soft-404 pages (200 response with "not found" content).
+
+Applies to: text/html content
+
+Check for patterns:
+- "page not found"
+- "not found"
+- "404"
+- "doesn't exist"
+- "does not exist"
+
+Minimum body text: 120 characters
+
+Why: Soft-404s waste crawl budget and confuse search engines about real content.
+
+---
+
+## RULE: http.redirect_chain_max_1
+Severity: CRITICAL
+
+No redirect chains over 1 hop.
+
+Applies to: all URLs
+Max hops allowed: 1
+
+Why: Redirect chains waste crawl budget and slow down users. Direct links to final destinations.
+
+---
+
+## RULE: http.no_redirect_loops
+Severity: CRITICAL
+
+No redirect loops.
+
+Applies to: all URLs
+
+Why: Redirect loops are broken links that never resolve.
+
+---
+
+## RULE: url.force_https
+Severity: CRITICAL
+
+HTTPS must be enforced on all URLs.
+
+Applies to: all URLs
+
+Why: HTTPS is a ranking signal and required for security.
+
+---
+
+## RULE: url.canonical_host_enforced
+Severity: CRITICAL
+
+Single canonical host must be enforced.
+
+Canonical host: humanos.id
+Applies to: all URLs
+
+Why: Prevents duplicate content between www and non-www versions.

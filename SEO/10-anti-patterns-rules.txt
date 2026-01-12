@@ -1,0 +1,82 @@
+# Anti-Pattern Detection Rules
+# Catch common SEO mistakes and "fake" optimization
+
+---
+
+## RULE: anti.preview_domain_leak
+Severity: CRITICAL
+
+No preview/Vercel domains anywhere in production.
+
+Applies to: site-wide
+Check locations: canonicals, og:url, sitemap, any href
+
+Blocked substrings:
+- vercel.app
+
+Why: Preview domain URLs in production metadata confuse search engines and split ranking signals.
+
+---
+
+## RULE: anti.perfect_meta_empty_page
+Severity: WARN
+
+Flag pages with perfect metadata but near-empty content.
+
+Applies to: text/html
+
+Triggers when:
+- Title >= 20 characters
+- Description >= 80 characters
+- BUT body text <= 120 characters
+
+Why: This pattern suggests auto-generated pages with templated meta but no real content.
+
+---
+
+## RULE: anti.boilerplate_meta_reuse
+Severity: WARN
+
+Detect boilerplate titles/descriptions reused across many pages.
+
+Applies to: site-wide
+
+Warning thresholds:
+- Title duplication: > 20% of pages share same title
+- Description duplication: > 20% of pages share same description
+
+Why: Mass-duplicated metadata provides no unique value and suggests lazy templating.
+
+---
+
+## Additional Anti-Patterns to Watch
+
+Canonical pointing to homepage (common mistake)
+- Many pages accidentally set canonical to "/" instead of self
+
+Indexable pages with zero internal links
+- These "invisible" pages won't be discovered by crawlers
+
+Hidden text blocks (display:none with keywords)
+- Search engines penalize hidden text stuffing
+
+Keyword stuffing in meta
+- Unnatural keyword repetition in title/description
+
+Cloaking (different content for bots vs users)
+- Serving different content based on user agent
+
+---
+
+## Red Flags Summary
+
+CRITICAL:
+- Preview domains in production metadata
+- Canonical to wrong domain
+- noindex on production pages
+
+WARN:
+- Perfect meta + empty content
+- Duplicate titles/descriptions > 20%
+- Pages not linked from anywhere
+- Canonical pointing to homepage

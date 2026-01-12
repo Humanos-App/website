@@ -1,0 +1,72 @@
+# Social Media Tags Rules
+# OpenGraph and Twitter Card metadata
+
+---
+
+## RULE: social.opengraph_minimum
+Severity: WARN
+
+Pages should have basic OpenGraph tags for social sharing.
+
+Applies to: text/html
+
+Required properties:
+- og:title       - Title shown when shared
+- og:description - Description shown when shared
+- og:url         - Canonical URL of the page
+- og:image       - Preview image (recommended: 1200x630px)
+
+Optional but recommended:
+- og:type        - Usually "website" or "article"
+- og:site_name   - Your site name (e.g., "HumanOS")
+- og:locale      - Language (e.g., "en_US")
+
+Example:
+<meta property="og:title" content="Page Title">
+<meta property="og:description" content="Description here">
+<meta property="og:url" content="https://humanos.id/page">
+<meta property="og:image" content="https://humanos.id/images/og-image.jpg">
+
+Why: OpenGraph controls how your pages appear when shared on Facebook, LinkedIn, Discord, etc.
+
+---
+
+## RULE: social.twitter_minimum
+Severity: WARN
+
+Pages should have basic Twitter Card tags.
+
+Applies to: text/html
+
+Required names:
+- twitter:card        - Card type: "summary" or "summary_large_image"
+- twitter:title       - Title for Twitter
+- twitter:description - Description for Twitter
+
+Optional but recommended:
+- twitter:image       - Preview image
+- twitter:site        - Your Twitter handle: @humanosai
+
+Example:
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Page Title">
+<meta name="twitter:description" content="Description here">
+<meta name="twitter:image" content="https://humanos.id/images/twitter-card.jpg">
+<meta name="twitter:site" content="@humanosai">
+
+Why: Twitter Cards control how your pages appear when shared on Twitter/X.
+
+---
+
+## Notes on Images
+
+OG Image:
+- Recommended size: 1200x630 pixels
+- Aspect ratio: 1.91:1
+- Max file size: 8MB
+- Formats: JPG, PNG, GIF
+
+Twitter Image:
+- Summary card: 144x144px minimum
+- Large image card: 300x157px minimum (ideal: 1200x628px)
+- Max file size: 5MB

@@ -1,0 +1,81 @@
+# Reporting and CI Configuration
+
+---
+
+## Severity Levels
+
+CRITICAL - Fail CI, must fix before deploy
+- Blocks indexing
+- Breaks crawling
+- Leaks preview URLs to production
+
+WARN - Report but don't fail
+- Suboptimal but not blocking
+- Best practices not followed
+
+INFO - Informational only
+- Suggestions and hints
+
+---
+
+## Output Formats
+
+Text report:
+- Human-readable summary
+- Grouped by page and rule
+- Shows examples of violations
+
+JSON report:
+- Machine-readable for CI annotations
+- Full violation details
+- Suitable for GitHub Actions annotations
+
+---
+
+## CI Behavior
+
+Exit code non-zero if: any CRITICAL violations
+Max examples per rule: 8
+Include examples: true
+
+Recommended command:
+node seo-gate.js --baseUrl=$DEPLOY_URL --env=$VERCEL_ENV --out=seo-report.json
+
+Artifacts to save:
+- seo-report.json
+- seo-report.txt
+
+---
+
+## Diff Mode (Regression Detection)
+
+Compare against baseline to show only new issues.
+
+Baseline file: .seo-gate/baseline.json
+Show only regressions: true
+
+Use case: Catch new SEO problems introduced in a PR without noise from existing issues.
+
+---
+
+## Vercel Integration
+
+For preview deployments:
+- Run SEO gate against DEPLOY_URL
+- Pass VERCEL_ENV to determine expected behavior
+- Preview should have noindex enforced
+- Production should be indexable
+
+GitHub Actions example:
+
+```yaml
+- name: SEO Gate
+  run: |
+    node seo-gate.js \
+      --baseUrl=${{ env.VERCEL_URL }} \
+      --env=${{ env.VERCEL_ENV }} \
+      --out=seo-report.json
+  env:
+    VERCEL_URL: ${{ steps.deploy.outputs.url }}
+    VERCEL_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+```

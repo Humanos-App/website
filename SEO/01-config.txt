@@ -1,0 +1,26 @@
+# SEO Gate Configuration
+# Base settings for humanos.id
+
+## Target Configuration
+- Mode: deployed
+- Base URL: https://humanos.id
+- Allowed hosts: humanos.id, www.humanos.id
+- Blocked hosts: vercel.app (prevent preview domain indexing)
+- Max URLs to crawl: 500
+- Max crawl depth: 6
+- Timeout: 15000ms
+- User Agent: SEO-Gate/1.0 (+https://humanos.id)
+
+## Fetch Settings
+- Follow redirects: false (detect redirect chains)
+- Accept header: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+
+## URL Normalization
+- Force HTTPS: true
+- Canonical host: humanos.id
+- Allow www: false (redirect www to non-www)
+- Trailing slash: never
+- Strip index.html: true
+- Strip default ports: true
+- Collapse multiple slashes: true
+- Remove tracking params: utm_source, utm_medium, utm_campaign, utm_term, utm_content, gclid, fbclid

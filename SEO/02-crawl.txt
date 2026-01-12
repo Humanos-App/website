@@ -1,0 +1,29 @@
+# Crawl Strategy
+
+## Seed URLs
+Start crawling from:
+- / (homepage)
+- /sitemap.xml
+- /robots.txt
+
+## Crawl Behavior
+- Include sitemap URLs: true
+- Parse robots.txt: true
+- Same host only: true (no external links)
+- Respect canonical URLs as source of truth for duplicates
+- Detect infinite loops
+- Cap crawl depth and URL count
+
+## Ignore Paths (don't crawl)
+Path prefixes:
+- /api
+- /_next
+- /assets
+- /static
+- /.well-known
+
+## Ignore Extensions (binary/media files)
+- .pdf
+- .zip
+- .mp4, .mov, .webm
+- .png, .jpg, .jpeg, .gif, .svg, .webp, .ico

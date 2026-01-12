@@ -1,4 +1,13 @@
 {
+    "headers": [
+      {
+        "source": "/(.*)",
+        "has": [{ "type": "host", "value": "(?!humanos\\.id$).*" }],
+        "headers": [
+          { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        ]
+      }
+    ],
     "redirects": [
       {
         "source": "/:path*",
@@ -10,6 +19,7 @@
     "rewrites": [
       { "source": "/robots.txt", "destination": "/public/robots.txt" },
       { "source": "/sitemap.xml", "destination": "/public/sitemap.xml" },
+      { "source": "/images/:path*", "destination": "/public/images/:path*" },
 
       { "source": "/usecases", "destination": "/UseCases/generated-page.html" },
       { "source": "/usecases/(.*)", "destination": "/UseCases/$1" },

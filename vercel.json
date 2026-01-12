@@ -1,8 +1,16 @@
 {
+    "redirects": [
+      {
+        "source": "/:path*",
+        "has": [{ "type": "host", "value": "www.humanos.id" }],
+        "destination": "https://humanos.id/:path*",
+        "permanent": true
+      }
+    ],
     "rewrites": [
       { "source": "/usecases", "destination": "/UseCases/generated-page.html" },
       { "source": "/usecases/(.*)", "destination": "/UseCases/$1" },
-  
+
       { "source": "/", "destination": "/Homepage/generated-page.html" },
       { "source": "/(.*)", "destination": "/Homepage/$1" }
     ]

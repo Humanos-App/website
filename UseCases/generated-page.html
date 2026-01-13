@@ -6,6 +6,11 @@
     <title>
       Humanos Use Cases | AI Authorization & Automated Decision Verification
     </title>
+    <!-- Prevent FOUC -->
+    <style>
+      html { visibility: hidden; }
+      html.loaded { visibility: visible; }
+    </style>
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
     <meta
@@ -55,7 +60,7 @@
       rel="stylesheet"
     />
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         darkMode: "class",
@@ -1457,5 +1462,8 @@
         </div>
       </footer>
     </main>
+    <script>
+      document.documentElement.classList.add('loaded');
+    </script>
   </body>
 </html>

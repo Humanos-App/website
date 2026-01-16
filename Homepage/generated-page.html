@@ -6,8 +6,12 @@
     <title>Humanos | Human Truth Layer for AI</title>
     <!-- Prevent FOUC -->
     <style>
-      html { visibility: hidden; }
-      html.loaded { visibility: visible; }
+      html {
+        visibility: hidden;
+      }
+      html.loaded {
+        visibility: visible;
+      }
     </style>
     <link rel="icon" type="image/png" href="/images/favicon.png" />
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
@@ -550,12 +554,17 @@
       }
     </style>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZFTV019R6C"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZFTV019R6C"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ZFTV019R6C');
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-ZFTV019R6C");
     </script>
   </head>
   <body
@@ -2123,7 +2132,7 @@
                   </div>
                   <div class="w-px h-4 bg-white/10 absolute -bottom-2"></div>
                   <span
-                    class="absolute -bottom-6 text-[8px] text-zinc-600 font-mono bg-black/50 px-1.5 py-0.5 rounded border border-white/5"
+                    class="absolute -bottom-6 text-[7px] text-zinc-600 font-mono bg-black/50 px-1.5 py-1 rounded border border-white/5"
                     >SHA-256</span
                   >
                 </div>
@@ -3328,7 +3337,7 @@
       </footer>
     </main>
     <script>
-      document.documentElement.classList.add('loaded');
+      document.documentElement.classList.add("loaded");
     </script>
   </body>
 </html>

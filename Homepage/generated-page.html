@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
@@ -328,7 +328,7 @@
               if (entry.isIntersecting) entry.target.classList.add("animate");
             });
           },
-          { threshold: 0.05, rootMargin: "0px 0px -10% 0px" }
+          { threshold: 0.05, rootMargin: "0px 0px -10% 0px" },
         );
         document
           .querySelectorAll(".animate-on-scroll")
@@ -602,14 +602,14 @@
             if (!window.UnicornStudio) {
               window.UnicornStudio = { isInitialized: !1 };
               var i = document.createElement("script");
-              (i.src =
+              ((i.src =
                 "https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js"),
                 (i.onload = function () {
                   window.UnicornStudio.isInitialized ||
                     (UnicornStudio.init(),
                     (window.UnicornStudio.isInitialized = !0));
                 }),
-                (document.head || document.body).appendChild(i);
+                (document.head || document.body).appendChild(i));
             }
           })();
         </script>
@@ -733,7 +733,13 @@
           <button
             type="button"
             class="hover:text-white transition-colors text-sm font-medium text-zinc-400"
-            onclick="window.open('https://app.humanos.id/sign-in','_blank','noopener,noreferrer')"
+            onclick="
+              window.open(
+                'https://app.humanos.id/sign-in',
+                '_blank',
+                'noopener,noreferrer',
+              )
+            "
           >
             Log in
           </button>
@@ -741,7 +747,10 @@
         <div class="flex shrink-0 h-14 gap-x-2 md:gap-x-4 gap-y-4 items-center">
           <a
             href="javascript:void(0);"
-            onclick="window.open('https://app.humanos.id/sign-up', '_blank'); return false;"
+            onclick="
+              window.open('https://app.humanos.id/sign-up', '_blank');
+              return false;
+            "
             class="hover:bg-zinc-200 transition-all overflow-hidden group cursor-pointer inline-flex items-center justify-center text-xs font-semibold text-zinc-950 bg-white rounded-full py-1.5 px-3 md:pt-2 md:pr-5 md:pb-2 md:pl-5 relative"
           >
             <span class="z-10 relative">Get Started</span>
@@ -832,7 +841,16 @@
           >
             <button
               class="group inline-flex overflow-hidden transition-all duration-300 hover:bg-zinc-200 font-medium text-zinc-950 bg-white h-12 rounded-full pr-8 pl-8 relative items-center justify-center"
-              onclick="event.preventDefault();event.stopPropagation();window.open('http://humanos.id/usecases', '_blank', 'noopener,noreferrer');return false;"
+              onclick="
+                event.preventDefault();
+                event.stopPropagation();
+                window.open(
+                  'http://humanos.id/usecases',
+                  '_blank',
+                  'noopener,noreferrer',
+                );
+                return false;
+              "
               role="button"
             >
               <span class="cursor-pointer mr-2">Use Cases</span>
@@ -844,7 +862,16 @@
             </button>
             <button
               class="group inline-flex transition-all hover:text-white hover:border-white/30 cursor-pointer font-medium text-zinc-400 bg-transparent h-12 border-white/10 border rounded-full pr-8 pl-8 items-center justify-center"
-              onclick="event.preventDefault();event.stopPropagation();window.open('https://humanos.mintlify.app/essentials/introduction', '_blank', 'noopener,noreferrer');return false;"
+              onclick="
+                event.preventDefault();
+                event.stopPropagation();
+                window.open(
+                  'https://humanos.mintlify.app/essentials/introduction',
+                  '_blank',
+                  'noopener,noreferrer',
+                );
+                return false;
+              "
               role="button"
               type="button"
             >
@@ -2543,19 +2570,19 @@
 
           <!-- Pricing Cards Grid -->
           <div
-            class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 w-full animate-on-scroll items-start animate"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 w-full animate-on-scroll items-start animate"
           >
             <!-- Card 1: Pay-as-you-go -->
             <div
-              class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full"
+              class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-emerald-500/30 p-8 hover:bg-zinc-900/40 hover:border-emerald-500/50 transition-all duration-300 relative overflow-hidden h-full"
             >
               <div
-                class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"
+                class="absolute inset-0 bg-gradient-to-b from-emerald-500/[0.05] to-transparent pointer-events-none"
               ></div>
 
               <div class="flex flex-col gap-2 mb-6 relative z-10">
                 <span
-                  class="text-[10px] font-mono font-medium text-zinc-500 uppercase tracking-widest"
+                  class="text-[10px] font-mono font-medium text-emerald-500 uppercase tracking-widest"
                   >PAY-AS-YOU-GO</span
                 >
                 <div class="flex items-baseline gap-1.5 mt-2">
@@ -2583,7 +2610,9 @@
 
               <button
                 class="hover:bg-zinc-200 transition-colors shadow-white/5 cursor-pointer text-sm font-semibold text-zinc-950 bg-white w-full z-10 rounded-full mb-10 pt-3 pr-4 pb-3 pl-4 relative shadow-lg"
-                onclick="window.open('https://app.humanos.id/sign-up', '_blank')"
+                onclick="
+                  window.open('https://app.humanos.id/sign-up', '_blank')
+                "
                 role="button"
               >
                 Start building
@@ -2644,139 +2673,12 @@
               </div>
             </div>
 
-            <!-- Card 2: Pro -->
+            <!-- Card 2: Custom -->
             <div
-              class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full"
+              class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-purple-500/30 p-8 hover:bg-zinc-900/40 hover:border-purple-500/50 transition-all duration-300 relative overflow-hidden h-full"
             >
               <div
-                class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"
-              ></div>
-
-              <div class="flex flex-col gap-2 mb-6 relative z-10">
-                <span
-                  class="text-[10px] font-mono font-medium text-emerald-500 uppercase tracking-widest"
-                  >PRO</span
-                >
-                <div class="flex items-baseline gap-1.5 mt-2">
-                  <span
-                    class="text-4xl md:text-5xl font-semibold text-white tracking-tight"
-                    >$99</span
-                  >
-                  <span class="text-sm text-zinc-500 font-light">/ month</span>
-                </div>
-              </div>
-
-              <div
-                class="text-sm text-zinc-400 font-light leading-relaxed mb-8 min-h-[60px] relative z-10"
-              >
-                <p class="">
-                  For teams running production workflows in regulated or
-                  high-risk environments.
-                </p>
-              </div>
-
-              <button
-                class="w-full py-3 px-4 bg-zinc-800 text-zinc-400 border border-white/5 cursor-not-allowed rounded-full text-sm font-medium mb-10 relative z-10 flex items-center justify-center gap-2"
-              >
-                Coming soon
-              </button>
-
-              <div class="space-y-4 relative z-10 mb-8">
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Included verification allowance (monthly)</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Discounted per-verification pricing beyond allowance</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Teams &amp; groups for access control</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Extended data retention (5 years)</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Security &amp; compliance certifications</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Production + sandbox environments</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Priority support</span
-                  >
-                </div>
-                <div class="flex gap-3 items-start">
-                  <iconify-icon
-                    icon="lucide:check"
-                    class="text-zinc-600 shrink-0 mt-0.5"
-                    width="16"
-                  ></iconify-icon>
-                  <span class="text-sm text-zinc-400 font-light leading-snug"
-                    >Audit-ready exports and reporting</span
-                  >
-                </div>
-              </div>
-
-              <p
-                class="mt-auto text-xs text-zinc-600 font-light leading-relaxed border-t border-white/5 pt-4"
-              >
-                Designed for early production as organizations scale automation.
-              </p>
-            </div>
-
-            <!-- Card 3: Custom -->
-            <div
-              class="group flex flex-col rounded-2xl bg-zinc-900/20 border border-white/5 p-8 hover:bg-zinc-900/40 hover:border-white/10 transition-all duration-300 relative overflow-hidden h-full"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent pointer-events-none"
+                class="absolute inset-0 bg-gradient-to-b from-purple-500/[0.05] to-transparent pointer-events-none"
               ></div>
 
               <div class="flex flex-col gap-2 mb-6 relative z-10">
@@ -2803,7 +2705,11 @@
 
               <button
                 class="hover:bg-white/5 transition-colors z-10 cursor-pointer text-sm font-medium text-white bg-transparent w-full border-white/10 border rounded-full mb-10 pt-3 pr-4 pb-3 pl-4 relative"
-                onclick="document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });"
+                onclick="
+                  document
+                    .getElementById('contact')
+                    ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                "
                 role="button"
               >
                 Contact sales
@@ -2921,7 +2827,7 @@
           <!-- Secondary Pricing Row: Approval Collection -->
           <div class="mt-12 md:mt-16 w-full animate-on-scroll">
             <div
-              class="relative w-full rounded-2xl border border-white/5 bg-zinc-900/10 p-8 md:p-12 overflow-hidden flex flex-col md:flex-row gap-10 md:justify-between items-start md:items-center"
+              class="relative w-full rounded-2xl border border-white/5 bg-zinc-900/10 p-8 md:p-12 overflow-hidden flex flex-col gap-10"
             >
               <div
                 class="absolute inset-0 bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none"
@@ -2930,51 +2836,75 @@
                 class="absolute inset-0 bg-gradient-to-r from-zinc-950/80 via-transparent to-zinc-950/80 pointer-events-none"
               ></div>
 
-              <div class="relative z-10 flex flex-col gap-4 max-w-xl">
-                <h3
-                  class="md:text-3xl text-2xl text-white tracking-tight font-serif whitespace-nowrap"
+              <div
+                class="flex flex-col md:flex-row gap-10 md:justify-between items-start md:items-center relative z-10"
+              >
+                <div class="flex flex-col gap-4 max-w-xl">
+                  <h3
+                    class="md:text-3xl text-2xl text-white tracking-tight font-serif whitespace-nowrap"
+                  >
+                    When approval doesn't exist,
+                    <span class="text-zinc-500">Humanos collects it.</span>
+                  </h3>
+                  <p class="text-zinc-400 font-light leading-relaxed">
+                    Some actions require a new human decision. Humanos securely
+                    requests and issues an authorization when needed.
+                  </p>
+                </div>
+
+                <div
+                  class="flex flex-col md:items-end gap-2 md:text-right shrink-0"
                 >
-                  When approval doesn’t exist,
-                  <span class="text-zinc-500">Humanos collects it.</span>
-                </h3>
-                <p class="text-zinc-400 font-light leading-relaxed">
-                  Some actions require a new human decision. Humanos securely
-                  requests and issues an authorization when needed.
-                </p>
+                  <div class="flex flex-col">
+                    <span class="text-sm text-zinc-500 font-light mb-1"
+                      >Approval collection</span
+                    >
+                    <div class="flex items-baseline gap-2 md:justify-end">
+                      <span class="text-sm text-zinc-400 font-light">From</span>
+                      <span
+                        class="text-3xl font-semibold text-white tracking-tight"
+                        >$0.10</span
+                      >
+                      <span class="text-sm text-zinc-400 font-light"
+                        >per authorization</span
+                      >
+                    </div>
+                  </div>
+                  <div class="h-px w-full bg-white/10 my-2"></div>
+                  <p class="text-xs text-zinc-500 font-mono">
+                    Price varies by channel and approval method.
+                  </p>
+                  <p
+                    class="text-xs text-emerald-500 font-medium flex items-center gap-1.5 mt-1 md:justify-end"
+                  >
+                    <iconify-icon
+                      icon="lucide:repeat"
+                      width="12"
+                    ></iconify-icon>
+                    Collected once. Reused indefinitely.
+                  </p>
+                </div>
               </div>
 
               <div
-                class="relative z-10 flex flex-col md:items-end gap-2 md:text-right shrink-0"
+                class="flex justify-between items-center w-full pt-6 relative z-10"
               >
-                <div class="flex flex-col">
-                  <span class="text-sm text-zinc-500 font-light mb-1"
-                    >Approval collection</span
-                  >
-                  <div class="flex items-baseline gap-2 md:justify-end">
-                    <span class="text-sm text-zinc-400 font-light">From</span>
-                    <span
-                      class="text-3xl font-semibold text-white tracking-tight"
-                      >$0.10</span
-                    >
-                    <span class="text-sm text-zinc-400 font-light"
-                      >per authorization</span
-                    >
-                  </div>
-                </div>
-                <div class="h-px w-full bg-white/10 my-2"></div>
-                <p class="text-xs text-zinc-500 font-mono">
-                  Price varies by channel and approval method.
-                </p>
-                <p
-                  class="text-xs text-emerald-500 font-medium flex items-center gap-1.5 mt-1 md:justify-end"
-                >
-                  <iconify-icon icon="lucide:repeat" width="12"></iconify-icon>
-                  Collected once. Reused indefinitely.
-                </p>
+                <span class="text-sm text-zinc-500 font-light">KYC</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                <span class="text-sm text-zinc-500 font-light">Signatures</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                <span class="text-sm text-zinc-500 font-light">Forms</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                <span class="text-sm text-zinc-500 font-light">Consents</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                <span class="text-sm text-zinc-500 font-light">Payments</span>
+                <span class="w-1.5 h-1.5 rounded-full bg-zinc-700"></span>
+                <span class="text-sm text-zinc-500 font-light">Custom</span>
               </div>
             </div>
           </div>
         </div>
+        <!-- Authorization Types Row -->
       </section>
       <section
         class="flex flex-col md:py-32 bg-zinc-950 w-full z-20 border-white/5 border-t pt-24 pb-24 relative"
@@ -3234,7 +3164,7 @@
                     const error = document.getElementById("contact-error");
                     const btn = document.getElementById("contact-submit");
                     const btnText = document.getElementById(
-                      "contact-submit-text"
+                      "contact-submit-text",
                     );
 
                     if (!form) return;

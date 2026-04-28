@@ -1,0 +1,236 @@
+/* ============================================================
+   Humanos — Colors & Type
+   The design system is authorization-first. Every color and
+   every type role exists to signal system state.
+   ============================================================ */
+
+/* ---- Web fonts ---------------------------------------------
+   Primary face: Helvetica World (brand). Not a web font; we
+   substitute Inter on the web and fall back to the native
+   Helvetica / Arial stack. Mono: JetBrains Mono for IDs,
+   timestamps, constraints, logs.
+-------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ========== COLOR — CORE ================================= */
+  --hm-authority:      #111111; /* ink / primary surface / text */
+  --hm-clarity:        #F4F3EF; /* page / machine layer base    */
+  --hm-humanity:       #E4D8C8; /* human layer / warmth         */
+
+  /* ========== COLOR — SIGNALS (state only) ================= */
+  --hm-verification:   #4B49CA; /* primary indigo — verified    */
+  --hm-execution:      #7978E9; /* secondary indigo — executing */
+  --hm-pending:        #7DA0FA; /* awaiting decision             */
+  --hm-rejection:      #F3797E; /* rejected / blocked            */
+
+  /* Tinted washes for state backgrounds (8% & 14%) */
+  --hm-verification-wash: rgba(75,73,202,0.08);
+  --hm-execution-wash:    rgba(121,120,233,0.10);
+  --hm-pending-wash:      rgba(125,160,250,0.10);
+  --hm-rejection-wash:    rgba(243,121,126,0.10);
+
+  /* ========== NEUTRAL SCALE (derived from authority) ======= */
+  --hm-ink-0:   #111111; /* primary text on light              */
+  --hm-ink-1:   #2A2A28; /* body on light                      */
+  --hm-ink-2:   #4A4A46; /* secondary                          */
+  --hm-ink-3:   #76746D; /* tertiary / labels                  */
+  --hm-ink-4:   #A6A29A; /* disabled                           */
+  --hm-line:    #DDD9D0; /* hairlines on clarity               */
+  --hm-line-strong: #C9C4B7;
+  --hm-surface-raised: #FFFFFF; /* machine/record layer card    */
+
+  /* On-dark variants */
+  --hm-chalk-0: #F4F3EF; /* text on authority                  */
+  --hm-chalk-1: #CFCDC6;
+  --hm-chalk-2: #8F8D85;
+  --hm-line-dark: #2A2A28;
+
+  /* ========== SEMANTIC ROLES =============================== */
+  --fg-1: var(--hm-ink-0);
+  --fg-2: var(--hm-ink-2);
+  --fg-3: var(--hm-ink-3);
+  --fg-inverse: var(--hm-chalk-0);
+
+  --bg-page:    var(--hm-clarity);
+  --bg-human:   var(--hm-humanity);
+  --bg-machine: var(--hm-surface-raised);
+  --bg-authority: var(--hm-authority);
+
+  --border-1: var(--hm-line);
+  --border-2: var(--hm-line-strong);
+
+  /* State semantic */
+  --state-authorized: var(--hm-verification);
+  --state-executing:  var(--hm-execution);
+  --state-pending:    var(--hm-pending);
+  --state-rejected:   var(--hm-rejection);
+
+  /* ========== TYPOGRAPHY =================================== */
+  /* Humanos has no foundry license. Inter is the committed brand face.
+     Helvetica World remains in the stack only as a hand-off hook if a
+     license is ever acquired; Inter is authoritative today. */
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Inter features: ss01 straightens a/g toward neo-grotesque,
+     cv11 is single-story a (institutional), tnum gives tabular figures
+     for every number in the product. */
+  --font-features-sans: "ss01" 1, "cv11" 1, "tnum" 1;
+  --font-features-mono: "zero" 1, "ss01" 1;
+
+  /* Type scale (px) — matches the brand spec */
+  --type-hero-size:    48px;
+  --type-hero-weight:  600;
+  --type-hero-leading: 1.08;
+  --type-hero-track:   -0.02em;
+
+  --type-section-size:    32px;
+  --type-section-size-lg: 40px;
+  --type-section-weight:  600;
+  --type-section-leading: 1.15;
+  --type-section-track:   -0.015em;
+
+  --type-title-size:    22px;
+  --type-title-size-lg: 24px;
+  --type-title-size-sm: 20px;
+  --type-title-weight:  600;
+  --type-title-leading: 1.25;
+  --type-title-track:   -0.005em;
+
+  --type-body-size:    16px;
+  --type-body-size-lg: 18px;
+  --type-body-weight:  400;
+  --type-body-leading: 1.5;
+
+  --type-label-size:    12px;
+  --type-label-size-lg: 14px;
+  --type-label-weight:  500;
+  --type-label-leading: 1.3;
+  --type-label-track:   0.04em;
+
+  --type-mono-size:    13px;
+  --type-mono-leading: 1.5;
+
+  /* ========== SPACING (generous by principle) ============== */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  24px;
+  --sp-6:  32px;
+  --sp-7:  48px;
+  --sp-8:  64px;
+  --sp-9:  80px;  /* section default */
+  --sp-10: 120px; /* hero / page block */
+  --sp-11: 160px;
+
+  /* ========== RADII — deliberately tight =================== */
+  --r-0: 0;
+  --r-1: 2px;   /* records / inputs / rails                   */
+  --r-2: 4px;   /* buttons / chips                            */
+  --r-3: 8px;   /* cards                                      */
+  --r-full: 999px;
+
+  /* ========== DEPTH / ELEVATION ============================ */
+  /* Depth reflects "layers of truth", not decoration.        */
+  --elev-base:   none;
+  --elev-record: 0 1px 0 var(--hm-line), 0 0 0 1px rgba(17,17,17,0.02);
+  --elev-active: 0 1px 2px rgba(17,17,17,0.06), 0 8px 24px -8px rgba(17,17,17,0.12);
+  --elev-focus:  0 0 0 3px rgba(75,73,202,0.18), 0 1px 2px rgba(17,17,17,0.08);
+
+  /* ========== MOTION — short, deterministic ================ */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit:     cubic-bezier(0.4, 0, 1, 1);
+  --dur-fast:   120ms;
+  --dur-base:   180ms;
+  --dur-slow:   260ms;
+}
+
+/* ============================================================
+   Base element styles — the semantic hooks
+   ============================================================ */
+
+html, body {
+  background: var(--bg-page);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-leading);
+  font-feature-settings: var(--font-features-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, .hm-hero {
+  font-family: var(--font-sans);
+  font-size: var(--type-hero-size);
+  font-weight: var(--type-hero-weight);
+  line-height: var(--type-hero-leading);
+  letter-spacing: var(--type-hero-track);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+h2, .hm-section {
+  font-family: var(--font-sans);
+  font-size: var(--type-section-size);
+  font-weight: var(--type-section-weight);
+  line-height: var(--type-section-leading);
+  letter-spacing: var(--type-section-track);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+h3, .hm-title {
+  font-family: var(--font-sans);
+  font-size: var(--type-title-size);
+  font-weight: var(--type-title-weight);
+  line-height: var(--type-title-leading);
+  letter-spacing: var(--type-title-track);
+  margin: 0;
+}
+
+p, .hm-body {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-size);
+  font-weight: var(--type-body-weight);
+  line-height: var(--type-body-leading);
+  margin: 0;
+  color: var(--fg-2);
+}
+
+.hm-label {
+  font-family: var(--font-sans);
+  font-size: var(--type-label-size);
+  font-weight: var(--type-label-weight);
+  letter-spacing: var(--type-label-track);
+  line-height: var(--type-label-leading);
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+code, kbd, samp, pre, .hm-mono {
+  font-family: var(--font-mono);
+  font-size: var(--type-mono-size);
+  line-height: var(--type-mono-leading);
+  font-feature-settings: var(--font-features-mono);
+}
+
+/* ============================================================
+   Utility: state text colors (one meaning per color)
+   ============================================================ */
+.hm-state-authorized { color: var(--state-authorized); }
+.hm-state-executing  { color: var(--state-executing); }
+.hm-state-pending    { color: var(--state-pending); }
+.hm-state-rejected   { color: var(--state-rejected); }
+
+/* ============================================================
+   Focus — indigo verification ring
+   ============================================================ */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--elev-focus);
+  border-color: var(--state-authorized);
+}

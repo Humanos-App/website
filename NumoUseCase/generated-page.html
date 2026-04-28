@@ -1,0 +1,1777 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Humanos - Numo use case</title>
+<meta name="description" content="Humanos is a verification layer at execution time. Every agent action is checked against a signed mandate, in real time, with one API call." />
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" href="assets/favicon.ico" />
+
+<!-- Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Verifying every agent-driven financial action before execution · Humanos" />
+<meta property="og:description" content="Humanos is a verification layer at execution time. Every agent action is checked against a signed mandate, in real time, with one API call." />
+<meta property="og:image" content="assets/share-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Humanos — authorization layer for agentic finance" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Verifying every agent-driven financial action before execution · Humanos" />
+<meta name="twitter:description" content="Humanos is a verification layer at execution time. Every agent action is checked against a signed mandate, in real time, with one API call." />
+<meta name="twitter:image" content="assets/share-image.png" />
+
+<link rel="stylesheet" href="assets/colors_and_type.css" />
+<style>
+  :root {
+    --bg: #F4F3EF;
+    --ink: #111111;
+    --muted: rgba(17,17,17,0.60);
+    --muted-2: rgba(17,17,17,0.40);
+    --line: rgba(17,17,17,0.12);
+    --line-2: rgba(17,17,17,0.20);
+    --indigo: #4b49ca;
+    --indigo-2: #7978e9;
+    --rose: #F3797E;
+    --surface: #FFFFFF;
+    --sidebar-w: 300px;
+    --content: 1060px;
+    --pad-x: 56px;
+    --section-y: 120px;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-feature-settings: var(--font-features-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection { background: var(--indigo); color: var(--bg); }
+  a { color: inherit; text-decoration: none; }
+  a.link { color: var(--ink); border-bottom: 1px solid var(--line-2); transition: border-color 140ms, color 140ms; }
+  a.link:hover { color: var(--indigo); border-color: var(--indigo); }
+
+  /* ---- shell with sidebar -------------------------------------- */
+  .shell {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    align-items: start;
+  }
+
+  /* ---- sidebar ------------------------------------------------ */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+    padding: 40px 28px 28px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    overflow-y: auto;
+    z-index: 50;
+  }
+  .sidebar .brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: opacity 140ms;
+  }
+  .sidebar .brand:hover { opacity: 0.7; }
+  .sidebar .brand img {
+    height: 66px;
+    display: block;
+  }
+  .nav-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-list a {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 10px;
+    padding: 7px 0 7px 12px;
+    margin-left: -14px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    transition: color 140ms;
+    border-left: 2px solid transparent;
+  }
+  .nav-list a .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted-2);
+    padding-top: 1px;
+  }
+  .nav-list a:hover { color: var(--indigo); }
+  .nav-list a:hover .num { color: var(--indigo); }
+  .nav-list a.active {
+    color: var(--ink);
+    border-left-color: var(--indigo);
+  }
+  .nav-list a.active .num { color: var(--indigo); }
+
+  .sidebar-cta {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .side-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 500;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 2px;
+    transition: background 140ms;
+  }
+  .side-btn:hover { background: #000; }
+  .side-btn .arr { font-family: var(--font-mono); font-size: 12px; opacity: 0.6; }
+  .side-btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--line-2);
+  }
+  .side-btn--ghost:hover { border-color: var(--ink); background: rgba(17,17,17,0.04); }
+  .sidebar-foot {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--muted-2);
+    letter-spacing: 0.02em;
+    margin-top: 12px;
+  }
+
+  /* ---- main content ------------------------------------------ */
+  .main { min-width: 0; }
+  .wrap { width: 100%; padding: 0 var(--pad-x); }
+  .content { width: 100%; max-width: var(--content); margin: 0 auto; }
+
+  /* ---- typography -------------------------------------------- */
+  h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+  h1 { font-size: clamp(48px, 6.4vw, 88px); line-height: 0.98; letter-spacing: -0.035em; }
+  h2 { font-size: clamp(32px, 3.6vw, 48px); line-height: 1.05; }
+  h3 { font-size: 18px; line-height: 1.3; font-weight: 600; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .body {
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(17,17,17,0.78);
+    text-wrap: pretty;
+  }
+  .mono {
+    font-family: var(--font-mono);
+    font-feature-settings: var(--font-features-mono);
+  }
+
+  section { padding: var(--section-y) 0; border-bottom: 1px solid var(--line); }
+  section.tight { padding: 88px 0; }
+  section.tighter { padding: 64px 0; }
+
+  /* =============================================================
+     HERO
+     ============================================================= */
+  .hero { padding-top: 140px; padding-bottom: 132px; }
+  .hero .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 56px;
+  }
+  .hero .eyebrow .pin {
+    width: 8px; height: 8px;
+    background: var(--indigo);
+    display: inline-block;
+    animation: pulse 2.4s cubic-bezier(.2,0,0,1) infinite;
+  }
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(75,73,202,0.5); }
+    50%     { box-shadow: 0 0 0 5px rgba(75,73,202,0); }
+  }
+  .hero h1 { margin: 0 0 56px; max-width: 18ch; }
+  .hero h1 .accent { color: var(--indigo); }
+  .hero .hero-cta { margin-bottom: 56px; }
+
+  .signals {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 56px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
+  }
+  .signals .row {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+  .signals .row .arr {
+    font-family: var(--font-mono);
+    color: var(--indigo);
+    font-size: 14px;
+    padding-top: 1px;
+  }
+  .signals-2 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 64px;
+  }
+  .signals-2 .row {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  .signals-2 .row .arr {
+    font-family: var(--font-mono);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .pitch { display: flex; flex-direction: column; gap: 6px; max-width: 60ch; margin: 0 0 64px; }
+  .pitch p {
+    margin: 0;
+    font-size: clamp(20px, 2.2vw, 24px);
+    line-height: 1.4;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .pitch p.dim { color: var(--muted); font-weight: 400; }
+  .pitch p.flag { color: var(--rose); }
+
+  .cta-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    font-weight: 500;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 2px;
+    transition: background 140ms;
+  }
+  .btn:hover { background: #000; }
+  .btn .mono { font-size: 12.5px; color: rgba(244,243,239,0.65); }
+  .btn--ghost { background: transparent; color: var(--ink); border-color: var(--line-2); }
+  .btn--ghost:hover { border-color: var(--ink); background: rgba(17,17,17,0.04); }
+
+  /* =============================================================
+     ABOUT NUMO
+     ============================================================= */
+  .numo-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .numo-card .lhs .eyebrow { margin-bottom: 14px; }
+  .numo-card h3 { font-size: 24px; line-height: 1.25; letter-spacing: -0.018em; margin-bottom: 10px; max-width: 22ch; }
+  .numo-card p { margin: 0; max-width: 42ch; }
+  .numo-card .rhs {
+    display: flex; flex-direction: column; gap: 12px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+    border-left: 1px solid var(--line); padding-left: 32px;
+  }
+  .numo-card .rhs .pair { display: flex; justify-content: space-between; gap: 16px; }
+  .numo-card .rhs .pair span:first-child { text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted-2); }
+  .numo-card .rhs .pair span:last-child { color: var(--ink); }
+  .numo-card .rhs .pair a { color: var(--indigo); }
+
+  /* =============================================================
+     SECTION-HEAD with side gutter (matches screenshots)
+     ============================================================= */
+  .s-head {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 64px;
+    margin-bottom: 48px;
+    align-items: baseline;
+  }
+  .s-head .num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    padding-top: 6px;
+  }
+  .s-head h2 { max-width: 22ch; }
+  .s-body {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+  .gutter {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+    padding-top: 4px;
+  }
+  .prose { max-width: 64ch; min-width: 0; }
+  .prose p {
+    font-size: 17px;
+    line-height: 1.55;
+    color: rgba(17,17,17,0.85);
+    margin: 0 0 18px;
+  }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose .lede {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 28px;
+  }
+
+  /* =============================================================
+     PROBLEM SECTION
+     ============================================================= */
+  .problem-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    margin: 0;
+  }
+  .problem-split .col {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .problem-split .col + .col { border-left: 1px solid var(--line); }
+  .problem-split .col .k {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted-2);
+  }
+  .problem-split .col .t {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .problem-split .col .d {
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+  }
+  .problem-split .col em { color: var(--ink); font-style: italic; }
+  .problem-split .col .mono-line {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    margin-top: auto;
+  }
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--indigo);
+    padding: 22px 28px;
+    margin-top: 24px;
+  }
+  .callout p { margin: 0; font-size: 17px; color: var(--ink); }
+  .callout.warn { border-left-color: var(--rose); }
+
+  /* =============================================================
+     SOLUTION SECTION (code-dominant)
+     ============================================================= */
+  .code-block {
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+    max-width: 100%;
+    min-width: 0;
+    box-shadow: 0 1px 2px rgba(17,17,17,0.06), 0 28px 72px -24px rgba(17,17,17,0.30);
+  }
+  .code-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(244,243,239,0.08);
+    background: rgba(244,243,239,0.04);
+  }
+  .code-head .lhs {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: rgba(244,243,239,0.7);
+  }
+  .code-head .dot {
+    width: 7px; height: 7px;
+    border-radius: 999px;
+    background: var(--indigo);
+    box-shadow: 0 0 0 3px rgba(75,73,202,0.2);
+  }
+  .code-head .file { color: var(--bg); font-weight: 500; }
+  .code-head .copy {
+    background: transparent;
+    border: 1px solid rgba(244,243,239,0.18);
+    color: rgba(244,243,239,0.8);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    padding: 4px 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 140ms;
+  }
+  .code-head .copy:hover { color: var(--bg); border-color: rgba(244,243,239,0.4); }
+  .code-head .copy.ok { color: var(--indigo); border-color: rgba(75,73,202,0.5); }
+  .code-block pre {
+    margin: 0;
+    padding: 26px 28px;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--bg);
+  }
+  .tk-c { color: rgba(244,243,239,0.45); font-style: italic; }
+  .tk-k { color: #C9C5F4; }
+  .tk-s { color: #B8E3C6; }
+  .tk-n { color: #F3D6A0; }
+  .tk-v { color: var(--bg); }
+  .tk-p { color: rgba(244,243,239,0.7); }
+  .tk-f { color: #A8A6F0; }
+  .tk-m { color: #ECEAFE; }
+
+  .code-decision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 24px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .code-decision .branch {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .code-decision .branch + .branch { border-left: 1px solid var(--line); }
+  .code-decision .branch .h {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .code-decision .branch .h .mark { font-size: 12px; }
+  .code-decision .branch.ok .h .mark { color: var(--indigo); }
+  .code-decision .branch.no .h .mark { color: var(--rose); }
+  .code-decision .branch .t { font-size: 17px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; }
+  .code-decision .branch .d { font-size: 14px; color: var(--muted); line-height: 1.5; margin: 0; }
+
+  /* =============================================================
+     OUTCOME SECTION (6-grid + dark capstone)
+     ============================================================= */
+  .out-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+    background: var(--surface);
+  }
+  .out-grid .o {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--surface);
+  }
+  .out-grid .o .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--indigo);
+  }
+  .out-grid .o .t { font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.005em; line-height: 1.25; }
+  .out-grid .o .d { font-size: 14px; line-height: 1.5; color: var(--muted); }
+
+  .outcome-bottom {
+    margin-top: 28px;
+    padding: 22px 28px;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 2px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .outcome-bottom .pulse {
+    width: 10px; height: 10px;
+    background: var(--indigo);
+  }
+
+  /* =============================================================
+     ANIMATION SECTION
+     ============================================================= */
+  .animation-section { padding-top: 100px; padding-bottom: 100px; }
+  .animation-frame {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 1px 0 rgba(17,17,17,0.04), 0 24px 60px -28px rgba(17,17,17,0.18);
+    overflow: hidden;
+  }
+  .animation-frame .strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .animation-frame .strip .lhs { display: inline-flex; align-items: center; gap: 10px; }
+  .animation-frame .strip .lhs .live {
+    width: 7px; height: 7px;
+    background: var(--indigo);
+    border-radius: 999px;
+    animation: pulse 2.4s cubic-bezier(.2,0,0,1) infinite;
+  }
+  #flow-animation {
+    width: 100%;
+    aspect-ratio: 1200 / 420;
+    background-color: var(--surface);
+    position: relative;
+    overflow: hidden;
+  }
+  #flow-animation::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(17,17,17,0.09) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(17,17,17,0.09) 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-mask-image: radial-gradient(ellipse 75% 80% at center, black 0%, rgba(0,0,0,0.35) 60%, transparent 100%);
+    mask-image: radial-gradient(ellipse 75% 80% at center, black 0%, rgba(0,0,0,0.35) 60%, transparent 100%);
+    pointer-events: none;
+  }
+  #flow-animation .flow-svg { position: relative; z-index: 1; }
+  #flow-animation .flow-svg { width: 100%; height: 100%; display: block; }
+
+  .animation-shots {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .animation-shots .shot {
+    padding: 14px 14px 18px;
+    border-right: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.45;
+    transition: background 240ms ease, color 240ms ease, box-shadow 240ms ease;
+    position: relative;
+  }
+  .animation-shots .shot:last-child { border-right: 0; }
+  .animation-shots .shot .n {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 4px;
+    transition: color 240ms ease;
+  }
+  .animation-shots .shot.is-active {
+    background: rgba(75, 73, 202, 0.06);
+    color: var(--ink);
+    box-shadow:
+      inset 0 -2px 0 var(--indigo),
+      0 10px 24px -10px rgba(75, 73, 202, 0.45);
+  }
+  .animation-shots .shot.is-active .n { color: var(--indigo); }
+
+  /* =============================================================
+     STEPS / VS / SHARED / UC / MODEL — same as v3
+     ============================================================= */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line-2);
+    border-bottom: 1px solid var(--line-2);
+    background: var(--surface);
+  }
+  .steps.steps-5 { grid-template-columns: repeat(5, 1fr); }
+  .steps .step {
+    padding: 32px 28px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .steps .step:last-child { border-right: 0; }
+  .steps .step .n { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted-2); }
+  .steps .step .t { font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .steps .step .d { font-size: 14px; line-height: 1.55; color: var(--muted); }
+  .steps .step::after {
+    content: "→";
+    position: absolute; right: -8px; top: 38px;
+    font-family: var(--font-mono); font-size: 14px;
+    color: var(--muted-2);
+    background: var(--surface);
+    padding: 0 4px;
+  }
+  .steps .step:last-child::after { display: none; }
+
+  .vs {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .vs-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--line-2);
+    background: var(--bg);
+  }
+  .vs-head .h { padding: 22px 28px; display: flex; flex-direction: column; gap: 8px; }
+  .vs-head .h + .h { border-left: 1px solid var(--line); }
+  .vs-head .h .label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-2); }
+  .vs-head .h .title { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
+  .vs-head .h.ok .title { color: var(--indigo); }
+  .vs-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+  .vs-row:last-child { border-bottom: 0; }
+  .vs-row .c {
+    padding: 20px 28px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink);
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 10px;
+    align-items: baseline;
+  }
+  .vs-row .c + .c { border-left: 1px solid var(--line); }
+  .vs-row .c.lhs { color: var(--muted); }
+  .vs-row .c.lhs::before { content: "✕"; font-family: var(--font-mono); color: var(--rose); font-size: 13px; }
+  .vs-row .c.rhs::before { content: "✔"; font-family: var(--font-mono); color: var(--indigo); font-size: 13px; }
+  .vs-bottom {
+    margin-top: 28px;
+    padding: 24px 28px;
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 18px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+  .vs-bottom .small {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: rgba(244,243,239,0.55);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .shared { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; align-items: center; }
+  .shared svg.shared-svg { width: 100%; height: auto; display: block; }
+  .shared ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .shared ul li {
+    border-bottom: 1px solid var(--line);
+    padding: 18px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+  }
+  .shared ul li::before { content: "→"; font-family: var(--font-mono); color: var(--indigo); font-size: 14px; }
+  .shared ul li strong { color: var(--ink); font-weight: 500; }
+  .shared-callout {
+    grid-column: 1 / -1;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--indigo);
+    font-size: 19px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-top: 32px;
+  }
+
+  .uc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+  .uc .card {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 36px;
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 220px;
+  }
+  .uc .card .row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .uc .card .row .num { font-family: var(--font-mono); font-size: 11.5px; color: var(--muted-2); letter-spacing: 0.08em; text-transform: uppercase; }
+  .uc .card h3 { font-size: 22px; line-height: 1.25; letter-spacing: -0.018em; }
+  .uc .card .desc { font-size: 15px; line-height: 1.5; color: var(--muted); margin: 0; }
+  .uc .card .verify {
+    margin-top: auto;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 10px 14px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .uc .card .verify .tag {
+    color: var(--indigo);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 10.5px;
+  }
+
+  .model {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .model .stage {
+    padding: 36px 28px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+    min-height: 240px;
+  }
+  .model .stage:last-child { border-right: 0; }
+  .model .stage .ico {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--line-2);
+    border-radius: 2px;
+    color: var(--indigo);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--bg);
+  }
+  .model .stage .n { font-family: var(--font-mono); font-size: 11px; color: var(--muted-2); letter-spacing: 0.08em; text-transform: uppercase; }
+  .model .stage .t { font-size: 22px; font-weight: 600; letter-spacing: -0.018em; }
+  .model .stage .d { font-size: 14px; line-height: 1.55; color: var(--muted); }
+  .model .stage::after {
+    content: "→";
+    position: absolute; right: -8px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: 14px;
+    color: var(--muted-2);
+    background: var(--surface);
+    padding: 0 4px;
+  }
+  .model .stage:last-child::after { display: none; }
+
+  /* =============================================================
+     FINAL CLOSE — matches screenshot 4 exactly
+     ============================================================= */
+  .close {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 160px 0 140px;
+    border-bottom: 0;
+  }
+  .close h2 {
+    font-size: clamp(48px, 6vw, 84px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin: 0 0 36px;
+    max-width: 14ch;
+    color: var(--bg);
+  }
+  .close .sub {
+    font-size: 18px;
+    line-height: 1.5;
+    color: rgba(244,243,239,0.6);
+    max-width: 56ch;
+    margin: 0 0 64px;
+  }
+  .close-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(244,243,239,0.12);
+    border-bottom: 1px solid rgba(244,243,239,0.12);
+    margin-bottom: 64px;
+  }
+  .close-pillars .p {
+    padding: 28px;
+    border-right: 1px solid rgba(244,243,239,0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .close-pillars .p:last-child { border-right: 0; }
+  .close-pillars .p .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(244,243,239,0.55);
+  }
+  .close-pillars .p .t {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--bg);
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+  }
+  .close-mantra {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 56px;
+  }
+  .close-mantra .ln {
+    font-size: clamp(28px, 3.6vw, 40px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+  .close-mantra .strike {
+    color: rgba(244,243,239,0.5);
+    text-decoration: line-through;
+    text-decoration-color: var(--rose);
+    text-decoration-thickness: 2px;
+  }
+  .close-mantra .stamp { color: var(--indigo-2); }
+
+  .close .cta-row .btn {
+    background: var(--bg);
+    color: var(--ink);
+    border-color: var(--bg);
+  }
+  .close .cta-row .btn:hover { background: #fff; border-color: #fff; }
+  .close .cta-row .btn--ghost {
+    background: transparent;
+    color: var(--bg);
+    border-color: rgba(244,243,239,0.25);
+  }
+  .close .cta-row .btn--ghost:hover { border-color: rgba(244,243,239,0.6); background: rgba(244,243,239,0.04); }
+
+  /* ---- footer ---- */
+  footer.foot {
+    background: var(--ink);
+    color: rgba(244,243,239,0.6);
+    padding: 32px 0;
+    border-top: 1px solid rgba(244,243,239,0.08);
+  }
+  .foot-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.02em;
+  }
+  .foot-inner .brand img { height: 14px; }
+  .foot-inner a:hover { color: var(--bg); }
+
+  /* reveal */
+  .js-ready .reveal { opacity: 0; transform: translateY(8px); transition: opacity 600ms cubic-bezier(.2,0,0,1), transform 600ms cubic-bezier(.2,0,0,1); }
+  .js-ready .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .js-ready .reveal { opacity: 1; transform: none; } }
+
+  /* responsive */
+  @media (max-width: 1100px) {
+    :root { --pad-x: 36px; --section-y: 96px; }
+    .shell { grid-template-columns: 1fr; }
+    .sidebar {
+      position: static;
+      height: auto;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding: 22px 24px 18px;
+      gap: 16px;
+    }
+    .sidebar .brand img { height: 48px; }
+    .nav-list {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px 12px;
+    }
+    .nav-list a {
+      padding: 4px 8px;
+      margin-left: 0;
+      border-left: 0;
+      border-bottom: 2px solid transparent;
+      grid-template-columns: auto auto;
+      gap: 6px;
+    }
+    .nav-list a.active {
+      border-left: 0;
+      border-bottom-color: var(--indigo);
+    }
+    .sidebar-cta {
+      flex-direction: row;
+      margin-top: 0;
+    }
+    .side-btn { flex: 1; }
+    .sidebar-foot { display: none; }
+    .s-head, .s-body { grid-template-columns: 1fr; gap: 16px; }
+    .s-head { margin-bottom: 28px; }
+    .problem-split { grid-template-columns: 1fr; }
+    .problem-split .col + .col { border-left: 0; border-top: 1px solid var(--line); }
+    .code-decision { grid-template-columns: 1fr; }
+    .code-decision .branch + .branch { border-left: 0; border-top: 1px solid var(--line); }
+    .out-grid { grid-template-columns: 1fr; }
+    .uc { grid-template-columns: 1fr; }
+    .shared { grid-template-columns: 1fr; gap: 40px; }
+    .model { grid-template-columns: 1fr 1fr; }
+    .model .stage:nth-child(2)::after, .model .stage:nth-child(4)::after { display: none; }
+    .model .stage:nth-child(2) { border-right: 0; }
+    .model .stage:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .animation-shots { grid-template-columns: repeat(4, 1fr); }
+    .numo-card { grid-template-columns: 1fr; gap: 28px; padding: 28px; }
+    .numo-card .rhs { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 24px; }
+    .close-pillars { grid-template-columns: 1fr; }
+    .close-pillars .p { border-right: 0; border-bottom: 1px solid rgba(244,243,239,0.12); }
+    .close-pillars .p:last-child { border-bottom: 0; }
+  }
+  @media (max-width: 760px) {
+    :root { --pad-x: 24px; --section-y: 72px; }
+    .nav-list { display: none; }
+    .sidebar-cta { display: none; }
+    .nav-label { border-bottom: 0; padding-bottom: 0; }
+    .hero { padding-top: 32px; }
+    .signals { grid-template-columns: 1fr; padding: 20px 0; }
+    .steps, .steps.steps-5 { grid-template-columns: 1fr; }
+    .steps .step { border-right: 0; border-bottom: 1px solid var(--line); }
+    .steps .step:last-child { border-bottom: 0; }
+    .steps .step::after { display: none; }
+    .vs-head { display: none; }
+    .vs-row { grid-template-columns: 1fr; }
+    .vs-row .c {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 16px 18px;
+    }
+    .vs-row .c + .c { border-left: 0; border-top: 1px dashed var(--line); }
+    .vs-row .c.lhs::before {
+      content: "✕  Build it yourself";
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+    }
+    .vs-row .c.rhs::before {
+      content: "✔  With Humanos";
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--indigo);
+    }
+    .uc, .model { grid-template-columns: 1fr; }
+    .model .stage::after { display: none; }
+    .model .stage:not(:last-child) { border-right: 0; border-bottom: 1px solid var(--line); }
+    .animation-shots { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+<!-- =============================================================
+     SIDEBAR
+     ============================================================= -->
+<aside class="sidebar" id="sidebar">
+  <a class="brand" href="https://humanos.id/" target="_blank" rel="noopener">
+    <img src="assets/logo-wordmark-black.svg" alt="Humanos" style="object-fit: contain; width: 200px" />
+  </a>
+  <div class="nav-label">Case study · Numo</div>
+  <ul class="nav-list" id="navList">
+    <li><a href="#hero"      data-target="hero"><span class="num">00</span><span>Overview</span></a></li>
+    <li><a href="#about-numo" data-target="about-numo"><span class="num">01</span><span>About Numo</span></a></li>
+    <li><a href="#problem"   data-target="problem"><span class="num">02</span><span>Problem</span></a></li>
+    <li><a href="#solution"  data-target="solution"><span class="num">03</span><span>Solution</span></a></li>
+    <li><a href="#outcome"   data-target="outcome"><span class="num">04</span><span>Outcome</span></a></li>
+    <li><a href="#animation" data-target="animation"><span class="num">05</span><span>System flow</span></a></li>
+    <li><a href="#how"       data-target="how"><span class="num">06</span><span>How Numo did it</span></a></li>
+    <li><a href="#recover"   data-target="recover"><span class="num">07</span><span>Real-time recovery</span></a></li>
+    <li><a href="#vs"        data-target="vs"><span class="num">08</span><span>Build vs Humanos</span></a></li>
+    <li><a href="#shared"    data-target="shared"><span class="num">09</span><span>Network effect</span></a></li>
+    <li><a href="#usecases"  data-target="usecases"><span class="num">10</span><span>Use cases</span></a></li>
+    <li><a href="#model"     data-target="model"><span class="num">11</span><span>Model</span></a></li>
+    <li><a href="#close"     data-target="close"><span class="num">12</span><span>Final word</span></a></li>
+  </ul>
+  <div class="sidebar-cta">
+    <a class="side-btn" href="https://humanos.mintlify.app/" target="_blank" rel="noopener">
+      <span>API docs</span>
+      <span class="arr">↗</span>
+    </a>
+    <a class="side-btn side-btn--ghost" href="https://calendly.com/pedrohumanos" target="_blank" rel="noopener">
+      <span>Book a demo</span>
+      <span class="arr">↗</span>
+    </a>
+  </div>
+  <div class="sidebar-foot">cs_numo · v5 · 2026-04-22</div>
+</aside>
+
+<main class="main">
+
+<!-- =============================================================
+     HERO
+     ============================================================= -->
+<section class="hero" id="hero" data-screen-label="00 Hero">
+  <div class="wrap"><div class="content">
+    <div class="eyebrow reveal"><span class="pin"></span><span>Authorization layer · Agentic finance</span></div>
+
+    <h1 class="reveal">
+      Ensure every agentic financial action is authorized <span class="accent">before execution.</span>
+    </h1>
+
+    <div class="cta-row reveal hero-cta">
+      <a class="btn" href="https://calendly.com/pedrohumanos" target="_blank" rel="noopener">Book a demo <span class="mono">↗</span></a>
+      <a class="btn btn--ghost" href="https://humanos.mintlify.app/" target="_blank" rel="noopener">API docs <span class="mono">↗</span></a>
+    </div>
+
+    <div class="signals reveal">
+      <div class="row"><span class="arr">→</span><span>Stop agents from moving capital without authorization</span></div>
+      <div class="row"><span class="arr">→</span><span>Get verifiable proof per action</span></div>
+      <div class="row"><span class="arr">→</span><span>Enforce rules across systems</span></div>
+      <div class="row"><span class="arr">→</span><span>Deterministic yes / no at execution</span></div>
+    </div>
+
+    <div class="signals-2 reveal">
+      <div class="row"><span class="arr">→</span><span>No rule duplication · No custom audit systems · No rebuilding per integration</span></div>
+      <div class="row"><span class="arr">→</span><span>Shared authorization layer across partners, custodians, and systems</span></div>
+    </div>
+
+    <div class="pitch reveal">
+      <p style="max-width: 700px">Autonomous agents are moving capital across systems.</p>
+      <p class="dim">Most systems assume they're allowed to.</p>
+      <p class="flag">That's the problem.</p>
+    </div>
+
+    <div class="cta-row reveal">
+      <a class="btn" href="#animation">See the system flow <span class="mono">35s loop</span></a>
+      <a class="btn btn--ghost" href="#how">How Numo implemented it</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     ABOUT NUMO
+     ============================================================= -->
+<section class="tighter" id="about-numo" data-screen-label="01 Numo">
+  <div class="wrap"><div class="content">
+    <div class="numo-card reveal">
+      <div class="lhs">
+        <div class="eyebrow">§ 01 · About the customer</div>
+        <h3><a class="link" href="https://usenumo.com/" target="_blank" rel="noopener">Numo</a> is a platform for automated capital allocation, where agents move capital across systems.</h3>
+        <p class="body">Strategies run autonomously. Capital is reallocated continuously across treasury, exchanges, custodians, and payment rails. Humanos sits between the agent's decision and the actual transaction, and checks every action before it goes through.</p>
+      </div>
+      <div class="rhs">
+        <div class="pair"><span>Domain</span><span>Automated capital allocation</span></div>
+        <div class="pair"><span>Surface area</span><span style="text-align:right">Treasury · Exchanges</br>Custodians · Rails</span></div>
+        <div class="pair"><span>Integration</span><span>One verify() call</span></div>
+        <div class="pair"><span>Site</span><a href="https://usenumo.com/" target="_blank" rel="noopener">usenumo.com&nbsp;↗</a></div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     PROBLEM
+     ============================================================= -->
+<section id="problem" data-screen-label="02 Problem">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 02 · Problem</div>
+      <h2>Capital moves on assumptions,<br/>not authorization.</h2>
+    </div>
+
+    <div class="s-body reveal">
+      <div class="gutter">Today</div>
+      <div class="prose" style="max-width: none;">
+        <p class="lede" style="max-width: 60ch;">Agents now move money. Strategies run on their own. Execution spans treasury, exchanges, custodians, and payment rails. But the rules that govern <em>what is allowed</em> live in code, scattered across systems, copied from one place to another, slowly drifting out of sync, and never actually checked at the moment an action happens.</p>
+
+        <div class="problem-split">
+          <div class="col">
+            <span class="k">What's happening</span>
+            <span class="t">Agents act, capital moves, no one verifies.</span>
+            <p class="d">Decisions are defined in one place. Agents act in another. Execution happens across multiple systems. Approvals — when they exist — are captured elsewhere. Nothing answers, in real time, whether a specific action is actually allowed.</p>
+            <span class="mono-line">decision · execution · monitoring → fragmented</span>
+          </div>
+          <div class="col">
+            <span class="k">What it costs</span>
+            <span class="t">Drift. Replication. Unprovable trust.</span>
+            <p class="d">Rules duplicated per venue. Policy changes require code deploys. Auditors reconstruct trails after the fact. The firm can show what agents <em>did</em> — not that any given action was <em>allowed</em>.</p>
+            <span class="mono-line">no shared answer to "what is allowed right now"</span>
+          </div>
+        </div>
+
+        <div class="callout warn">
+          <p>Capital moves based on assumptions, not verified authorization.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     SOLUTION
+     ============================================================= -->
+<section id="solution" data-screen-label="03 Solution">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 03 · Solution</div>
+      <h2>One verification step between<br/>decision and execution.</h2>
+    </div>
+
+    <div class="s-body reveal">
+      <div class="gutter">Humanos</div>
+      <div class="prose" style="max-width: none;">
+        <p class="lede" style="max-width: 60ch;">Humanos is a verification layer at execution time. Every agent action is checked against a signed mandate, in real time, with one API call. When authorization is missing, Humanos collects it — instantly — and execution continues.</p>
+
+        <div class="code-block">
+          <div class="code-head">
+            <div class="lhs">
+              <span class="dot"></span>
+              <span class="file">agent.ts</span>
+              <span>·</span>
+              <span>before any capital movement</span>
+            </div>
+            <button class="copy" id="copyBtn" type="button">Copy</button>
+          </div>
+<pre id="codeSrc"><span class="tk-c">// Generate a Verifiable Presentation (VP) for the agent's action.</span>
+<span class="tk-k">const</span> <span class="tk-p">{</span> <span class="tk-v">presentation</span> <span class="tk-p">}</span> <span class="tk-p">=</span> <span class="tk-k">await</span> <span class="tk-v">humanos</span><span class="tk-p">.</span><span class="tk-v">credentials</span><span class="tk-p">.</span><span class="tk-f">vp</span><span class="tk-p">({</span>
+  <span class="tk-m">credentialId</span><span class="tk-p">:</span> <span class="tk-v">vcId</span><span class="tk-p">,</span>
+<span class="tk-p">});</span>
+
+<span class="tk-c">// Verify before execute. One call. Deterministic answer.</span>
+<span class="tk-k">const</span> <span class="tk-v">verification</span> <span class="tk-p">=</span> <span class="tk-k">await</span> <span class="tk-v">humanos</span><span class="tk-p">.</span><span class="tk-v">credentials</span><span class="tk-p">.</span><span class="tk-f">verify</span><span class="tk-p">({</span>
+  <span class="tk-m">presentation</span><span class="tk-p">,</span>
+  <span class="tk-m">action</span><span class="tk-p">:</span> <span class="tk-s">"reallocate_capital"</span><span class="tk-p">,</span>
+  <span class="tk-m">runtimeContext</span><span class="tk-p">:</span> <span class="tk-p">{</span>
+    <span class="tk-m">strategy</span><span class="tk-p">:</span> <span class="tk-s">"delta_neutral"</span><span class="tk-p">,</span>
+    <span class="tk-m">amount</span><span class="tk-p">:</span> <span class="tk-n">50000</span><span class="tk-p">,</span>
+  <span class="tk-p">},</span>
+<span class="tk-p">});</span>
+
+<span class="tk-c">// Execute if authorized, request approval if not.</span>
+<span class="tk-k">if</span> <span class="tk-p">(</span><span class="tk-v">verification</span><span class="tk-p">.</span><span class="tk-m">decision</span> <span class="tk-p">===</span> <span class="tk-s">"allow"</span><span class="tk-p">)</span> <span class="tk-p">{</span>
+  <span class="tk-k">await</span> <span class="tk-v">execute</span><span class="tk-p">(</span><span class="tk-v">action</span><span class="tk-p">);</span>
+<span class="tk-p">}</span> <span class="tk-k">else</span> <span class="tk-p">{</span>
+  <span class="tk-k">await</span> <span class="tk-v">requestApproval</span><span class="tk-p">(</span><span class="tk-v">verification</span><span class="tk-p">.</span><span class="tk-m">reason</span><span class="tk-p">);</span>
+<span class="tk-p">}</span></pre>
+        </div>
+
+        <div class="code-decision">
+          <div class="branch ok">
+            <span class="h"><span class="mark">✔</span><span>Authorized</span></span>
+            <span class="t">Execute.</span>
+            <p class="d">Within mandate, within constraints, within validity. The agent proceeds. A Proof is generated.</p>
+          </div>
+          <div class="branch no">
+            <span class="h"><span class="mark">✕</span><span>Not authorized</span></span>
+            <span class="t">Recover — then continue.</span>
+            <p class="d">Humanos requests approval instantly (SMS, API), collects KYC or identity verification if required, updates the mandate, and resumes execution once authorization is valid.</p>
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top: 24px;">
+          <p>The system doesn't fail. It recovers authorization at runtime.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     OUTCOME
+     ============================================================= -->
+<section id="outcome" data-screen-label="04 Outcome">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 04 · Outcome</div>
+      <h2>What you get the<br/>moment it's wired in.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="out-grid">
+        <div class="o">
+          <span class="k">01 · Verify</span>
+          <span class="t">Every action verified before execution.</span>
+          <span class="d">Nothing moves on assumption. The verify call is non-optional and inline.</span>
+        </div>
+        <div class="o">
+          <span class="k">02 · Enforce</span>
+          <span class="t">One rule set across all systems.</span>
+          <span class="d">Internal and external systems read from the same authorization source.</span>
+        </div>
+        <div class="o">
+          <span class="k">03 · Eliminate</span>
+          <span class="t">Manual approvals are gone.</span>
+          <span class="d">Standing mandates replace four-person chains. Humans sign once, not every time.</span>
+        </div>
+        <div class="o">
+          <span class="k">04 · Audit</span>
+          <span class="t">Auditability without building logs.</span>
+          <span class="d">Every action produces a cryptographic Proof. Auditors look it up directly, instead of piecing together logs after the fact.</span>
+        </div>
+        <div class="o">
+          <span class="k">05 · Update</span>
+          <span class="t">Change rules without code changes.</span>
+          <span class="d">Issue a new mandate. Revoke the old one. Effective immediately, everywhere.</span>
+        </div>
+        <div class="o">
+          <span class="k">06 · Recover</span>
+          <span class="t">Recover missing authorization in real time.</span>
+          <span class="d">Approval, KYC, or identity verification is collected the moment it's needed. Execution resumes once authorization is valid.</span>
+        </div>
+      </div>
+
+      <div class="outcome-bottom">
+        <span class="pulse"></span>
+        <span>Agents can act autonomously — within provable, enforceable boundaries.</span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     ANIMATION
+     ============================================================= -->
+<section class="animation-section" id="animation" data-screen-label="05 System flow">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 05 · System flow</div>
+      <h2>Agent → verify() → recover → execute → prove.</h2>
+    </div>
+
+    <div class="animation-frame reveal">
+      <div class="strip">
+        <span class="lhs"><span class="live"></span><span>Live · 35s loop · verify → recover → continue → prove</span></span>
+        <span>humanos.verify()</span>
+      </div>
+      <div id="flow-animation" role="img" aria-label="Animated system flow"></div>
+      <div class="animation-shots">
+        <div class="shot" data-shot="prepare"><span class="n">01</span>Agent prepares action</div>
+        <div class="shot" data-shot="verify"><span class="n">02</span>verify() called</div>
+        <div class="shot" data-shot="decide"><span class="n">03</span>Not authorized</div>
+        <div class="shot" data-shot="request"><span class="n">04</span>Request approval / KYC</div>
+        <div class="shot" data-shot="collect"><span class="n">05</span>Approval collected</div>
+        <div class="shot" data-shot="update reverify"><span class="n">06</span>Mandate updated · re-verify</div>
+        <div class="shot" data-shot="execute proof"><span class="n">07</span>Execute · Proof generated</div>
+        <div class="shot" data-shot="hold"><span class="n">08</span>Verified</div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     HOW NUMO IMPLEMENTED IT
+     ============================================================= -->
+<section id="how" data-screen-label="06 How Numo implemented it">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 06 · Implementation</div>
+      <h2>How <a class="link" href="https://usenumo.com/" target="_blank" rel="noopener">Numo</a> implemented it.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="steps steps-5">
+        <div class="step">
+          <span class="n">01</span>
+          <span class="t">Define intent.</span>
+          <span class="d">Users define rules — inside the Numo UI, or externally (CRM, backend, partner platforms). Sent to Humanos via API and issued as a structured mandate.</span>
+        </div>
+        <div class="step">
+          <span class="n">02</span>
+          <span class="t">Agent prepares action.</span>
+          <span class="d">A strategy decides to move capital. The action is assembled with subject, amount, and context.</span>
+        </div>
+        <div class="step">
+          <span class="n">03</span>
+          <span class="t">Verify before execution.</span>
+          <span class="d">Agent calls <span class="mono">humanos.verify({...})</span>. Constraints, validity, and revocation checked in real time.</span>
+        </div>
+        <div class="step">
+          <span class="n">04</span>
+          <span class="t">Decision · recover if needed.</span>
+          <span class="d">Authorized → execution proceeds. Not authorized → Humanos requests approval or KYC in real time.</span>
+        </div>
+        <div class="step">
+          <span class="n">05</span>
+          <span class="t">Resume execution · prove.</span>
+          <span class="d">Once authorization is collected, verification passes, execution continues, and a cryptographic Proof is generated.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal" style="margin-top: 32px;">
+      <div class="callout">
+        <p>Systems don't just check authorization — they can obtain it when needed.</p>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     RECOVERY — Handling Missing Authorization in Real Time
+     ============================================================= -->
+<section id="recover" data-screen-label="07 Real-time recovery">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 07 · Recovery</div>
+      <h2>Handling missing authorization<br/>in real time.</h2>
+    </div>
+
+    <div class="s-body reveal">
+      <div class="gutter">Recover</div>
+      <div class="prose" style="max-width: none;">
+        <p class="lede" style="max-width: 60ch;">In automated systems, not every action is pre-authorized. When an agent attempts an action outside the current mandate, Humanos doesn't fail — it recovers.</p>
+
+        <div class="out-grid">
+          <div class="o">
+            <span class="k">01 · Detect</span>
+            <span class="t">Detect missing or invalid authorization.</span>
+            <span class="d">verify() returns a structured reason — out of scope, expired, revoked, or identity not yet verified.</span>
+          </div>
+          <div class="o">
+            <span class="k">02 · Request</span>
+            <span class="t">Request approval instantly.</span>
+            <span class="d">SMS, API, or email to the mandate holder. The agent waits; the system does not silently fail.</span>
+          </div>
+          <div class="o">
+            <span class="k">03 · Collect</span>
+            <span class="t">Collect identity verification (KYC) if required.</span>
+            <span class="d">Higher-risk actions can require step-up KYC, document verification, or biometric checks before authorization is granted.</span>
+          </div>
+          <div class="o">
+            <span class="k">04 · Update</span>
+            <span class="t">Update the mandate in real time.</span>
+            <span class="d">Approved scope is added to the mandate — versioned, signed, and effective immediately across every system that calls verify().</span>
+          </div>
+        </div>
+
+        <div class="outcome-bottom" style="margin-top: 24px;">
+          <span class="pulse"></span>
+          <span>Execution resumes once authorization is valid.</span>
+        </div>
+
+        <div class="callout" style="margin-top: 24px;">
+          <p>Authorization is not just verified — it can be collected at the moment it's needed.</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     BUILD VS HUMANOS
+     ============================================================= -->
+<section id="vs" data-screen-label="08 Build vs Humanos">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 08 · Build vs Humanos</div>
+      <h2>Authorization doesn't scale<br/>as an internal system.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="vs">
+        <div class="vs-head">
+          <div class="h">
+            <span class="label">Build it yourself</span>
+            <span class="title">Internal authorization</span>
+          </div>
+          <div class="h ok">
+            <span class="label">With Humanos</span>
+            <span class="title">Shared authorization layer</span>
+          </div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>Rules fragment across systems and venues.</span></div>
+          <div class="c rhs"><span>Mandates are shared across every system that calls verify().</span></div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>Authorization is coupled to your codebase.</span></div>
+          <div class="c rhs"><span>Rules are externalized, versioned, and revocable.</span></div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>Auditability requires reconstructing logs after the fact.</span></div>
+          <div class="c rhs"><span>Proof is generated at execution time. Auditors verify, not reconstruct.</span></div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>No external party can verify your trust claims.</span></div>
+          <div class="c rhs"><span>Counterparties verify Proofs independently — same standard, same primitives.</span></div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>Every new integration restarts the work.</span></div>
+          <div class="c rhs"><span>One verify() call covers every venue, internal or external.</span></div>
+        </div>
+        <div class="vs-row">
+          <div class="c lhs"><span>Rule changes require code, deploys, and coordination.</span></div>
+          <div class="c rhs"><span>Issue a new mandate, revoke the old one. Effective in real time.</span></div>
+        </div>
+      </div>
+
+      <div class="vs-bottom">
+        <span class="small">Bottom line</span>
+        <span>You can build a verification layer for your own system.</span>
+        <span>You cannot build the shared standard across systems.</span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     SHARED LAYER — network effect
+     ============================================================= -->
+<section id="shared" data-screen-label="09 Shared layer">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 09 · Network effect</div>
+      <h2>Authorization becomes a shared primitive — not something rebuilt per system.</h2>
+    </div>
+
+    <div class="shared reveal">
+      <div>
+        <svg class="shared-svg" viewBox="0 0 520 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="g2" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M0 .5H20" fill="none" stroke="rgba(17,17,17,0.05)" stroke-width="0.6"/>
+              <path d="M.5 0V20" fill="none" stroke="rgba(17,17,17,0.05)" stroke-width="0.6"/>
+            </pattern>
+          </defs>
+          <rect width="520" height="360" fill="url(#g2)"/>
+          <g stroke="#4b49ca" stroke-width="1.2" fill="none">
+            <line x1="260" y1="180" x2="80" y2="80" />
+            <line x1="260" y1="180" x2="440" y2="80" />
+            <line x1="260" y1="180" x2="80" y2="280" />
+            <line x1="260" y1="180" x2="440" y2="280" />
+            <line x1="260" y1="180" x2="260" y2="60" />
+            <line x1="260" y1="180" x2="260" y2="320" />
+          </g>
+          <g transform="translate(260,180)">
+            <circle r="48" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+            <text y="-2" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#111">Humanos</text>
+            <text y="14" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(17,17,17,0.55)">verify()</text>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="11" font-weight="500" fill="#111">
+            <g transform="translate(80,80)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Treasury</text></g>
+            <g transform="translate(440,80)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Exchange</text></g>
+            <g transform="translate(80,280)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Custodian</text></g>
+            <g transform="translate(440,280)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Bank rail</text></g>
+            <g transform="translate(260,60)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Auditor</text></g>
+            <g transform="translate(260,320)"><rect x="-50" y="-15" width="100" height="30" fill="#FFF" stroke="rgba(17,17,17,0.18)"/><text text-anchor="middle" dy="4">Partner</text></g>
+          </g>
+        </svg>
+      </div>
+      <ul>
+        <li><span><strong>Mandates work across systems.</strong> Issue once. Verify anywhere — internal services, custodians, exchanges, rails.</span></li>
+        <li><span><strong>Counterparties verify independently.</strong> Auditors and partners check Proofs without trusting your logs.</span></li>
+        <li><span><strong>Integrations reuse the same standard.</strong> No new logic per venue. The integration is the verify() call.</span></li>
+        <li><span><strong>Each new participant strengthens the standard.</strong> The more systems verify against Humanos, the more valuable a Proof becomes.</span></li>
+      </ul>
+      <div class="shared-callout">
+        Authorization becomes a shared primitive — not something rebuilt per system.
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     USE CASES
+     ============================================================= -->
+<section id="usecases" data-screen-label="10 Use cases">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 10 · Use cases</div>
+      <h2>Anywhere agents move capital.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="uc">
+        <div class="card">
+          <div class="row"><h3>Treasury</h3><span class="num">01</span></div>
+          <p class="desc">Sweep, rebalance, and allocate liquidity across operating accounts and yield venues.</p>
+          <div class="verify"><span class="tag">Verify before execution</span><span>transfer · rebalance · sweep</span></div>
+        </div>
+        <div class="card">
+          <div class="row"><h3>Crypto / DeFi</h3><span class="num">02</span></div>
+          <p class="desc">Allocate capital across exchanges, vaults, and on-chain protocols on autonomous schedules.</p>
+          <div class="verify"><span class="tag">Verify before execution</span><span>deposit · swap · stake</span></div>
+        </div>
+        <div class="card">
+          <div class="row"><h3>Trading systems</h3><span class="num">03</span></div>
+          <p class="desc">Run strategies across venues, with strict limits set for each venue, each asset, and each time window.</p>
+          <div class="verify"><span class="tag">Verify before execution</span><span>order · hedge · close</span></div>
+        </div>
+        <div class="card">
+          <div class="row"><h3>Market makers</h3><span class="num">04</span></div>
+          <p class="desc">Coordinate inventory and quote risk across multiple environments and counterparties.</p>
+          <div class="verify"><span class="tag">Verify before execution</span><span>quote · move inventory · settle</span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     MODEL
+     ============================================================= -->
+<section id="model" class="tight" data-screen-label="11 Model">
+  <div class="wrap"><div class="content">
+    <div class="s-head reveal">
+      <div class="num">§ 11 · Model</div>
+      <h2>Issue → Verify → Collect → Prove.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="model">
+        <div class="stage">
+          <span class="ico">I</span>
+          <span class="n">01 · Issue</span>
+          <span class="t">Mandate.</span>
+          <span class="d">User intent → signed, structured authorization. Mandates can be created from any system — UI, backend, or external partner — and reused across all execution environments.</span>
+        </div>
+        <div class="stage">
+          <span class="ico">V</span>
+          <span class="n">02 · Verify</span>
+          <span class="t">Check.</span>
+          <span class="d">Every agent action runs through verify(). Deterministic yes / no.</span>
+        </div>
+        <div class="stage">
+          <span class="ico">C</span>
+          <span class="n">03 · Collect</span>
+          <span class="t">Approval.</span>
+          <span class="d">Out of bounds? Request human approval in real time — API, SMS, or email.</span>
+        </div>
+        <div class="stage">
+          <span class="ico">P</span>
+          <span class="n">04 · Prove</span>
+          <span class="t">Receipt.</span>
+          <span class="d">Cryptographic Proof per action. Auditable forever. Verifiable by anyone.</span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     FINAL CLOSE — matches screenshot 4
+     ============================================================= -->
+<section class="close" id="close" data-screen-label="12 Final word">
+  <div class="wrap"><div class="content">
+    <div class="reveal">
+      <h2>Humanos operates at the moment an agent decides to move money.</h2>
+      <p class="sub">At that moment, authorization must be verified, the decision must be deterministic, and the outcome must be provable. Everything else follows.</p>
+    </div>
+
+    <div class="close-pillars reveal">
+      <div class="p">
+        <span class="k">Verified</span>
+        <span class="t">Authorization is checked at execution — never assumed.</span>
+      </div>
+      <div class="p">
+        <span class="k">Deterministic</span>
+        <span class="t">Allow, block, or request approval. Nothing in between.</span>
+      </div>
+      <div class="p">
+        <span class="k">Provable</span>
+        <span class="t">Every action emits a cryptographic receipt anyone can verify.</span>
+      </div>
+    </div>
+
+    <div class="close-mantra reveal">
+      <span class="ln strike">Agents assume permission.</span>
+      <span class="ln stamp">Agents verify it.</span>
+    </div>
+
+    <div class="cta-row reveal">
+      <a class="btn" href="https://calendly.com/pedrohumanos" target="_blank" rel="noopener">
+        Talk to Humanos <span class="mono">humanos.id</span>
+      </a>
+      <a class="btn btn--ghost" href="https://humanos.mintlify.app/" target="_blank" rel="noopener">Read the API</a>
+    </div>
+  </div></div>
+</section>
+
+<!-- =============================================================
+     FOOTER
+     ============================================================= -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <a class="brand" href="https://humanos.id/" target="_blank" rel="noopener">
+      <img src="assets/logo-wordmark-white.svg" alt="Humanos" />
+    </a>
+    <div>
+      <span>cs_numo · v5</span><span> · </span><span>2026-04-22</span><span> · </span>
+      <a href="https://humanos.id/" target="_blank" rel="noopener">humanos.id</a><span> · </span>
+      <a href="https://usenumo.com/" target="_blank" rel="noopener">usenumo.com</a>
+    </div>
+  </div>
+</footer>
+
+</main>
+</div>
+
+<script src="flow-animation.js" defer></script>
+<script>
+  // active link tracking
+  (function () {
+    const links = Array.from(document.querySelectorAll('#navList a'));
+    if (!links.length) return;
+    const map = new Map();
+    links.forEach(a => {
+      const id = a.dataset.target;
+      const sec = id && document.getElementById(id);
+      if (sec) map.set(sec, a);
+    });
+    if (!('IntersectionObserver' in window)) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const a = map.get(e.target);
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    map.forEach((_, sec) => io.observe(sec));
+  })();
+
+  // reveal-on-scroll
+  (function () {
+    document.documentElement.classList.add('js-ready');
+    const els = document.querySelectorAll('.reveal');
+    const showAll = () => els.forEach(e => e.classList.add('in'));
+    const safety = setTimeout(showAll, 1400);
+    if (!('IntersectionObserver' in window)) { showAll(); clearTimeout(safety); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { rootMargin: '300px 0px 300px 0px', threshold: 0 });
+    els.forEach(e => io.observe(e));
+    requestAnimationFrame(() => {
+      const vh = window.innerHeight;
+      els.forEach(e => {
+        const r = e.getBoundingClientRect();
+        if (r.top < vh + 400 && r.bottom > -400) e.classList.add('in');
+      });
+    });
+  })();
+
+  // copy code button
+  (function () {
+    const btn = document.getElementById('copyBtn');
+    const src = document.getElementById('codeSrc');
+    if (!btn || !src) return;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(src.innerText);
+        btn.textContent = '✔ Copied'; btn.classList.add('ok');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 1600);
+      } catch (e) { btn.textContent = 'Press ⌘C'; }
+    });
+  })();
+</script>
+
+</body>
+</html>

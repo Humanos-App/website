@@ -24,6 +24,9 @@
       { "source": "/usecases", "destination": "/UseCases/generated-page.html" },
       { "source": "/usecases/:path*", "destination": "/UseCases/:path*" },
 
+      { "source": "/numo-use-case", "destination": "/NumoUseCase/generated-page.html" },
+      { "source": "/numo-use-case/:path*", "destination": "/NumoUseCase/:path*" },
+
       { "source": "/", "destination": "/Homepage/generated-page.html" }
     ]
   }

@@ -267,7 +267,8 @@
     color: var(--muted);
     font-size: 13px;
   }
-  .pitch { display: flex; flex-direction: column; gap: 6px; max-width: 60ch; margin: 0 0 64px; }
+  .pitch { display: flex; flex-direction: column; gap: 6px; margin: 0 0 64px; }
+  .pitch p:first-child { white-space: nowrap; }
   .pitch p {
     margin: 0;
     font-size: clamp(20px, 2.2vw, 24px);
@@ -308,13 +309,13 @@
     border-radius: 4px;
     padding: 36px 40px;
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 56px;
     align-items: center;
   }
   .numo-card .lhs .eyebrow { margin-bottom: 14px; }
-  .numo-card h3 { font-size: 24px; line-height: 1.25; letter-spacing: -0.018em; margin-bottom: 10px; max-width: 22ch; }
-  .numo-card p { margin: 0; max-width: 42ch; }
+  .numo-card h3 { font-size: 24px; line-height: 1.25; letter-spacing: -0.018em; margin-bottom: 10px; max-width: 32ch; }
+  .numo-card p { margin: 0; max-width: 60ch; }
   .numo-card .rhs {
     display: flex; flex-direction: column; gap: 12px;
     font-family: var(--font-mono); font-size: 12px; color: var(--muted);
@@ -1143,7 +1144,7 @@
     </div>
 
     <div class="pitch reveal">
-      <p style="max-width: 700px">Autonomous agents are moving capital across systems.</p>
+      <p>Autonomous agents are moving capital across systems.</p>
       <p class="dim">Most systems assume they're allowed to.</p>
       <p class="flag">That's the problem.</p>
     </div>
@@ -1512,11 +1513,13 @@
         </div>
       </div>
 
-      <div class="vs-bottom">
-        <span class="small">Bottom line</span>
-        <span>You can build a verification layer for your own system.</span>
-        <span>You cannot build the shared standard across systems.</span>
-      </div>
+    <div class="vs-bottom">
+      <span class="small">Bottom line</span>
+      <ul>
+        <li>You can build a verification layer for your own system.</li>
+        <li>You cannot build the shared standard across systems.</li>
+      </ul>
+    </div>
     </div>
   </div></div>
 </section>
